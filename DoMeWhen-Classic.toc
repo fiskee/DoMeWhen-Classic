@@ -1,0 +1,72 @@
+## Interface: 11320
+## Author: Fisker
+## Version: 1
+## Title: DoMeWhen Classic
+## Notes: Core Rotation Addon
+## SavedVariables: DMWSettings
+
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\LibSharedMedia-3.0\lib.xml
+Libs\AceAddon-3.0\AceAddon-3.0.xml
+Libs\AceGUI-3.0\AceGUI-3.0.xml
+Libs\AceConfig-3.0\AceConfig-3.0.xml
+Libs\AceConfig-3.0\AceConfigDialog-3.0\AceConfigDialog-3.0.xml
+Libs\AceConfig-3.0\AceConfigCmd-3.0\AceConfigCmd-3.0.xml
+Libs\AceDB-3.0\AceDB-3.0.xml
+Libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
+Libs\AceConsole-3.0\AceConsole-3.0.xml
+Libs\LibDBIcon-1.0\LibDataBroker-1.1\LibDataBroker-1.1.lua
+Libs\LibDBIcon-1.0\LibDBIcon-1.0\lib.xml
+Libs\LibClassicDurations\LibClassicDurations.xml
+Libs\!LibDraw\LibDraw.lua
+
+Core.lua
+Classes\Classes.lua
+System\Settings.lua
+System\ObjectManager.lua
+System\Combatlog.lua
+System\EventHandler.lua
+System\SlashHandler.lua
+
+Classes\Unit\Unit.lua
+Classes\Unit\TimeToDie.lua
+Classes\Unit\Friend.lua
+Classes\Spell\Spell.lua
+Classes\Spell\Cast.lua
+Classes\Spell\LastCast.lua
+Classes\LocalPlayer\LocalPlayer.lua
+Classes\LocalPlayer\Loaders.lua
+Classes\LocalPlayer\Enemy.lua
+Classes\LocalPlayer\Friend.lua
+Classes\Aura\Aura.lua
+Classes\Aura\Cache.lua
+Classes\Item\Item.lua
+
+Helpers\AutoLoot.lua
+Helpers\Quest.lua
+Helpers\Queue.lua
+Helpers\Rotation.lua
+
+Enums\Spells\Global.lua
+Enums\Spells\Druid.lua
+Enums\Spells\Hunter.lua
+Enums\Spells\Mage.lua
+Enums\Spells\Paladin.lua
+Enums\Spells\Priest.lua
+Enums\Spells\Rogue.lua
+Enums\Spells\Shaman.lua
+Enums\Spells\Warlock.lua
+Enums\Spells\Warrior.lua
+
+Enums\Items.lua
+Enums\Misc.lua
+Enums\Dispel.lua
+Enums\Dummy.lua
+Enums\Overrides.lua
+Enums\HardCC.lua
+Enums\Interrupts.lua
+Enums\CC.lua
+
+UI\Main.lua
+UI\HUD.lua

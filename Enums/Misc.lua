@@ -1,0 +1,3 @@
+  DMW.Enums.MeleeSpell = {
+
+  }
