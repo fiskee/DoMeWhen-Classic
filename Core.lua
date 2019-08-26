@@ -17,6 +17,7 @@ local function FindRotation()
         if DMW.Rotations[DMW.Player.Class].Settings then
             DMW.Rotations[DMW.Player.Class].Settings()
         end
+        DMW.UI.HUD.Load()
     end
 end
 
@@ -48,9 +49,8 @@ f:SetScript(
                 if DMW.Helpers.Queue.Run() then
                     return
                 end
-                DMW.Player.Rotation()
-                if not DMW.UI.HUD.Loaded then
-                    DMW.UI.HUD.Load()
+                if DMW.Helpers.Rotation.Active() then
+                    DMW.Player.Rotation()
                 end
             end
         end
