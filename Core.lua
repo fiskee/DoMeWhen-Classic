@@ -14,6 +14,9 @@ local Initialized = false
 local function FindRotation()
     if DMW.Rotations[DMW.Player.Class] and DMW.Rotations[DMW.Player.Class].Rotation then
         DMW.Player.Rotation = DMW.Rotations[DMW.Player.Class].Rotation
+        if DMW.Rotations[DMW.Player.Class].Settings then
+            DMW.Rotations[DMW.Player.Class].Settings()
+        end
     end
 end
 
