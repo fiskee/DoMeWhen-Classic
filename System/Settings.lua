@@ -30,6 +30,7 @@ local defaults = {
             Items = true
         },
         Helpers = {
+            AutoLoot = false,
             QuestieHelper = false
         }
     }

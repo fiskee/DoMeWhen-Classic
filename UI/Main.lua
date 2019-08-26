@@ -66,6 +66,18 @@ local Options = {
                     order = 4,
                     name = "Helpers"
                 },
+                AutoLoot = {
+                    type = "toggle",
+                    order = 5,
+                    name = "Auto Loot",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.AutoLoot
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.AutoLoot = value
+                    end
+                },
                 QuestieHelper = {
                     type = "toggle",
                     order = 5,
