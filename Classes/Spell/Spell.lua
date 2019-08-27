@@ -13,7 +13,7 @@ function Spell:New(SpellID, CastType)
     self.IsHarmful = IsHarmfulSpell(self.SpellName) or false
     self.IsHelpful = IsHelpfulSpell(self.SpellName) or false
     self.LastCastTime = 0
-    self.LastBotTarget = ""
+    self.LastBotTarget = "player"
     local costTable = GetSpellPowerCost(self.SpellID)
     for _, costInfo in pairs(costTable) do
         if costInfo.costPerSec > 0 then

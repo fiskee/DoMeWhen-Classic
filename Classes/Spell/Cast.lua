@@ -9,7 +9,7 @@ function Spell:FacingCast(Unit, Rank)
 			MouselookActive = true
 			MouselookStop()
 		end
-		FaceDirection(Unit or "Target", true)
+		FaceDirection(Unit.Pointer or "Target", true)
 		if not Rank then
             CastSpellByName(self.SpellName, Unit.Pointer)
         else
@@ -49,8 +49,17 @@ function Spell:Cast(Unit, Rank)
                 return false
             end
         else
+            -- local CurrentTarget = UnitTarget(DMW.Player.Pointer)
+            -- local ChangeTarget = false
+            -- if Unit and not Unit == DMW.Player and not UnitIsUnit("target", Unit) then
+            --     TargetUnit(Unit)
+            --     ChangeTarget = true
+            -- end
             self:FacingCast(Unit.Pointer, Rank)
             self.LastBotTarget = Unit.Pointer
+            -- if ChangeTarget then
+            --     TargetUnit(CurrentTarget)
+            -- end
         end
         return true
     end
