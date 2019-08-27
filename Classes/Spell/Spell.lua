@@ -70,7 +70,7 @@ function Spell:CD(Rank)
 end
 
 function Spell:IsReady(Rank)
-    if GetSpellInfo(self.SpellName) and ((not Rank and IsUsableSpell(self.SpellName)) or (Rank and IsUsableSpell(self.Ranks[Rank]))) and self:CurrentCD(Rank) == 0 then
+    if GetSpellInfo(self.SpellName) and ((not Rank and IsUsableSpell(self.SpellName)) or (Rank and IsUsableSpell(self.Ranks[Rank]))) and self:CD(Rank) == 0 then
         return true
     end
     return false
