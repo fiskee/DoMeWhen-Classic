@@ -110,7 +110,7 @@ end
 
 function Spell:CastTime(Rank)
     if Rank then
-        return select(4, GetSpellInfo(self.Ranks[Rank]))
+        return select(4, GetSpellInfo(self.Ranks[Rank])) / 1000
     end
-    return select(4, GetSpellInfo(self.SpellName))
+    return select(4, GetSpellInfo(self.SpellName)) / 1000
 end
