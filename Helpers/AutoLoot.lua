@@ -5,7 +5,7 @@ local Looting = false
 
 function DMW.Helpers.AutoLoot.Run()
     if DMW.Settings.profile.Helpers.AutoLoot then
-        if Looting and (DMW.Time - Looting) > 0.6 then
+        if Looting and (DMW.Time - Looting) > 1 then
             Looting = false
         end
         if not Looting and not DMW.Player.Combat then
