@@ -19,7 +19,8 @@ local defaults = {
         Enemy = {
             InterruptPct = 70,
             ChannelInterrupt = 1,
-            InterruptTarget = 1
+            InterruptTarget = 1,
+            AutoFace = true
         },
         Friend = {
             DispelDelay = 1

@@ -98,14 +98,32 @@ local Options = {
             type = "group",
             order = 3,
             args = {
-                InterruptHeader = {
+                GeneralHeader = {
                     type = "header",
                     order = 1,
+                    name = "General"
+                },
+                AutoFacing = {
+                    type = "toggle",
+                    order = 2,
+                    name = "Auto Facing",
+                    desc = "Will auto face instant cast spells on target",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Enemy.AutoFace
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Enemy.AutoFace = value
+                    end
+                },
+                InterruptHeader = {
+                    type = "header",
+                    order = 3,
                     name = "Interrupts"
                 },
                 InterruptPct = {
                     type = "range",
-                    order = 2,
+                    order = 4,
                     name = "Interrupt %",
                     desc = "Set desired % for interrupting enemy casts",
                     width = "full",
@@ -121,7 +139,7 @@ local Options = {
                 },
                 ChannelInterrupt = {
                     type = "range",
-                    order = 3,
+                    order = 5,
                     name = "Channel Interrupt",
                     desc = "Set seconds to wait before interrupting enemy channels",
                     width = "full",
@@ -137,7 +155,7 @@ local Options = {
                 },
                 InterruptTarget = {
                     type = "select",
-                    order = 4,
+                    order = 6,
                     name = "Interrupt Target",
                     desc = "Select desired target setting for interrupts",
                     width = "full",
