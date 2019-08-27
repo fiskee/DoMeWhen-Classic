@@ -49,17 +49,8 @@ function Spell:Cast(Unit, Rank)
                 return false
             end
         else
-            -- local CurrentTarget = UnitTarget(DMW.Player.Pointer)
-            -- local ChangeTarget = false
-            -- if Unit and not Unit == DMW.Player and not UnitIsUnit("target", Unit) then
-            --     TargetUnit(Unit)
-            --     ChangeTarget = true
-            -- end
-            self:FacingCast(Unit.Pointer, Rank)
+            self:FacingCast(Unit, Rank)
             self.LastBotTarget = Unit.Pointer
-            -- if ChangeTarget then
-            --     TargetUnit(CurrentTarget)
-            -- end
         end
         return true
     end

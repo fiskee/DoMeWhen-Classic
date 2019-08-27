@@ -88,8 +88,8 @@ local function UpdateUnits()
     table.wipe(Enemies)
     table.wipe(Friends)
     DMW.Player.Target = nil
-    DMW.Player.Focus = nil
-    DMW.Player.Mouseover = nil
+    -- DMW.Player.Focus = nil
+    -- DMW.Player.Mouseover = nil
     DMW.Player.Pet = nil
 
     for Pointer, Unit in pairs(Units) do
@@ -98,10 +98,10 @@ local function UpdateUnits()
         end
         if not DMW.Player.Target and UnitIsUnit(Pointer, "target") then
             DMW.Player.Target = Unit
-        elseif not DMW.Player.Mouseover and UnitIsUnit(Pointer, "mouseover") then
-            DMW.Player.Mouseover = Unit
-        elseif not DMW.Player.Focus and UnitIsUnit(Pointer, "focus") then
-            DMW.Player.Focus = Unit
+        -- elseif not DMW.Player.Mouseover and UnitIsUnit(Pointer, "mouseover") then
+        --     DMW.Player.Mouseover = Unit
+        -- elseif not DMW.Player.Focus and UnitIsUnit(Pointer, "focus") then
+        --     DMW.Player.Focus = Unit
         elseif DMW.Player.PetActive and not DMW.Player.Pet and UnitIsUnit(Pointer, "pet") then
             DMW.Player.Pet = Unit
         end
