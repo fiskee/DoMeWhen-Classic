@@ -3,13 +3,15 @@ local Buff = DMW.Classes.Buff
 local Debuff = DMW.Classes.Debuff
 
 function Buff:New(SpellID, BaseDuration)
-    self.SpellID = SpellID
+    self.Ranks = SpellID
+    self.SpellID = self.Ranks[1]
     self.SpellName = GetSpellInfo(self.SpellID)
     self.BaseDuration = BaseDuration
 end
 
 function Debuff:New(SpellID, BaseDuration)
-    self.SpellID = SpellID
+    self.Ranks = SpellID
+    self.SpellID = self.Ranks[1]
     self.SpellName = GetSpellInfo(self.SpellID)
     self.BaseDuration = BaseDuration
 end
