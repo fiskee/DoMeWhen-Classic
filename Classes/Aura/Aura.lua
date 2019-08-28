@@ -181,7 +181,7 @@ end
 
 function Debuff:Count(Table)
     local Count = 0
-    Table = Table or DMW.Player:GetEnemies(40)
+    Table = Table or DMW.Player:GetAttackable(40)
     for _, Unit in pairs(Table) do
         if self:Exist(Unit) then
             Count = Count + 1
