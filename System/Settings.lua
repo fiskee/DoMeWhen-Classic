@@ -32,6 +32,7 @@ local defaults = {
         },
         Helpers = {
             AutoLoot = false,
+            AutoSkinning = false,
             QuestieHelper = false,
             Herbs = false,
             Ore = false,

@@ -78,9 +78,21 @@ local Options = {
                         DMW.Settings.profile.Helpers.AutoLoot = value
                     end
                 },
+                AutoSkinning = {
+                    type = "toggle",
+                    order = 6,
+                    name = "Auto Skinning",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.AutoSkinning
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.AutoSkinning = value
+                    end
+                },
                 QuestieHelper = {
                     type = "toggle",
-                    order = 5,
+                    order = 7,
                     name = "Questie Helper",
                     desc = "Mark quest mobs using data from Questie addon",
                     width = "full",
@@ -93,7 +105,7 @@ local Options = {
                 },
                 Herbs = {
                     type = "toggle",
-                    order =7,
+                    order = 8,
                     name = "Track Herbs",
                     desc = "Mark herbs in the world",
                     width = "full",
@@ -106,7 +118,7 @@ local Options = {
                 },
                 Ore = {
                     type = "toggle",
-                    order = 8,
+                    order = 9,
                     name = "Track Ore",
                     desc = "Mark ore in the world",
                     width = "full",
@@ -119,7 +131,7 @@ local Options = {
                 },
                 LineToNodes = {
                     type = "toggle",
-                    order = 9,
+                    order = 10,
                     name = "Show Lines To Nodes",
                     desc = "Draw a line from player to herbs/ore",
                     width = "full",
@@ -128,6 +140,19 @@ local Options = {
                     end,
                     set = function(info, value)
                         DMW.Settings.profile.Helpers.LineToNodes = value
+                    end
+                },
+                DrawShitties = {
+                    type = "input",
+                    order = 11,
+                    name = "DrawShitties",
+                    desc = "Draw from string",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.DrawShitties
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.DrawShitties = value
                     end
                 }
             }

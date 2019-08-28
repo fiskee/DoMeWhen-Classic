@@ -2,6 +2,7 @@ local DMW = DMW
 DMW.Helpers.Gatherers = {}
 local LibDraw = LibStub("LibDraw-1.0")
 local Looting = false
+local Skinning = false
 
 local function Line(sx, sy, sz, ex, ey, ez)
     local function WorldToScreen (wX, wY, wZ)
@@ -41,6 +42,39 @@ function DMW.Helpers.Gatherers.Run()
                 if Unit.Dead and Unit.Distance < 5 and UnitCanBeLooted(Unit.Pointer) then
                     InteractUnit(Unit.Pointer)
                     Looting = DMW.Time
+                end
+            end
+        end
+    end
+    if DMW.Settings.profile.Helpers.AutoSkinning then
+        if Skinning and (DMW.Time - Skinning) > 2.3 then
+            Skinning = false
+        end
+        if not Skinning and not DMW.Player.Combat and not DMW.Player.Moving and not DMW.Player.Casting then
+            for _, Unit in pairs(DMW.Units) do
+                if Unit.Dead and Unit.Distance < 5 and UnitCanBeSkinned(Unit.Pointer) then
+                    InteractUnit(Unit.Pointer)
+                    Skinning = DMW.Time
+                end
+            end
+        end
+    end
+    LibDraw.SetColor(0, 0, 255)
+    if DMW.Settings.profile.Helpers.DrawShitties then
+        local DrawShitties = {}
+        local s = 1
+        local tX, tY, tZ
+        for k in string.gmatch(DMW.Settings.profile.Helpers.DrawShitties, "[^%s]+") do
+           table.insert(DrawShitties,k)
+        end
+        for _, Unit in pairs(DMW.Units) do
+            for i = 1, #DrawShitties do
+                if strmatch(Unit.Name, DrawShitties[i]) and not Unit.Dead and not Unit.Target then
+                    tX, tY, tZ = Unit.PosX, Unit.PosY, Unit.PosZ
+                    LibDraw.SetWidth(4)
+                    LibDraw.Line(tX, tY, tZ + s * 1.3, tX, tY, tZ)
+                    LibDraw.Line(tX - s, tY, tZ, tX + s, tY, tZ)
+                    LibDraw.Line(tX, tY - s, tZ, tX, tY + s, tZ)
                 end
             end
         end
