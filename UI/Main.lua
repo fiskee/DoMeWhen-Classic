@@ -142,17 +142,17 @@ local Options = {
                         DMW.Settings.profile.Helpers.LineToNodes = value
                     end
                 },
-                DrawShitties = {
+                TrackUnits = {
                     type = "input",
                     order = 11,
-                    name = "DrawShitties",
-                    desc = "Draw from string",
+                    name = "Track Units By Name",
+                    desc = "Mark units by name or part of name, seperated by comma",
                     width = "full",
                     get = function()
-                        return DMW.Settings.profile.Helpers.DrawShitties
+                        return DMW.Settings.profile.Helpers.TrackUnits
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.DrawShitties = value
+                        DMW.Settings.profile.Helpers.TrackUnits = value
                     end
                 }
             }

@@ -5,12 +5,12 @@ local Looting = false
 local Skinning = false
 
 local function Line(sx, sy, sz, ex, ey, ez)
-    local function WorldToScreen (wX, wY, wZ)
-        local sX, sY = _G.WorldToScreen(wX, wY, wZ);
+    local function WorldToScreen(wX, wY, wZ)
+        local sX, sY = _G.WorldToScreen(wX, wY, wZ)
         if sX and sY then
-            return sX, -(WorldFrame:GetTop() - sY);
+            return sX, -(WorldFrame:GetTop() - sY)
         else
-            return sX, sY;
+            return sX, sY
         end
     end
     local startx, starty = WorldToScreen(sx, sy, sz)
@@ -19,16 +19,16 @@ local function Line(sx, sy, sz, ex, ey, ez)
         local i = 1
         while (endx == nil or endy == nil) and i < 50 do
             endx, endy = WorldToScreen(GetPositionBetweenPositions(ex, ey, ez, sx, sy, sz, i))
-            i = i + 1 
+            i = i + 1
         end
     end
     if (startx == nil or starty == nil) and (endx and endy) then
         local i = 1
         while (startx == nil or starty == nil) and i < 50 do
             startx, starty = WorldToScreen(GetPositionBetweenPositions(sx, sy, sz, ex, ey, ez, i))
-            i = i + 1 
+            i = i + 1
         end
-    end                
+    end
     LibDraw.Draw2DLine(startx, starty, endx, endy)
 end
 
@@ -60,16 +60,16 @@ function DMW.Helpers.Gatherers.Run()
         end
     end
     LibDraw.SetColor(0, 0, 255)
-    if DMW.Settings.profile.Helpers.DrawShitties then
-        local DrawShitties = {}
+    if DMW.Settings.profile.Helpers.TrackUnits then
+        local TrackUnits = {}
         local s = 1
         local tX, tY, tZ
-        for k in string.gmatch(DMW.Settings.profile.Helpers.DrawShitties, "[^%s]+") do
-           table.insert(DrawShitties,k)
+        for k in string.gmatch(DMW.Settings.profile.Helpers.TrackUnits, "([^,]+)") do
+            table.insert(TrackUnits, string.trim(k))
         end
         for _, Unit in pairs(DMW.Units) do
-            for i = 1, #DrawShitties do
-                if strmatch(Unit.Name, DrawShitties[i]) and not Unit.Dead and not Unit.Target then
+            for i = 1, #TrackUnits do
+                if strmatch(Unit.Name, TrackUnits[i]) and not Unit.Dead and not Unit.Target then
                     tX, tY, tZ = Unit.PosX, Unit.PosY, Unit.PosZ
                     LibDraw.SetWidth(4)
                     LibDraw.Line(tX, tY, tZ + s * 1.3, tX, tY, tZ)
