@@ -42,8 +42,9 @@ Classes\LocalPlayer\Friend.lua
 Classes\Aura\Aura.lua
 Classes\Aura\Cache.lua
 Classes\Item\Item.lua
+Classes\GameObject\GameObject.lua
 
-Helpers\AutoLoot.lua
+Helpers\Gatherers.lua
 Helpers\Quest.lua
 Helpers\Queue.lua
 Helpers\Rotation.lua
@@ -67,6 +68,7 @@ Enums\Overrides.lua
 Enums\HardCC.lua
 Enums\Interrupts.lua
 Enums\CC.lua
+Enums\Gatherables.lua
 
 UI\Main.lua
 UI\HUD.lua

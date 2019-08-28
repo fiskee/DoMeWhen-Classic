@@ -1,11 +1,11 @@
 local DMW = DMW
-DMW.Enemies, DMW.Attackable, DMW.Units, DMW.Friends = {}, {}, {}, {}
+DMW.Enemies, DMW.Attackable, DMW.Units, DMW.Friends, DMW.GameObjects = {}, {}, {}, {}, {}
 DMW.Friends.Units = {}
 DMW.Friends.Tanks = {}
-local Enemies, Attackable, Units, Friends = DMW.Enemies, DMW.Attackable, DMW.Units, DMW.Friends.Units
-local Unit, LocalPlayer = DMW.Classes.Unit, DMW.Classes.LocalPlayer
+local Enemies, Attackable, Units, Friends, GameObjects = DMW.Enemies, DMW.Attackable, DMW.Units, DMW.Friends.Units, DMW.GameObjects
+local Unit, LocalPlayer, GameObject = DMW.Classes.Unit, DMW.Classes.LocalPlayer, DMW.Classes.GameObject
 
-local function RemoveUnit(Pointer)
+local function Remove(Pointer)
     if Units[Pointer] ~= nil then
         Units[Pointer] = nil
     end
@@ -14,6 +14,9 @@ local function RemoveUnit(Pointer)
     end
     if DMW.Tables.AuraCache[Pointer] ~= nil then
         DMW.Tables.AuraCache[Pointer] = nil
+    end
+    if GameObjects[Pointer] ~= nil then
+        GameObjects[Pointer] = nil
     end
 end
 
@@ -123,20 +126,31 @@ local function UpdateUnits()
     HandleFriends()
 end
 
+local function UpdateGameObjects()
+    for _, Object in pairs(GameObjects) do
+        if not Object.NextUpdate or Object.NextUpdate < DMW.Time then
+            Object:Update()
+        end
+    end
+end
+
 function DMW.UpdateOM()
     local _, updated, added, removed = GetObjectCount(true)
     if updated and #removed > 0 then
         for _, v in pairs(removed) do
-            RemoveUnit(v)
+            Remove(v)
         end
     end
     if updated and #added > 0 then
         for _, v in pairs(added) do
             if ObjectIsUnit(v) then
                 Units[v] = Unit(v)
+            elseif ObjectIsGameObject(v) then
+                GameObjects[v] = GameObject(v)
             end
         end
     end
     DMW.Player:Update()
     UpdateUnits()
+    UpdateGameObjects()
 end

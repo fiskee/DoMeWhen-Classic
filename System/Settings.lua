@@ -32,7 +32,9 @@ local defaults = {
         },
         Helpers = {
             AutoLoot = false,
-            QuestieHelper = false
+            QuestieHelper = false,
+            Herbs = false,
+            Ore = false,
         }
     }
 }

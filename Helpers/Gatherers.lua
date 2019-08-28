@@ -1,9 +1,9 @@
 local DMW = DMW
-DMW.Helpers.AutoLoot = {}
-
+DMW.Helpers.Gatherers = {}
+local LibDraw = LibStub("LibDraw-1.0")
 local Looting = false
 
-function DMW.Helpers.AutoLoot.Run()
+function DMW.Helpers.Gatherers.Run()
     if DMW.Settings.profile.Helpers.AutoLoot then
         if Looting and (DMW.Time - Looting) > 1.3 then
             Looting = false
@@ -15,6 +15,12 @@ function DMW.Helpers.AutoLoot.Run()
                     Looting = DMW.Time
                 end
             end
+        end
+    end
+    LibDraw.SetColor(255, 0, 0)
+    for _, Object in pairs(DMW.GameObjects) do
+        if Object.Herb or Object.Ore then
+            LibDraw.Text(Object.Name .. " - " .. math.floor(Object.Distance) .. " Yards", "GameFontNormal", Object.PosX, Object.PosY, Object.PosZ + 2)
         end
     end
 end

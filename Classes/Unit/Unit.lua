@@ -31,6 +31,7 @@ function Unit:Update()
     self.Target = UnitTarget(self.Pointer)
     self.Moving = GetUnitSpeed(self.Pointer) > 0
     self.Facing = ObjectIsFacing("Player", self.Pointer)
+    self.Quest = self:IsQuest()
 end
 
 function Unit:GetDistance(OtherUnit)
@@ -236,3 +237,14 @@ function Unit:CCed()
     return false
 end
 
+function Unit:IsQuest()
+    if DMW.Settings.profile.Helpers.QuestieHelper and QuestieTooltips and QuestieTooltips.tooltipLookup["u_" .. self.Name] then
+        for _, Tooltip in pairs(QuestieTooltips.tooltipLookup["u_" .. self.Name]) do
+            Tooltip.Objective:Update()
+            if not Tooltip.Objective.Completed then
+                return true
+            end
+        end
+    end
+    return false
+end

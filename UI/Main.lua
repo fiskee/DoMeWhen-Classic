@@ -90,6 +90,32 @@ local Options = {
                     set = function(info, value)
                         DMW.Settings.profile.Helpers.QuestieHelper = value
                     end
+                },
+                Herbs = {
+                    type = "toggle",
+                    order =7,
+                    name = "Track Herbs",
+                    desc = "Mark herbs in the world",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.Herbs
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.Herbs = value
+                    end
+                },
+                Ore = {
+                    type = "toggle",
+                    order = 8,
+                    name = "Track Ore",
+                    desc = "Mark ore in the world",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.Ore
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.Ore = value
+                    end
                 }
             }
         },
