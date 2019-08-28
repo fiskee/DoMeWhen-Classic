@@ -92,13 +92,13 @@ Note not all functions work in classic yet
 - :GetFriendsCone(Length, Angle, HP)
 
 ## Tables
-Buffs
-Debuffs
-Equipment
-Items
-LastCast
-Spells
-Talents
+- Buffs
+- Debuffs
+- Equipment
+- Items
+- LastCast
+- Spells
+- Talents
 
 # Buff/Debuff
 ## Constants
