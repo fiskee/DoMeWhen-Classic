@@ -7,6 +7,7 @@ EHFrame:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
 EHFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 EHFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 EHFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
+EHFrame:RegisterEvent("CHARACTER_POINTS_CHANGED")
 
 local function EventHandler(self, event, ...)
     if EWT then
@@ -34,6 +35,8 @@ local function EventHandler(self, event, ...)
             DMW.Player.Combat = DMW.Time
         elseif event == "PLAYER_EQUIPMENT_CHANGED" then
             DMW.Player:UpdateEquipment()
+        elseif event == "CHARACTER_POINTS_CHANGED" then
+            DMW.Player:GetTalents()
         end
     end
 end
