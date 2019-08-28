@@ -145,3 +145,16 @@ Note not all functions work in classic yet
 - :Cast(Unit, Rank)
 - :CastPool(Unit, Extra, Rank)
 - :CastGround(X, Y, Z, Rank)
+
+# Item
+## Constants
+.ItemID
+.ItemName
+.SpellName
+.SpellID
+
+## Functions
+- :Equipped()
+- :CD(Rank)
+- :IsReady(Rank)
+- :Use(Unit)
