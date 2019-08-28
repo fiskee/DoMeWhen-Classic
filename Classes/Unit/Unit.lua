@@ -14,7 +14,7 @@ function Unit:New(Pointer)
 end
 
 function Unit:Update()
-    self.NextUpdate = DMW.Time + (math.random(100, 400) / 1000)
+    self.NextUpdate = DMW.Time + (math.random(100, 600) / 10000)
     self.PosX, self.PosY, self.PosZ = ObjectPosition(self.Pointer)
     self.Distance = self:GetDistance()
     self.Dead = UnitIsDeadOrGhost(self.Pointer)
