@@ -39,7 +39,8 @@ Spells.ROGUE = {
     },
     Buffs = {
         Remorseless = {Ranks = {14143, 14149}},
-        SliceAndDice = {Ranks = {5171, 6774}}
+        SliceAndDice = {Ranks = {5171, 6774}},
+        Stealth = {Ranks = {1784, 1785, 1786, 1787}}
     },
     Debuffs = {},
     Talents = {}
