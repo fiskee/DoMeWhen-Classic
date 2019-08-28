@@ -33,7 +33,21 @@ function LocalPlayer:GetSpells()
 end
 
 function LocalPlayer:GetTalents()
-
+    if self.Talents then
+        table.wipe(self.Talents)
+    else
+        self.Talents = {}
+    end
+    local name, iconPath, tier, column, currentRank, maxRank, isExceptional, meetsPrereq
+    for k,v in pairs(DMW.Enums.Spells[self.Class].Talents) do
+        name, iconPath, tier, column, currentRank, maxRank, isExceptional, meetsPrereq = GetTalentInfo(v[1], v[2])
+        if name then
+            self.Talents[k] = {Rank = currentRank, MaxRank = maxRank, Active = false}
+            if currentRank > 0 then
+                self.Talents[k].Active = true
+            end
+        end
+    end
 end
 
 function LocalPlayer:UpdateEquipment()
