@@ -3,6 +3,34 @@ DMW.Helpers.Gatherers = {}
 local LibDraw = LibStub("LibDraw-1.0")
 local Looting = false
 
+local function Line(sx, sy, sz, ex, ey, ez)
+    local function WorldToScreen (wX, wY, wZ)
+        local sX, sY = _G.WorldToScreen(wX, wY, wZ);
+        if sX and sY then
+            return sX, -(WorldFrame:GetTop() - sY);
+        else
+            return sX, sY;
+        end
+    end
+    local startx, starty = WorldToScreen(sx, sy, sz)
+    local endx, endy = WorldToScreen(ex, ey, ez)
+    if (endx == nil or endy == nil) and (startx and starty) then
+        local i = 1
+        while (endx == nil or endy == nil) and i < 50 do
+            endx, endy = WorldToScreen(GetPositionBetweenPositions(ex, ey, ez, sx, sy, sz, i))
+            i = i + 1 
+        end
+    end
+    if (startx == nil or starty == nil) and (endx and endy) then
+        local i = 1
+        while (startx == nil or starty == nil) and i < 50 do
+            startx, starty = WorldToScreen(GetPositionBetweenPositions(sx, sy, sz, ex, ey, ez, i))
+            i = i + 1 
+        end
+    end                
+    LibDraw.Draw2DLine(startx, starty, endx, endy)
+end
+
 function DMW.Helpers.Gatherers.Run()
     if DMW.Settings.profile.Helpers.AutoLoot then
         if Looting and (DMW.Time - Looting) > 1.3 then
@@ -21,6 +49,9 @@ function DMW.Helpers.Gatherers.Run()
     for _, Object in pairs(DMW.GameObjects) do
         if Object.Herb or Object.Ore then
             LibDraw.Text(Object.Name .. " - " .. math.floor(Object.Distance) .. " Yards", "GameFontNormal", Object.PosX, Object.PosY, Object.PosZ + 2)
+            if DMW.Settings.profile.Helpers.LineToNodes then
+                Line(Object.PosX, Object.PosY, Object.PosZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
+            end
         end
     end
 end

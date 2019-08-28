@@ -35,6 +35,7 @@ local defaults = {
             QuestieHelper = false,
             Herbs = false,
             Ore = false,
+            LineToNodes = false,
         }
     }
 }

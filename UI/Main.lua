@@ -116,6 +116,19 @@ local Options = {
                     set = function(info, value)
                         DMW.Settings.profile.Helpers.Ore = value
                     end
+                },
+                LineToNodes = {
+                    type = "toggle",
+                    order = 9,
+                    name = "Show Lines To Nodes",
+                    desc = "Draw a line from player to herbs/ore",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.LineToNodes
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.LineToNodes = value
+                    end
                 }
             }
         },
