@@ -31,8 +31,10 @@ local function EventHandler(self, event, ...)
             DMW.Helpers.Queue.GetBindings()
         elseif event == "PLAYER_REGEN_ENABLED" then
             DMW.Player.Combat = false
+            DMW.Player.CombatLeft = DMW.Time
         elseif event == "PLAYER_REGEN_DISABLED" then
             DMW.Player.Combat = DMW.Time
+            DMW.Player.CombatLeft = false
         elseif event == "PLAYER_EQUIPMENT_CHANGED" then
             DMW.Player:UpdateEquipment()
         elseif event == "CHARACTER_POINTS_CHANGED" then

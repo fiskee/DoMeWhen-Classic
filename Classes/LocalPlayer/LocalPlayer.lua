@@ -10,6 +10,7 @@ function LocalPlayer:New(Pointer)
     self.Class = select(2, UnitClass(Pointer)):gsub("%s+", "")
     self.Distance = 0
     self.Combat = UnitAffectingCombat(self.Pointer) and DMW.Time or false
+    self.CombatLeft = false
     self.EID = false
     self.NoControl = false
     DMW.Functions.AuraCache.Refresh(Pointer)
@@ -43,6 +44,7 @@ function LocalPlayer:Update()
     self.PetActive = UnitIsVisible("pet")
     self.InGroup = IsInGroup()
     self.CombatTime = self.Combat and (DMW.Time - self.Combat) or 0
+    self.CombatLeftTime = self.CombatLeft and (DMW.Time - self.CombatLeft) or 0
 end
 
 function LocalPlayer:GCDRemain()
