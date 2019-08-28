@@ -50,7 +50,7 @@ function Unit:LineOfSight(OtherUnit)
 end
 
 function Unit:IsEnemy()
-    return self.LoS and self.Attackable and self:HasThreat() and (not self.Friend or UnitIsUnit(self.Pointer, "target")) and not self:CCed()
+    return self.LoS and self.Attackable and self:HasThreat() and ((not self.Friend and not self:CCed()) or UnitIsUnit(self.Pointer, "target"))
 end
 
 function Unit:IsBoss()
