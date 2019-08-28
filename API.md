@@ -1,7 +1,7 @@
 Note not all functions work in classic yet
 
-#Unit
-##Constants
+# Unit
+## Constants
 .Pointer
 .Name
 .GUID
@@ -10,7 +10,7 @@ Note not all functions work in classic yet
 .CombatReach
 .ObjectID
 
-##Variables
+## Variables
 .PosX, self.PosY, self.PosZ
 .Distance
 .Dead
@@ -26,7 +26,7 @@ Note not all functions work in classic yet
 .Facing
 .Quest
 
-##Functions
+## Functions
 :GetDistance(OtherUnit)
 :LineOfSight(OtherUnit)
 :IsEnemy()
@@ -43,15 +43,15 @@ Note not all functions work in classic yet
 :IsQuest()
 :GetTTD(targetPercentage)
 
-#Player
-##Constants
+# Player
+## Constants
 .Pointer
 .Name
 .GUID
 .Class
 .CombatReach
 
-##Variables
+## Variables
 .PosX, self.PosY, self.PosZ
 .Health
 .HealthMax
@@ -73,7 +73,7 @@ Note not all functions work in classic yet
 .CombatTime
 .CombatLeftTime
 
-##Functions
+## Functions
 :GCDRemain()
 :GCD()
 :CDs()
@@ -87,7 +87,7 @@ Note not all functions work in classic yet
 :GetFriends(Yards, HP)
 :GetFriendsCone(Length, Angle, HP)
 
-##Tables
+## Tables
 Buffs
 Debuffs
 Equipment
@@ -96,14 +96,14 @@ LastCast
 Spells
 Talents
 
-#Buff/Debuff
-##Constants
+# Buff/Debuff
+## Constants
 .Ranks[]
 .SpellID
 .SpellName
 .BaseDuration
 
-##Functions
+## Functions
 :Exist(Unit, OnlyPlayer)
 :Remain(Unit, OnlyPlayer)
 :Duration(Unit, OnlyPlayer)
@@ -115,8 +115,8 @@ Talents
 :Lowest(Table)
 :Query(Unit, OnlyPlayer)
 
-#Spell
-##Constants
+# Spell
+## Constants
 .Ranks[]
 .SpellID
 .SpellName
@@ -128,7 +128,7 @@ Talents
 .IsHarmful
 .IsHelpful
 
-##Functions
+## Functions
 :Cost(Rank)
 :CD(Rank)
 :IsReady(Rank)
