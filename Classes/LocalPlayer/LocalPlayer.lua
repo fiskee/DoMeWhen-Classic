@@ -45,6 +45,14 @@ function LocalPlayer:Update()
     self.CombatTime = self.Combat and (DMW.Time - self.Combat) or 0
 end
 
+function LocalPlayer:GCDRemain()
+    local Start, CD = GetSpellCooldown(61304)
+    if Start == 0 then
+        return 0
+    end
+    return math.max(0, (Start + CD) - DMW.Time - 0.1)
+end
+
 function LocalPlayer:GCD()
     if self.Class == "ROGUE" then
         return 1
