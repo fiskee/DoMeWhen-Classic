@@ -89,3 +89,11 @@ DMW.Enums.Ore = {
     [181069] = {Name = "Large Obsidian Chunk", SkillReq = 305},
     [181068] = {Name = "Small Obsidian Chunk", SkillReq = 305},
 }
+
+DMW.Enums.Trackable = {
+    [2843] = {Name = "Battered Chest", SkillReq = 0},
+    [106319] = {Name = "Battered Chest", SkillReq = 0},
+    [106318] = {Name = "Battered Chest", SkillReq = 0},
+    [2849] = {Name = "Battered Chest", SkillReq = 0},
+    [75293] = {Name = "Large Battered Chest", SkillReq = 0}
+}

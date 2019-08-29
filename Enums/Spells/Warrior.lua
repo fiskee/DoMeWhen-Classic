@@ -46,6 +46,8 @@ Spells.WARRIOR = {
     	BattleShout = {Ranks = {6673}}
     },
     Debuffs = {
+            DemoShout = {Ranks = {1160}},
+
     	SunderArmor = {Ranks = {7386}},
     	Rend = {Ranks = {6546}}
     },

@@ -129,9 +129,22 @@ local Options = {
                         DMW.Settings.profile.Helpers.Ore = value
                     end
                 },
-                LineToNodes = {
+                Trackable = {
                     type = "toggle",
                     order = 10,
+                    name = "Track objects",
+                    desc = "Mark objects in the world",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.Trackable
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.Trackable = value
+                    end
+                },
+                LineToNodes = {
+                    type = "toggle",
+                    order = 11,
                     name = "Show Lines To Nodes",
                     desc = "Draw a line from player to herbs/ore",
                     width = "full",
@@ -144,7 +157,7 @@ local Options = {
                 },
                 TrackUnits = {
                     type = "input",
-                    order = 11,
+                    order = 12,
                     name = "Track Units By Name",
                     desc = "Mark units by name or part of name, seperated by comma",
                     width = "full",
