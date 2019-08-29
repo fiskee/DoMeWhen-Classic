@@ -148,10 +148,10 @@ Note not all functions work in classic yet
 
 # Item
 ## Constants
-.ItemID
-.ItemName
-.SpellName
-.SpellID
+- .ItemID
+- .ItemName
+- .SpellName
+- .SpellID
 
 ## Functions
 - :Equipped()
