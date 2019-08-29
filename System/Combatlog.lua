@@ -23,5 +23,11 @@ function frame:Reader(event, ...)
         timeStamp, param, hideCaster, source, sourceName, sourceFlags, sourceRaidFlags, destination, destName, destFlags, destRaidFlags, spell, spellName, _, spellType = ...
         Locals()
         DMW.Functions.AuraCache.Event(...)
+
+        --Swing parse
+        if param == "SWING_DAMAGE" and source == Player.GUID then
+            Player.SwingLast = DMW.Time
+            Player.SwingNext = Player.SwingLast + UnitAttackSpeed("player")
+        end
     end
 end

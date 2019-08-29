@@ -18,6 +18,9 @@ function LocalPlayer:New(Pointer)
     self:GetTalents()
     self.Equipment = {}
     self.Items = {}
+    self.SwingNext = 0
+    self.SwingLast = 0
+    self.SwingLeft = 0
     self:UpdateEquipment()
     self:GetItems()
     DMW.Helpers.Queue.GetBindings()
@@ -43,6 +46,7 @@ function LocalPlayer:Update()
     self.Moving = GetUnitSpeed(self.Pointer) > 0
     self.PetActive = UnitIsVisible("pet")
     self.InGroup = IsInGroup()
+    self.SwingLeft = (self.SwingNext ~= 0 and self.SwingNext - DMW.Time > 0 and self.SwingNext - DMW.Time) or 0
     self.CombatTime = self.Combat and (DMW.Time - self.Combat) or 0
     self.CombatLeftTime = self.CombatLeft and (DMW.Time - self.CombatLeft) or 0
 end
