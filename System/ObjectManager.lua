@@ -101,11 +101,12 @@ local function UpdateUnits()
         end
         if not DMW.Player.Target and UnitIsUnit(Pointer, "target") then
             DMW.Player.Target = Unit
+        end
         -- elseif not DMW.Player.Mouseover and UnitIsUnit(Pointer, "mouseover") then
         --     DMW.Player.Mouseover = Unit
         -- elseif not DMW.Player.Focus and UnitIsUnit(Pointer, "focus") then
         --     DMW.Player.Focus = Unit
-        elseif DMW.Player.PetActive and not DMW.Player.Pet and UnitIsUnit(Pointer, "pet") then
+        if DMW.Player.PetActive and not DMW.Player.Pet and UnitIsUnit(Pointer, "pet") then
             DMW.Player.Pet = Unit
         end
         if Unit.Attackable then
