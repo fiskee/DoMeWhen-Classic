@@ -42,6 +42,9 @@ function Spell:Cast(Unit, Rank)
         end
     end
     if self:IsReady(Rank) and ((Unit.Distance <= self.MaxRange and (self.MinRange == 0 or Unit.Distance >= self.MinRange)) or IsSpellInRange(self.SpellName, Unit.Pointer) == 1) then
+        if not DMW.Player.Moving and not self.Name == DMW.Player.Spells.Shoot.SpellName and IsAutoRepeatSpell(DMW.Player.Spells.Shoot.SpellName) then
+            SpellStopCasting()
+        end
         if self.CastType == "Ground" then
             if self:CastGround(Unit.PosX, Unit.PosY, Unit.PosZ) then
                 self.LastBotTarget = Unit.Pointer
