@@ -63,7 +63,7 @@ function Spell:CD(Rank)
         self.CDCache = 0
         return 0
     end
-    --FinalCD = FinalCD - 0.1
+    FinalCD = FinalCD - 0.1
     if FinalCD < 0 then FinalCD = 0 end
     self.CDCache = FinalCD
     return FinalCD

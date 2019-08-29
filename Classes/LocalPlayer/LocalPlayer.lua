@@ -52,7 +52,7 @@ function LocalPlayer:GCDRemain()
     if Start == 0 then
         return 0
     end
-    return math.max(0, (Start + CD) - DMW.Time)
+    return math.max(0, (Start + CD) - DMW.Time - 0.1)
 end
 
 function LocalPlayer:GCD()
