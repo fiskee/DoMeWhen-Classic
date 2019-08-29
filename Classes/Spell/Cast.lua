@@ -41,7 +41,7 @@ function Spell:Cast(Unit, Rank)
             return false
         end
     end
-    if self:IsReady(Rank) and (Unit.Distance <= self.MaxRange or IsSpellInRange(self.SpellName, Unit.Pointer) == 1) then
+    if self:IsReady(Rank) and ((Unit.Distance <= self.MaxRange and (self.MinRange == 0 or Unit.Distance >= self.MinRange)) or IsSpellInRange(self.SpellName, Unit.Pointer) == 1) then
         if self.CastType == "Ground" then
             if self:CastGround(Unit.PosX, Unit.PosY, Unit.PosZ) then
                 self.LastBotTarget = Unit.Pointer
