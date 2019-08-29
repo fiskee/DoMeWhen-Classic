@@ -14,6 +14,7 @@ function GameObject:Update(Pointer)
     self.Quest = self:IsQuest()
     self.Herb = self:IsHerb()
     self.Ore = self:IsOre()
+    self.Trackable = self:IsTrackable()
 end
 
 function GameObject:GetDistance(OtherUnit)
@@ -43,6 +44,13 @@ end
 
 function GameObject:IsOre() --TODO: Add check if we have high enough skill
     if DMW.Settings.profile.Helpers.Ore and DMW.Enums.Ore[self.ObjectID] then
+        return true
+    end
+    return false
+end
+
+function GameObject:IsTrackable() --TODO: enums
+    if DMW.Settings.profile.Helpers.Trackable and DMW.Enums.Trackable[self.ObjectID] then
         return true
     end
     return false
