@@ -66,9 +66,22 @@ local Options = {
                     order = 4,
                     name = "Helpers"
                 },
-                AutoLoot = {
+                AntiAfk = {
                     type = "toggle",
                     order = 5,
+                    name = "Anti Afk",
+                    desc = "Enable/Disable EWT Anti Afk",
+                    width = "full",
+                    get = function()
+                        return IsHackEnabled(Hacks.AntiAfk)
+                    end,
+                    set = function(info, value)
+                        SetHackEnabled(Hacks.AntiAfk, value)
+                    end
+                },
+                AutoLoot = {
+                    type = "toggle",
+                    order = 6,
                     name = "Auto Loot",
                     width = "full",
                     get = function()
@@ -80,7 +93,7 @@ local Options = {
                 },
                 AutoSkinning = {
                     type = "toggle",
-                    order = 6,
+                    order = 7,
                     name = "Auto Skinning",
                     width = "full",
                     get = function()
@@ -92,7 +105,7 @@ local Options = {
                 },
                 QuestieHelper = {
                     type = "toggle",
-                    order = 7,
+                    order = 8,
                     name = "Questie Helper",
                     desc = "Mark quest mobs using data from Questie addon",
                     width = "full",
@@ -105,7 +118,7 @@ local Options = {
                 },
                 Herbs = {
                     type = "toggle",
-                    order = 8,
+                    order = 9,
                     name = "Track Herbs",
                     desc = "Mark herbs in the world",
                     width = "full",
@@ -118,7 +131,7 @@ local Options = {
                 },
                 Ore = {
                     type = "toggle",
-                    order = 9,
+                    order = 10,
                     name = "Track Ore",
                     desc = "Mark ore in the world",
                     width = "full",
@@ -131,7 +144,7 @@ local Options = {
                 },
                 Trackable = {
                     type = "toggle",
-                    order = 10,
+                    order = 11,
                     name = "Track objects",
                     desc = "Mark objects in the world",
                     width = "full",
@@ -144,7 +157,7 @@ local Options = {
                 },
                 LineToNodes = {
                     type = "toggle",
-                    order = 11,
+                    order = 12,
                     name = "Show Lines To Nodes",
                     desc = "Draw a line from player to herbs/ore",
                     width = "full",
@@ -157,7 +170,7 @@ local Options = {
                 },
                 TrackUnits = {
                     type = "input",
-                    order = 12,
+                    order = 13,
                     name = "Track Units By Name",
                     desc = "Mark units by name or part of name, seperated by comma",
                     width = "full",
