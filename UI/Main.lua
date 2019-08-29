@@ -145,8 +145,8 @@ local Options = {
                 Trackable = {
                     type = "toggle",
                     order = 11,
-                    name = "Track objects",
-                    desc = "Mark objects in the world",
+                    name = "Track Special Objects",
+                    desc = "Mark special objects in the world (chests, containers ect.)",
                     width = "full",
                     get = function()
                         return DMW.Settings.profile.Helpers.Trackable
