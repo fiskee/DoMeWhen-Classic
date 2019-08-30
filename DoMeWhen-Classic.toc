@@ -48,6 +48,7 @@ Helpers\Gatherers.lua
 Helpers\Quest.lua
 Helpers\Queue.lua
 Helpers\Rotation.lua
+Helpers\Dump.lua
 
 Enums\Spells\Global.lua
 Enums\Spells\Druid.lua
