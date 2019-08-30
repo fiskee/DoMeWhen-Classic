@@ -2,7 +2,7 @@ local DMW = DMW
 local Spell = DMW.Classes.Spell
 
 function Spell:FacingCast(Unit, Rank)
-	if DMW.Settings.profile.Enemy.AutoFace and self:CastTime(Rank) == 0 and not Unit.Facing and not UnitIsUnit("Player", Unit) then
+	if DMW.Settings.profile.Enemy.AutoFace and self:CastTime(Rank) == 0 and not Unit.Facing and not UnitIsUnit("Player", Unit.Pointer) then
 		local Facing = ObjectFacing("Player")
 		local MouselookActive = false
 		if IsMouselooking() then
