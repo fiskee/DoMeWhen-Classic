@@ -76,6 +76,8 @@ Note not all functions work in classic yet
 - .InGroup
 - .CombatTime
 - .CombatLeftTime
+- .SwingLast
+- .SwingNext
 
 ## Functions
 - :GCDRemain()
