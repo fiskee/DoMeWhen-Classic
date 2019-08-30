@@ -10,6 +10,7 @@ function Unit:New(Pointer)
     self.CombatReach = UnitCombatReach(Pointer)
     self.PosX, self.PosY, self.PosZ = ObjectPosition(Pointer)
     self.ObjectID = ObjectID(Pointer)
+    self.CreatureType = UnitCreatureType(Pointer)
     DMW.Functions.AuraCache.Refresh(Pointer)
 end
 

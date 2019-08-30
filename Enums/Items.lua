@@ -1,3 +1,3 @@
 DMW.Enums.Items = {
-    MinorHealthstone = 5512,
+    MinorHealthstone = 5512
 }
