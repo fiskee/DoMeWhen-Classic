@@ -9,6 +9,7 @@ Note not all functions work in classic yet
 - .Friend
 - .CombatReach
 - .ObjectID
+- .CreatureType
 
 ## Variables
 - .PosX
