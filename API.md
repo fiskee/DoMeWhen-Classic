@@ -87,6 +87,7 @@ Note not all functions work in classic yet
 - :CritPct()
 - :TTM()
 - :AutoTarget(Yards, Facing)
+- :AutoTargetQuest(Yards, Facing)
 - :GetEnemies(Yards)
 - :GetAttackable(Yards)
 - :GetEnemiesRect(Length, Width, TTD)
