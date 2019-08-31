@@ -83,6 +83,9 @@ end
 
 function Buff:Query(Unit, OnlyPlayer)
     OnlyPlayer = OnlyPlayer or false
+    if not Unit then
+        return nil
+    end
     Unit = Unit.Pointer
     if DMW.Tables.AuraCache[Unit] ~= nil and DMW.Tables.AuraCache[Unit][self.SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[Unit][self.SpellName]["player"] ~= nil) then
         local AuraReturn
@@ -98,6 +101,9 @@ end
 
 function Debuff:Query(Unit, OnlyPlayer)
     OnlyPlayer = OnlyPlayer or false
+    if not Unit then
+        return nil
+    end
     Unit = Unit.Pointer
     if DMW.Tables.AuraCache[Unit] ~= nil and DMW.Tables.AuraCache[Unit][self.SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[Unit][self.SpellName]["player"] ~= nil) then
         local AuraReturn

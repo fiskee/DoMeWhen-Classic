@@ -25,9 +25,6 @@ end
 function Debuff:Exist(Unit, OnlyPlayer)
     OnlyPlayer = OnlyPlayer or true
     Unit = Unit or DMW.Player.Target
-    if not Unit then
-        return false
-    end
     return self:Query(Unit, OnlyPlayer) ~= nil
 end
 
@@ -47,9 +44,6 @@ end
 function Debuff:Remain(Unit, OnlyPlayer)
     OnlyPlayer = OnlyPlayer or true
     Unit = Unit or DMW.Player.Target
-    if not Unit then
-        return false
-    end
     local EndTime = select(6, self:Query(Unit, OnlyPlayer))
     if EndTime then
         if EndTime == 0 then
@@ -73,9 +67,6 @@ end
 function Debuff:Duration(Unit, OnlyPlayer)
     OnlyPlayer = OnlyPlayer or true
     Unit = Unit or DMW.Player.Target
-    if not Unit then
-        return false
-    end
     local Duration = select(5, self:Query(Unit, OnlyPlayer))
     if Duration then
         return Duration
@@ -100,9 +91,6 @@ end
 function Debuff:Elapsed(Unit, OnlyPlayer)
     OnlyPlayer = OnlyPlayer or true
     Unit = Unit or DMW.Player.Target
-    if not Unit then
-        return false
-    end
     local EndTime = select(6, self:Query(Unit, OnlyPlayer))
     local Duration = select(5, self:Query(Unit, OnlyPlayer))
     if EndTime and Duration then
@@ -128,9 +116,6 @@ end
 function Debuff:Refresh(Unit, OnlyPlayer)
     OnlyPlayer = OnlyPlayer or true
     Unit = Unit or DMW.Player.Target
-    if not Unit then
-        return false
-    end
     local Remain = self:Remain(Unit, OnlyPlayer)
     if Remain > 0 then
         local Duration = self.BaseDuration or self:Duration()
@@ -152,9 +137,6 @@ end
 function Debuff:Stacks(Unit, OnlyPlayer)
     OnlyPlayer = OnlyPlayer or true
     Unit = Unit or DMW.Player.Target
-    if not Unit then
-        return false
-    end
     local Stacks = select(3, self:Query(Unit, OnlyPlayer))
     if Stacks then
         return Stacks
@@ -177,9 +159,6 @@ end
 function Debuff:Rank(Unit, OnlyPlayer)
     OnlyPlayer = OnlyPlayer or true
     Unit = Unit or DMW.Player.Target
-    if not Unit then
-        return false
-    end
     local SpellID = select(10, self:Query(Unit, OnlyPlayer))
     for i,v in ipairs(self.Ranks) do
         if SpellID == v then
