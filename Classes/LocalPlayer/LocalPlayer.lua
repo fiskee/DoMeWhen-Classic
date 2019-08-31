@@ -36,6 +36,9 @@ function LocalPlayer:Update()
     self.PowerDeficit = self.PowerMax - self.Power
     self.PowerPct = self.Power / self.PowerMax * 100
     self.PowerRegen = GetPowerRegen()
+    if not self.Combat and UnitAffectingCombat("player") then
+        self.Combat = DMW.Time
+    end
     if self.Class == "ROGUE" or self.Class == "DRUID" then
         self.ComboPoints = GetComboPoints("player", "target")
         self.ComboMax = UnitPowerMax(self.Pointer, 4)
