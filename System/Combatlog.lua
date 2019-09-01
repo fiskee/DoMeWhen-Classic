@@ -24,10 +24,29 @@ function frame:Reader(event, ...)
         Locals()
         DMW.Functions.AuraCache.Event(...)
 
-        --Swing parse
-        if param == "SWING_DAMAGE" and source == Player.GUID then
-            Player.SwingLast = DMW.Time
-            Player.SwingNext = Player.SwingLast + UnitAttackSpeed("player")
+        if source == Player.GUID then
+            if param == "SWING_DAMAGE" and source == Player.GUID then
+                Player.SwingLast = DMW.Time
+                Player.SwingNext = Player.SwingLast + UnitAttackSpeed("player")
+            end
+            if Player.Class == "WARRIOR" then
+                if param == "SWING_MISSED" or param == "SPELL_MISSED" then
+                    if spellType == "DODGE" then
+                        Player.overpowerUnit = destination
+                        Player.overpowerTime = DMW.Time + 5
+                    end
+                    if spellType == "PARRY" or spellType == "BLOCK" or spellType == "DODGE" then
+                        Player.revengeUnit = destination
+                        Player.revengeTime = DMW.Time + 5
+                    end
+                elseif spell == Spell.Overpower.SpellName and param == "SPELL_CAST_SUCCESS" then
+                    Player.overpowerTime = false
+                    Player.overpowerUnit = nil
+                elseif spell == Spell.Revenge.SpellName and param == "SPELL_CAST_SUCCESS" then
+                    Player.revengeTime = false
+                    Player.revengeUnit = nil
+                end
+            end
         end
     end
 end

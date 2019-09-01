@@ -23,6 +23,11 @@ function LocalPlayer:New(Pointer)
     self.SwingLeft = 0
     self:UpdateEquipment()
     self:GetItems()
+    -- self:Level = UnitLevel(Pointer)
+    if self.Class == "WARRIOR" then
+        self.overpowerTime = false
+        self.revengeTime = false
+    end
     DMW.Helpers.Queue.GetBindings()
 end
 
@@ -52,6 +57,16 @@ function LocalPlayer:Update()
     self.SwingLeft = (self.SwingNext ~= 0 and self.SwingNext - DMW.Time > 0 and self.SwingNext - DMW.Time) or 0
     self.CombatTime = self.Combat and (DMW.Time - self.Combat) or 0
     self.CombatLeftTime = self.CombatLeft and (DMW.Time - self.CombatLeft) or 0
+    if self.Class == "WARRIOR" then
+        if self.overpowerTime ~= false and DMW.Time >= self.overpowerTime then
+            self.overpowerTime = false
+            self.overpowerUnit = nil
+        end
+        if self.revengeTime ~= false and DMW.Time >= self.revengeTime then
+            self.revengeTime = false
+            self.revengeUnit = nil
+        end
+    end
 end
 
 function LocalPlayer:GCDRemain()
