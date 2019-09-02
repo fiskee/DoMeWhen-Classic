@@ -34,6 +34,7 @@ function Spell:Cost(Rank)
             return costInfo.cost
         end
     end
+    return 0
 end
 
 function Spell:CD(Rank)
