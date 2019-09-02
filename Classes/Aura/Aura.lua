@@ -17,7 +17,7 @@ function Debuff:New(SpellID, BaseDuration)
 end
 
 function Buff:Exist(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or true
+    OnlyPlayer = OnlyPlayer or false
     Unit = Unit or DMW.Player
     return self:Query(Unit, OnlyPlayer) ~= nil
 end
@@ -29,7 +29,7 @@ function Debuff:Exist(Unit, OnlyPlayer)
 end
 
 function Buff:Remain(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or true
+    OnlyPlayer = OnlyPlayer or false
     Unit = Unit or DMW.Player
     local EndTime = select(6, self:Query(Unit, OnlyPlayer))
     if EndTime then
@@ -55,7 +55,7 @@ function Debuff:Remain(Unit, OnlyPlayer)
 end
 
 function Buff:Duration(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or true
+    OnlyPlayer = OnlyPlayer or false
     Unit = Unit or DMW.Player
     local Duration = select(5, self:Query(Unit, OnlyPlayer))
     if Duration then
@@ -75,7 +75,7 @@ function Debuff:Duration(Unit, OnlyPlayer)
 end
 
 function Buff:Elapsed(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or true
+    OnlyPlayer = OnlyPlayer or false
     Unit = Unit or DMW.Player
     local EndTime = select(6, self:Query(Unit, OnlyPlayer))
     local Duration = select(5, self:Query(Unit, OnlyPlayer))
@@ -103,7 +103,7 @@ function Debuff:Elapsed(Unit, OnlyPlayer)
 end
 
 function Buff:Refresh(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or true
+    OnlyPlayer = OnlyPlayer or false
     Unit = Unit or DMW.Player
     local Remain = self:Remain(Unit, OnlyPlayer)
     if Remain > 0 then
@@ -125,7 +125,7 @@ function Debuff:Refresh(Unit, OnlyPlayer)
 end
 
 function Buff:Stacks(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or true
+    OnlyPlayer = OnlyPlayer or false
     Unit = Unit or DMW.Player
     local Stacks = select(3, self:Query(Unit, OnlyPlayer))
     if Stacks then
@@ -145,7 +145,7 @@ function Debuff:Stacks(Unit, OnlyPlayer)
 end
 
 function Buff:Rank(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or true
+    OnlyPlayer = OnlyPlayer or false
     Unit = Unit or DMW.Player
     local SpellID = select(10, self:Query(Unit, OnlyPlayer))
     for i,v in ipairs(self.Ranks) do
