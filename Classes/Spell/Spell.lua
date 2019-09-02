@@ -19,9 +19,6 @@ function Spell:New(SpellID, CastType)
         if costInfo.costPerSec > 0 then
             self.CastType = "Channel"
         end
-        if costInfo.cost > 0 then
-            self.Cost = costInfo.cost
-        end
     end
 end
 
@@ -34,7 +31,7 @@ function Spell:Cost(Rank)
     end
     for _, costInfo in pairs(CostTable) do
         if costInfo.cost > 0 then
-            self.Cost = costInfo.cost
+            return costInfo.cost
         end
     end
 end
