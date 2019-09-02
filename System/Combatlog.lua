@@ -31,29 +31,33 @@ function frame:Reader(event, ...)
             end
             if Player.Class == "WARRIOR" then
                 if string.match(param, "_MISSED") then
-                    if spellType == "DODGE" then
+                    local missType = param == "SWING_MISSED" and spell or spellType
+                    if missType == "DODGE" then
                         local overpower = {
                             overpowerUnit = destination,
                             overpowerTime = DMW.Time + 5
                         }
                         table.insert(Player.OverpowerUnit, overpower)
                     end
-                    if spellType == "PARRY" or spellType == "BLOCK" or spellType == "DODGE" then
-                        -- local overpower = {}
-                        -- overpower.overpowerUnit = destination
-                        -- overpower.overpowerTime = DMW.Time + 5
-                        -- table.insert(Player.OverpowerUnit, overpower)
+                    if missType == "PARRY" or spellType == "BLOCK" or spellType == "DODGE" then
+                        local revenge = {}
+                        revenge.revengeUnit = destination
+                        revenge.revengeTime = DMW.Time + 5
+                        table.insert(Player.RevengeUnit, revenge)
                     end
                 end
                 if spellName == Spell.Overpower.SpellName and param == "SPELL_CAST_SUCCESS" then
                     for i = 1, #Player.OverpowerUnit do
-                        if Player.OverpowerUnit[i].overpowerUnit == destination then
+                        if Player.OverpowerUnit[i] ~= nil and Player.OverpowerUnit[i].overpowerUnit == destination then
                             table.remove(Player.OverpowerUnit, i)
                         end
                     end                    
                 elseif spellName == Spell.Revenge.SpellName and param == "SPELL_CAST_SUCCESS" then
-                    Player.revengeTime = false
-                    Player.revengeUnit = nil
+                    for i = 1, #Player.RevengeUnit do
+                        if Player.RevengeUnit[i] ~= nil and Player.RevengeUnit[i].revengeUnit == destination then
+                            table.remove(Player.RevengeUnit, i)
+                        end
+                    end       
                 end
                 -- if #Player.OverpowerUnit > 0 and param == "UNIT_DIED" then
                 --     for i = 1, #Player.OverpowerUnit do
@@ -64,4 +68,3 @@ function frame:Reader(event, ...)
         end
     end
 end
-
