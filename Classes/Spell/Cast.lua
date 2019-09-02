@@ -59,7 +59,7 @@ end
 
 function Spell:CastPool(Unit, Extra, Rank)
 	Extra = Extra or 0
-	if (self.Cost(Rank) + Extra) > DMW.Player.Power then
+	if (self:Cost(Rank) + Extra) > DMW.Player.Power then
 		return true
 	end
 	return self:Cast(Unit, Rank)
