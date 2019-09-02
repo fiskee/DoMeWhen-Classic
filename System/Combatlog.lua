@@ -30,23 +30,38 @@ function frame:Reader(event, ...)
                 Player.SwingNext = Player.SwingLast + UnitAttackSpeed("player")
             end
             if Player.Class == "WARRIOR" then
-                if param == "SWING_MISSED" or param == "SPELL_MISSED" then
+                if string.match(param, "_MISSED") then
                     if spellType == "DODGE" then
-                        Player.overpowerUnit = destination
-                        Player.overpowerTime = DMW.Time + 5
+                        local overpower = {
+                            overpowerUnit = destination,
+                            overpowerTime = DMW.Time + 5
+                        }
+                        table.insert(Player.OverpowerUnit, overpower)
                     end
                     if spellType == "PARRY" or spellType == "BLOCK" or spellType == "DODGE" then
-                        Player.revengeUnit = destination
-                        Player.revengeTime = DMW.Time + 5
+                        -- local overpower = {}
+                        -- overpower.overpowerUnit = destination
+                        -- overpower.overpowerTime = DMW.Time + 5
+                        -- table.insert(Player.OverpowerUnit, overpower)
                     end
-                elseif spell == Spell.Overpower.SpellName and param == "SPELL_CAST_SUCCESS" then
-                    Player.overpowerTime = false
-                    Player.overpowerUnit = nil
-                elseif spell == Spell.Revenge.SpellName and param == "SPELL_CAST_SUCCESS" then
+                end
+                if spellName == Spell.Overpower.SpellName and param == "SPELL_CAST_SUCCESS" then
+                    for i = 1, #Player.OverpowerUnit do
+                        if Player.OverpowerUnit[i].overpowerUnit == destination then
+                            table.remove(Player.OverpowerUnit, i)
+                        end
+                    end                    
+                elseif spellName == Spell.Revenge.SpellName and param == "SPELL_CAST_SUCCESS" then
                     Player.revengeTime = false
                     Player.revengeUnit = nil
                 end
+                -- if #Player.OverpowerUnit > 0 and param == "UNIT_DIED" then
+                --     for i = 1, #Player.OverpowerUnit do
+                --         if Player.OverpowerUnit[i].overpowerUnit
+                --     end
+                -- end
             end
         end
     end
 end
+

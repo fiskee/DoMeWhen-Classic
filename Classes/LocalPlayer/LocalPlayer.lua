@@ -25,8 +25,8 @@ function LocalPlayer:New(Pointer)
     self:GetItems()
     -- self:Level = UnitLevel(Pointer)
     if self.Class == "WARRIOR" then
-        self.overpowerTime = false
-        self.revengeTime = false
+        self.OverpowerUnit = {}
+        self.RevengeUnit = {}
     end
     DMW.Helpers.Queue.GetBindings()
 end
@@ -58,13 +58,20 @@ function LocalPlayer:Update()
     self.CombatTime = self.Combat and (DMW.Time - self.Combat) or 0
     self.CombatLeftTime = self.CombatLeft and (DMW.Time - self.CombatLeft) or 0
     if self.Class == "WARRIOR" then
-        if self.overpowerTime ~= false and DMW.Time >= self.overpowerTime then
-            self.overpowerTime = false
-            self.overpowerUnit = nil
-        end
-        if self.revengeTime ~= false and DMW.Time >= self.revengeTime then
-            self.revengeTime = false
-            self.revengeUnit = nil
+        -- if self.overpowerTime ~= false and DMW.Time >= self.overpowerTime then
+        --     self.overpowerTime = false
+        --     self.overpowerUnit = nil
+        -- end
+        -- if self.revengeTime ~= false and DMW.Time >= self.revengeTime then
+        --     self.revengeTime = false
+        --     self.revengeUnit = nil
+        -- end
+        if #self.OverpowerUnit > 0 then
+            for i = 1, #self.OverpowerUnit do
+                if DMW.Time > self.OverpowerUnit[i].overpowerTime then
+                    table.remove(self.OverpowerUnit, i)
+                end
+            end
         end
     end
 end
