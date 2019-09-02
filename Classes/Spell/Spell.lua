@@ -27,11 +27,13 @@ function Spell:Cost(Rank)
     if Rank then
         CostTable = GetSpellPowerCost(self.Ranks[Rank])
     else
-        CostTable = GetSpellPowerCost(self.SpellID)
+        CostTable = GetSpellPowerCost(self.SpellName)
     end
-    for _, costInfo in pairs(CostTable) do
-        if costInfo.cost > 0 then
-            return costInfo.cost
+    if CostTable then
+        for _, costInfo in pairs(CostTable) do
+            if costInfo.cost > 0 then
+                return costInfo.cost
+            end
         end
     end
     return 0
