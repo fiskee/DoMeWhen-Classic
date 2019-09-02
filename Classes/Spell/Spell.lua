@@ -83,12 +83,21 @@ function Spell:IsReady(Rank)
     return false
 end
 
-function Spell:Charges()
-    return GetSpellCharges(self.SpellID)
+function Spell:Charges(Rank)
+    if Rank then
+        return GetSpellCharges(self.Ranks[Rank])
+    else
+        return GetSpellCharges(self.SpellName)
+    end
 end
 
-function Spell:ChargesFrac()
-    local Charges, MaxCharges, Start, Duration = GetSpellCharges(self.SpellID)
+function Spell:ChargesFrac(Rank)
+    local Charges, MaxCharges, Start, Duration
+    if Rank then
+        Charges, MaxCharges, Start, Duration = GetSpellCharges(self.Ranks[Rank])
+    else
+        Charges, MaxCharges, Start, Duration = GetSpellCharges(self.SpellName)
+    end
     if Charges ~= MaxCharges then
         return Charges + (1 - (Start + Duration - DMW.Time) / Duration)
     else
@@ -96,8 +105,13 @@ function Spell:ChargesFrac()
     end
 end
 
-function Spell:RechargeTime()
-    local Charges, MaxCharges, Start, Duration = GetSpellCharges(self.SpellID)
+function Spell:RechargeTime(Rank)
+    local Charges, MaxCharges, Start, Duration
+    if Rank then
+        Charges, MaxCharges, Start, Duration = GetSpellCharges(self.Ranks[Rank])
+    else
+        Charges, MaxCharges, Start, Duration = GetSpellCharges(self.SpellName)
+    end
     if Charges ~= MaxCharges then
         return Start + Duration - DMW.Time
     else
@@ -105,8 +119,13 @@ function Spell:RechargeTime()
     end
 end
 
-function Spell:FullRechargeTime()
-    local Charges, MaxCharges, Start, Duration = GetSpellCharges(self.SpellID)
+function Spell:FullRechargeTime(Rank)
+    local Charges, MaxCharges, Start, Duration
+    if Rank then
+        Charges, MaxCharges, Start, Duration = GetSpellCharges(self.Ranks[Rank])
+    else
+        Charges, MaxCharges, Start, Duration = GetSpellCharges(self.SpellName)
+    end
     if Charges ~= MaxCharges then
         local ChargesFracRemain = MaxCharges - (Charges + (1 - (Start + Duration - DMW.Time) / Duration))
         return ChargesFracRemain * Duration
