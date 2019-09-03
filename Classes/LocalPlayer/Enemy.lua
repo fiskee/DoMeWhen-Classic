@@ -43,6 +43,7 @@ function LocalPlayer:AutoTargetQuest(Yards, Facing)
             end
         end
     end
+    return false
 end
 
 function LocalPlayer:GetEnemies(Yards)

@@ -324,7 +324,7 @@ local Options = {
 
 local MinimapIcon =
     LibStub("LibDataBroker-1.1"):NewDataObject(
-    "MinimapIcon",
+    "DMWMinimapIcon",
     {
         type = "data source",
         text = "DMW",
@@ -358,7 +358,7 @@ function UI.Init()
     LibStub("AceConfig-3.0"):RegisterOptionsTable("DMW", Options)
     LibStub("AceConfigDialog-3.0"):SetDefaultSize("DMW", 400, 750)
     UI.MinimapIcon = LibStub("LibDBIcon-1.0")
-    UI.MinimapIcon:Register("MinimapIcon", MinimapIcon, DMW.Settings.profile.MinimapIcon)
+    UI.MinimapIcon:Register("DMWMinimapIcon", MinimapIcon, DMW.Settings.profile.MinimapIcon)
 end
 
 function UI.AddHeader(Text)
