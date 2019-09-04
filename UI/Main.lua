@@ -180,6 +180,19 @@ local Options = {
                     set = function(info, value)
                         DMW.Settings.profile.Helpers.TrackUnits = value
                     end
+                },
+                TrackObjects = {
+                    type = "input",
+                    order = 14,
+                    name = "Track Objects By Name",
+                    desc = "Mark objects by name or part of name, seperated by comma",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackObjects
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackObjects = value
+                    end
                 }
             }
         },
