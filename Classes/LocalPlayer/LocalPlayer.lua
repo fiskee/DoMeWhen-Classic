@@ -13,6 +13,7 @@ function LocalPlayer:New(Pointer)
     self.CombatLeft = false
     self.EID = false
     self.NoControl = false
+    self.Level = UnitLevel(Pointer)    
     DMW.Functions.AuraCache.Refresh(Pointer)
     self:GetSpells()
     self:GetTalents()
@@ -23,7 +24,6 @@ function LocalPlayer:New(Pointer)
     self.SwingLeft = 0
     self:UpdateEquipment()
     self:GetItems()
-    -- self:Level = UnitLevel(Pointer)
     if self.Class == "WARRIOR" then
         self.OverpowerUnit = {}
         self.RevengeUnit = {}
