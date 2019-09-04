@@ -45,7 +45,7 @@ DMW.Enums.Herbs = {
     [176587] = {Name = "Plaguebloom", SkillReq = 285},
     [176641] = {Name = "Plaguebloom", SkillReq = 285},
     [176588] = {Name = "Icecap", SkillReq = 290},
-    [176589] = {Name = "Black Lotus", SkillReq = 300},
+    [176589] = {Name = "Black Lotus", SkillReq = 300}
 }
 
 DMW.Enums.Ore = {
@@ -87,7 +87,7 @@ DMW.Enums.Ore = {
     [177388] = {Name = "Ooze Covered Rich Thorium Vein", SkillReq = 275},
     [175404] = {Name = "Rich Thorium Vein", SkillReq = 275},
     [181069] = {Name = "Large Obsidian Chunk", SkillReq = 305},
-    [181068] = {Name = "Small Obsidian Chunk", SkillReq = 305},
+    [181068] = {Name = "Small Obsidian Chunk", SkillReq = 305}
 }
 
 DMW.Enums.Trackable = {
@@ -95,5 +95,6 @@ DMW.Enums.Trackable = {
     [106319] = {Name = "Battered Chest", SkillReq = 0},
     [106318] = {Name = "Battered Chest", SkillReq = 0},
     [2849] = {Name = "Battered Chest", SkillReq = 0},
-    [75293] = {Name = "Large Battered Chest", SkillReq = 0}
+    [75293] = {Name = "Large Battered Chest", SkillReq = 0},
+    [153453] = {Name = "Solid Chest", SkillReq = 0}
 }
