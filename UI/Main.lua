@@ -73,10 +73,10 @@ local Options = {
                     desc = "Enable/Disable EWT Anti Afk",
                     width = "full",
                     get = function()
-                        return IsHackEnabled(Hacks.AntiAfk)
+                        return IsHackEnabled("antiafk")
                     end,
                     set = function(info, value)
-                        SetHackEnabled(Hacks.AntiAfk, value)
+                        SetHackEnabled("antiafk", value)
                     end
                 },
                 AutoLoot = {
