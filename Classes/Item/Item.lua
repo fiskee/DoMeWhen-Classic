@@ -32,7 +32,7 @@ function Item:CD()
 end
 
 function Item:IsReady()
-    return IsUsableItem(self.ItemID) and self:CD() == 0
+    return IsUsableItem(self.ItemName) and self:CD() == 0
 end
 
 function Item:Use(Unit)
