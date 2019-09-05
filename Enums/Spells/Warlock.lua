@@ -64,7 +64,8 @@ Spells.WARLOCK = {
         DeathCoil = {Ranks = {6789, 17925, 17926}},
         EnslaveDemon = {Ranks = {1098, 11725, 11726}},
         Fear = {Ranks = {5782, 6213, 6215}},
-        Immolate = {Ranks = {348, 707, 1094, 2941, 11665, 11667, 11668, 25309}}
+        Immolate = {Ranks = {348, 707, 1094, 2941, 11665, 11667, 11668, 25309}},
+        SiphonLife = {Ranks = {18265, 18879, 18880, 18881, 18927, 18928, 18929}},
     },
     Talents = {
         --Affliction
