@@ -114,7 +114,7 @@ function Queue.Run()
         Queue.Target = false
         Queue.Item = false
     end
-    if Queue.Spell and DMW.Player.Combat then
+    if Queue.Spell and DMW.Player.Combat and not DMW.Player.Casting then
         if Queue.Type == 2 then
             if Queue.Target and IsSpellInRange(Queue.Spell.SpellName, Queue.Target.Pointer) ~= nil then
                 if Queue.Spell:Cast(Queue.Target) then

@@ -36,7 +36,9 @@ function LocalPlayer:Update()
     self.Health = UnitHealth(self.Pointer)
     self.HealthMax = UnitHealthMax(self.Pointer)
     self.HP = self.Health / self.HealthMax * 100
+    self.Casting = CastingInfo(self.Pointer) or ChannelInfo(self.Pointer)
     self.Power = UnitPower(self.Pointer)
+    self.Power = self:PredictedPower()
     self.PowerMax = UnitPowerMax(self.Pointer)
     self.PowerDeficit = self.PowerMax - self.Power
     self.PowerPct = self.Power / self.PowerMax * 100
@@ -50,7 +52,6 @@ function LocalPlayer:Update()
         self.ComboDeficit = self.ComboMax - self.ComboPoints
     end
     self.Instance = select(2, IsInInstance())
-    self.Casting = CastingInfo(self.Pointer) or ChannelInfo(self.Pointer)
     self.Moving = GetUnitSpeed(self.Pointer) > 0
     self.PetActive = UnitIsVisible("pet")
     self.InGroup = IsInGroup()
@@ -74,6 +75,23 @@ function LocalPlayer:Update()
             end
         end
     end
+end
+
+function LocalPlayer:PredictedPower()
+    if self.Casting then
+        local SpellID = select(9, CastingInfo("player"))
+        if SpellID then
+            local CostTable = GetSpellPowerCost(SpellID)
+            if CostTable then
+                for _, CostInfo in pairs(CostTable) do
+                    if CostInfo.cost > 0 then
+                        return (self.Power - CostInfo.cost)
+                    end
+                end
+            end
+        end
+    end
+    return self.Power
 end
 
 function LocalPlayer:GCDRemain()
