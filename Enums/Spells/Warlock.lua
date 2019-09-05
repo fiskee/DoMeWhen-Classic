@@ -38,6 +38,7 @@ Spells.WARLOCK = {
         ShadowBolt = {Ranks = {686, 695, 705, 1088, 1106, 7641, 11659, 11660, 11661, 25307}},
         ShadowWard = {Ranks = {6229, 11739, 11740, 28610}},
         Shadowburn = {Ranks = {17877, 18867, 18868, 18869, 18870, 18871}},
+        SiphonLife = {Ranks = {18265, 18879, 18880, 18881, 18927, 18928, 18929}},
         SoulFire = {Ranks = {6353, 17924}},
         SummonImp = {Ranks = {688}},
         SummonFelhunter = {Ranks = {691}},
@@ -48,6 +49,7 @@ Spells.WARLOCK = {
     Buffs = {
         DemonArmor = {Ranks = {706, 1086, 11733, 11734, 11735}},
         DemonSkin = {Ranks = {687, 696}},
+        Nightfall = {Ranks = {18094, 18095}},
         ShadowWard = {Ranks = {6229, 11739, 11740, 28610}}
     },
     Debuffs = {

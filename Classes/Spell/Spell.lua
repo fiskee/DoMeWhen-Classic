@@ -140,3 +140,7 @@ function Spell:CastTime(Rank)
     end
     return select(4, GetSpellInfo(self.SpellName)) / 1000
 end
+
+function Spell:Known()
+    return GetSpellInfo(self.SpellName)
+end
