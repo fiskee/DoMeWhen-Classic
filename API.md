@@ -88,6 +88,7 @@ Note not all functions work in classic yet
 - :TTM()
 - :AutoTarget(Yards, Facing)
 - :AutoTargetQuest(Yards, Facing)
+- :AutoTargetAny(Yards, Facing)
 - :GetEnemies(Yards)
 - :GetAttackable(Yards)
 - :GetEnemiesRect(Length, Width, TTD)
@@ -149,6 +150,8 @@ Note not all functions work in classic yet
 - :Cast(Unit, Rank)
 - :CastPool(Unit, Extra, Rank)
 - :CastGround(X, Y, Z, Rank)
+- :Known()
+- :Usable(Rank)
 
 # Item
 ## Constants
