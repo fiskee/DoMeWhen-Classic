@@ -2,6 +2,7 @@ local Spells = DMW.Enums.Spells
 
 Spells.ROGUE = {
     Abilities = {
+        AdrenalineRush = {Ranks = {13750}},
         Ambush = {Ranks = {8676, 8724, 8725, 11267, 11268, 11269}},
         Backstab = {Ranks = {53, 2589, 2590, 2591, 8721, 11279, 11280, 11281, 25300}},
         BladeFlurry = {Ranks = {13877}},
