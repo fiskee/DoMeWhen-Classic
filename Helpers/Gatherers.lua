@@ -59,6 +59,19 @@ function DMW.Helpers.Gatherers.Run()
             end
         end
     end
+    if DMW.Settings.profile.Helpers.AutoGather then
+        if Looting and (DMW.Time - Looting) > 0.6 then
+            Looting = false
+        end
+        if not Looting and not DMW.Player.Combat and not DMW.Player.Moving then
+            for _, Object in pairs(DMW.GameObjects) do
+                if (Object.Herb or Object.Ore or Object.Trackable) and Object.Distance < 5 then
+                    ObjectInteract(Object.Pointer)
+                    Looting = DMW.Time
+                end
+            end
+        end
+    end
     LibDraw.SetColor(0, 0, 255)
     if DMW.Settings.profile.Helpers.TrackUnits then
         local TrackUnits = {}

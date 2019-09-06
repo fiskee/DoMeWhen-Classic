@@ -34,6 +34,7 @@ local defaults = {
             AutoLoot = false,
             AutoSkinning = false,
             QuestieHelper = false,
+            AutoGather = false,
             Herbs = false,
             Ore = false,
             LineToNodes = false

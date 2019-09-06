@@ -116,9 +116,21 @@ local Options = {
                         DMW.Settings.profile.Helpers.QuestieHelper = value
                     end
                 },
-                Herbs = {
+                AutoGather = {
                     type = "toggle",
                     order = 9,
+                    name = "Auto Gather",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.AutoGather
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.AutoGather = value
+                    end
+                },
+                Herbs = {
+                    type = "toggle",
+                    order = 10,
                     name = "Track Herbs",
                     desc = "Mark herbs in the world",
                     width = "full",
@@ -131,7 +143,7 @@ local Options = {
                 },
                 Ore = {
                     type = "toggle",
-                    order = 10,
+                    order = 11,
                     name = "Track Ore",
                     desc = "Mark ore in the world",
                     width = "full",
@@ -144,7 +156,7 @@ local Options = {
                 },
                 Trackable = {
                     type = "toggle",
-                    order = 11,
+                    order = 12,
                     name = "Track Special Objects",
                     desc = "Mark special objects in the world (chests, containers ect.)",
                     width = "full",
@@ -157,7 +169,7 @@ local Options = {
                 },
                 LineToNodes = {
                     type = "toggle",
-                    order = 12,
+                    order = 13,
                     name = "Show Lines To Nodes",
                     desc = "Draw a line from player to herbs/ore",
                     width = "full",
@@ -170,7 +182,7 @@ local Options = {
                 },
                 TrackUnits = {
                     type = "input",
-                    order = 13,
+                    order = 14,
                     name = "Track Units By Name",
                     desc = "Mark units by name or part of name, seperated by comma",
                     width = "full",
@@ -183,7 +195,7 @@ local Options = {
                 },
                 TrackObjects = {
                     type = "input",
-                    order = 14,
+                    order = 15,
                     name = "Track Objects By Name",
                     desc = "Mark objects by name or part of name, seperated by comma",
                     width = "full",
