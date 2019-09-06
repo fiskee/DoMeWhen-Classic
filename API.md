@@ -9,6 +9,7 @@ Note not all functions work in classic yet
 - .Friend
 - .CombatReach
 - .ObjectID
+- .Level
 - .CreatureType
 
 ## Variables
@@ -20,6 +21,7 @@ Note not all functions work in classic yet
 - .Health
 - .HealthMax
 - .HP
+- .RealHealth
 - .TTD
 - .LoS
 - .Attackable

@@ -1,5 +1,5 @@
 # DoMeWhen - Classic
-This is the core rotation addon of DoMeWhen, it does not contain any rotations, it only containts the functions needed for rotations to work, and a handful of helper functions.
+This is the core rotation addon of DoMeWhen, it does not contain any rotations, it only contains the functions needed for rotations to work, and a handful of helper functions.
 
 ## Installation
 Download zip on github, extract to your classic addons folder and remove the "-master" from directory name.

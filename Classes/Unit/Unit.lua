@@ -10,6 +10,7 @@ function Unit:New(Pointer)
     self.CombatReach = UnitCombatReach(Pointer)
     self.PosX, self.PosY, self.PosZ = ObjectPosition(Pointer)
     self.ObjectID = ObjectID(Pointer)
+    self.Level = UnitLevel(Pointer)
     self.CreatureType = UnitCreatureType(Pointer)
     DMW.Functions.AuraCache.Refresh(Pointer)
 end
@@ -19,8 +20,19 @@ function Unit:Update()
     self.PosX, self.PosY, self.PosZ = ObjectPosition(self.Pointer)
     self.Distance = self:GetDistance()
     self.Dead = UnitIsDeadOrGhost(self.Pointer)
-    self.Health = UnitHealth(self.Pointer)
-    self.HealthMax = UnitHealthMax(self.Pointer)
+    if RealMobHealth_CreatureHealthCache and self.ObjectID and RealMobHealth_CreatureHealthCache[self.ObjectID .. "-" .. self.Level] then
+        self.HealthMax = RealMobHealth_CreatureHealthCache[self.ObjectID .. "-" .. self.Level]
+        self.RealHealth = true
+        self.Health = self.HealthMax * (UnitHealth(self.Pointer) / 100)
+    else
+        self.HealthMax = UnitHealthMax(self.Pointer)
+        if self.HealthMax ~= 100 then
+            self.RealHealth = true
+        else
+            self.RealHealth = false
+        end
+        self.Health = UnitHealth(self.Pointer)
+    end
     self.HP = self.Health / self.HealthMax * 100
     self.TTD = self:GetTTD()
     self.LoS = false
