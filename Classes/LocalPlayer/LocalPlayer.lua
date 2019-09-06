@@ -133,3 +133,48 @@ function LocalPlayer:TTM()
         return 0
     end
 end
+
+function LocalPlayer:Dispel(Spell)
+    local AuraCache = DMW.Tables.AuraCache[self.Pointer]
+    if not AuraCache or not Spell then
+        return false
+    end
+    local DispelTypes = {}
+    for k, v in pairs(DMW.Enums.DispelSpells[Spell.SpellID]) do
+        DispelTypes[v] = true
+    end
+    local Elapsed
+    local Delay = DMW.Settings.profile.Friend.DispelDelay - 0.2 + (math.random(1, 4) / 10)
+    local ReturnValue = false
+    --name, icon, count, debuffType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId
+    local AuraReturn
+    for _, Aura in pairs(AuraCache) do
+        if (self.Friend and Aura.Type == "HARMFUL") or (not self.Friend and Aura.Type == "HELPFUL") then
+            AuraReturn = Aura.AuraReturn 
+            Elapsed = AuraReturn[5] - (AuraReturn[6] - DMW.Time)
+            if AuraReturn[4] and DispelTypes[AuraReturn[4]] and Elapsed > Delay then
+                if DMW.Enums.NoDispel[AuraReturn[10]] then
+                    ReturnValue = false
+                    break                
+                elseif DMW.Enums.SpecialDispel[AuraReturn[10]] and DMW.Enums.SpecialDispel[AuraReturn[10]].Stacks then 
+                    if AuraReturn[3] >= DMW.Enums.SpecialDispel[AuraReturn[10]].Stacks then
+                        ReturnValue = true
+                    else
+                        ReturnValue = false
+                        break
+                    end
+                elseif DMW.Enums.SpecialDispel[AuraReturn[10]] and DMW.Enums.SpecialDispel[AuraReturn[10]].Range then
+                    if select(2, self:GetFriends(DMW.Enums.SpecialDispel[AuraReturn[10]].Range)) < 2 then
+                        ReturnValue = true
+                    else
+                        ReturnValue = false
+                        break
+                    end
+                else
+                    ReturnValue = true
+                end
+            end
+        end
+    end
+    return ReturnValue
+end
