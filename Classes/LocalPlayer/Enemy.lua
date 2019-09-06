@@ -25,7 +25,7 @@ function LocalPlayer:AutoTarget(Yards, Facing)
     local Facing = Facing or false
     if (not self.Target or self.Target.Dead) and self.Combat then
         for _, Unit in ipairs(DMW.Enemies) do
-            if Unit.Distance <= Yards and (not Facing or Unit.Facing == true) then
+            if Unit.Distance <= Yards and (not Facing or Unit.Facing) then
                 TargetUnit(Unit.Pointer)
                 return true
             end
@@ -37,7 +37,7 @@ function LocalPlayer:AutoTargetQuest(Yards, Facing)
     local Facing = Facing or false
     if not self.Target or self.Target.Dead then
         for _, Unit in ipairs(DMW.Attackable) do
-            if Unit.Distance <= Yards and (not Facing or Unit.Facing == true) and Unit.Quest and not Unit.Dead and not Unit.Target and not UnitIsTapDenied(Unit.Pointer) then
+            if Unit.Distance <= Yards and (not Facing or Unit.Facing) and Unit.Quest and not Unit.Dead and not Unit.Target and not UnitIsTapDenied(Unit.Pointer) then
                 TargetUnit(Unit.Pointer)
                 return true
             end
@@ -50,7 +50,7 @@ function LocalPlayer:AutoTargetAny(Yards, Facing)
     local Facing = Facing or false
     if not self.Target or self.Target.Dead then
         for _, Unit in ipairs(DMW.Attackable) do
-            if Unit.Distance <= Yards and (not Facing or Unit.Facing == true) and not Unit.Dead and not Unit.Target and not UnitIsTapDenied(Unit.Pointer) then
+            if Unit.Distance <= Yards and (not Facing or Unit.Facing) and not Unit.Dead and not Unit.Target and not UnitIsTapDenied(Unit.Pointer) then
                 TargetUnit(Unit.Pointer)
                 return true
             end
