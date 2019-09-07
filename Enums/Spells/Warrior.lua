@@ -47,7 +47,7 @@ Spells.WARRIOR = {
 	Buffs = {
 		BattleShout = {Ranks = {6673, 5242, 6192, 11549, 11550, 11551, 25289}},
 		ShieldBlock = {Ranks = {2565}},
-		SweepStrikes = {Ranks = {12292}},
+		SweepStrikes = {Ranks = {12292}}
 	},
 	Debuffs = {
 		DemoShout = {Ranks = {1160, 6190, 11554, 11555, 11556}},

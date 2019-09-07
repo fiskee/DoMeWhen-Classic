@@ -56,8 +56,22 @@ function frame:Reader(event, ...)
                     for i = 1, #Player.RevengeUnit do
                         if Player.RevengeUnit[i] ~= nil and Player.RevengeUnit[i].revengeUnit == destination then
                             table.remove(Player.RevengeUnit, i)
+                            table.remove(Player.OverpowerUnit, i)
                         end
                     end       
+                end
+                if param == "UNIT_DIED" then
+                    for i = 1, #Player.revengeUnit do
+                        if Player.RevengeUnit[i].revengeUnit == destination then
+                            table.remove(Player.RevengeUnit, i)
+                            table.remove(Player.OverpowerUnit, i)
+                        end   
+                    end
+                    for i = 1, #Player.OverpowerUnit do
+                        if Player.OverpowerUnit[i].overpowerUnit == destination then
+                            table.remove(Player.OverpowerUnit, i)
+                        end   
+                    end
                 end
                 -- if #Player.OverpowerUnit > 0 and param == "UNIT_DIED" then
                 --     for i = 1, #Player.OverpowerUnit do
