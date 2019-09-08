@@ -47,6 +47,8 @@ Note not all functions work in classic yet
 - :CCed()
 - :IsQuest()
 - :GetTTD(targetPercentage)
+- :CastingInfo()
+- :ChannelInfo()
 
 # Player
 ## Constants

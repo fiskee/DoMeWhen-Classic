@@ -122,23 +122,32 @@ function Unit:GetFriends(Yards, HP)
     return Table, Count
 end
 
-function Unit:HardCC() --TODO: Fix this
+function Unit:HardCC()
     if DMW.Enums.HardCCUnits[self.ObjectID] then
         return true
     end
-    -- local CastingInfo = {UnitCastingInfo(self.Pointer)} --name, text, texture, startTimeMS, endTimeMS, isTradeSkill, castID, notInterruptible, spellId
-    -- local ChannelInfo = {UnitChannelInfo(self.Pointer)} --name, text, texture, startTimeMS, endTimeMS, isTradeSkill, notInterruptible, spellId
-    -- local StartTime, SpellID
-    -- if CastingInfo[4] then
-    --     StartTime = CastingInfo[4] / 1000
-    --     SpellID = CastingInfo[9]
-    -- elseif ChannelInfo[4] then
-    --     StartTime = ChannelInfo[4] / 1000
-    --     SpellID = ChannelInfo[8]
-    -- end
-    -- if StartTime and SpellID and DMW.Enums.HardCCCasts[SpellID] and (DMW.Time - StartTime) > 0.4 then
-    --     return true
-    -- end
+    local Settings = DMW.Settings.profile
+    local StartTime, EndTime, SpellID, Type
+    local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = self:CastingInfo()
+    if name then
+        StartTime = startTime / 1000
+        SpellID = spellID
+    else
+        name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID = self:ChannelInfo()
+        if name then
+            StartTime = startTime / 1000
+            SpellID = spellID
+        end
+    end
+    if StartTime and SpellID and DMW.Enums.HardCCCasts[SpellID] then
+        local Delay = Settings.Enemy.InterruptDelay - 0.2 + (math.random(1, 4) / 10)
+        if Delay < 0.1 then
+            Delay = 0.1
+        end
+        if (DMW.Time - StartTime) > Delay then
+            return true
+        end
+    end
     return false
 end
 
