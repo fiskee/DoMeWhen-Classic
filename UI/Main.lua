@@ -239,33 +239,17 @@ local Options = {
                 InterruptPct = {
                     type = "range",
                     order = 4,
-                    name = "Interrupt %",
-                    desc = "Set desired % for interrupting enemy casts",
+                    name = "Interrupt Delay",
+                    desc = "Set desired delay in sec for interrupting enemy casts, will randomize around value",
                     width = "full",
                     min = 0,
-                    max = 100,
-                    step = 1,
-                    get = function()
-                        return DMW.Settings.profile.Enemy.InterruptPct
-                    end,
-                    set = function(info, value)
-                        DMW.Settings.profile.Enemy.InterruptPct = value
-                    end
-                },
-                ChannelInterrupt = {
-                    type = "range",
-                    order = 5,
-                    name = "Channel Interrupt",
-                    desc = "Set seconds to wait before interrupting enemy channels",
-                    width = "full",
-                    min = 0.0,
-                    max = 3.0,
+                    max = 2,
                     step = 0.1,
                     get = function()
-                        return DMW.Settings.profile.Enemy.ChannelInterrupt
+                        return DMW.Settings.profile.Enemy.InterruptDelay
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Enemy.ChannelInterrupt = value
+                        DMW.Settings.profile.Enemy.InterruptDelay = value
                     end
                 },
                 InterruptTarget = {
@@ -274,7 +258,7 @@ local Options = {
                     name = "Interrupt Target",
                     desc = "Select desired target setting for interrupts",
                     width = "full",
-                    values = {"Any", "Target", "Focus", "Mouseover"},
+                    values = {"Any", "Target"},
                     style = "dropdown",
                     get = function()
                         return DMW.Settings.profile.Enemy.InterruptTarget

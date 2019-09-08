@@ -1,5 +1,6 @@
 local DMW = DMW
 local Unit = DMW.Classes.Unit
+local LibCC = LibStub("LibClassicCasterinoDMW", true)
 
 function Unit:New(Pointer)
     self.Pointer = Pointer
@@ -141,10 +142,41 @@ function Unit:HardCC() --TODO: Fix this
     return false
 end
 
-function Unit:Interrupt() --TODO: Fix this
+function Unit:Interrupt()
     local InterruptTarget = DMW.Settings.profile.Enemy.InterruptTarget
-    if DMW.Settings.profile.HUD.Interrupts == 2 or (InterruptTarget == 2 and not UnitIsUnit(self.Pointer, "target")) or (InterruptTarget == 3 and not UnitIsUnit(self.Pointer, "focus")) or (InterruptTarget == 4 and not UnitIsUnit(self.Pointer, "mouseover")) then
+    if DMW.Settings.profile.HUD.Interrupts == 2 or (InterruptTarget == 2 and not UnitIsUnit(self.Pointer, "target")) then
         return false
+    end
+    local Settings = DMW.Settings.profile
+    local StartTime, EndTime, SpellID, Type
+    local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = self:CastingInfo()
+    if name then
+        if endTime and not notInterruptible then
+            StartTime = startTime / 1000
+            EndTime = endTime / 1000
+            SpellID = spellID
+            Type = "Cast"
+        end
+    else
+        name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID = self:ChannelInfo()
+        if name then
+            if endTime and not notInterruptible then
+                StartTime = startTime / 1000
+                SpellID = spellID
+                Type = "Channel"
+            end
+        else
+            return false
+        end
+    end
+    if not DMW.Enums.InterruptBlacklist[SpellID] then
+        local Delay = Settings.Enemy.InterruptDelay - 0.2 + (math.random(1, 4) / 10)
+        if Delay < 0.1 then
+            Delay = 0.1
+        end
+        if (DMW.Time - StartTime) > Delay then
+            return true
+        end
     end
     return false
 end
@@ -260,4 +292,12 @@ function Unit:IsQuest()
         end
     end
     return false
+end
+
+function Unit:CastingInfo()
+    return LibCC:UnitCastingInfo(self.Pointer)
+end
+
+function Unit:ChannelInfo()
+    return LibCC:UnitChannelInfo(self.Pointer)
 end

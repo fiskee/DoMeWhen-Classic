@@ -17,8 +17,7 @@ local defaults = {
             Show = true
         },
         Enemy = {
-            InterruptPct = 70,
-            ChannelInterrupt = 1,
+            InterruptDelay = 0.8,
             InterruptTarget = 1,
             AutoFace = true
         },
