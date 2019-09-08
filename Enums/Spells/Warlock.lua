@@ -2,6 +2,7 @@ local Spells = DMW.Enums.Spells
 
 Spells.WARLOCK = {
     Abilities = {
+        AmplifyCurse = {Ranks = {18288}},
         Banish = {Ranks = {710, 18647}},
         Conflagrate = {Ranks = {17962}},
         Corruption = {Ranks = {172, 6222, 6223, 7648, 11671, 11672, 25311}},
