@@ -11,7 +11,7 @@ function Unit:New(Pointer)
     self.PosX, self.PosY, self.PosZ = ObjectPosition(Pointer)
     self.ObjectID = ObjectID(Pointer)
     self.Level = UnitLevel(Pointer)
-    self.CreatureType = UnitCreatureType(Pointer)
+    self.CreatureType = DMW.Enums.CreatureType[UnitCreatureTypeID(Pointer)]
     DMW.Functions.AuraCache.Refresh(Pointer)
 end
 
