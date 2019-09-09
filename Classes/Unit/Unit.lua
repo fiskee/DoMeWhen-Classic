@@ -92,7 +92,7 @@ function Unit:HasThreat()
     elseif DMW.Player.Instance == "none" and (DMW.Enums.Dummy[self.ObjectID] or UnitIsUnit(self.Pointer, "target")) then
         return true
     end
-    if self.Target and (UnitIsUnit(self.Target, "player") or UnitIsUnit(self.Target, "pet") or UnitInParty(self.Target)) then
+    if not self.Player and self.Target and (UnitIsUnit(self.Target, "player") or UnitIsUnit(self.Target, "pet") or UnitInParty(self.Target)) then
         return true
     end
     return false
