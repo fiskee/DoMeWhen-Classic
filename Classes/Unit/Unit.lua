@@ -72,6 +72,8 @@ function Unit:IsBoss()
     local Classification = UnitClassification(self.Pointer)
     if Classification == "worldboss" or Classification == "rareelite" then
         return true
+    elseif LibStub("LibBossIDs-1.0").BossIDs[self.ObjectID] then
+        return true
     elseif DMW.Player.EID then
         for i = 1, 5 do
             if UnitIsUnit("boss" .. i, self.Pointer) then
