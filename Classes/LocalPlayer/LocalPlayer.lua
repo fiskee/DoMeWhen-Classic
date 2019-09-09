@@ -22,6 +22,7 @@ function LocalPlayer:New(Pointer)
     self.SwingNext = 0
     self.SwingLast = 0
     self.SwingLeft = 0
+    self.Looting = false
     self:UpdateEquipment()
     self:GetItems()
     if self.Class == "WARRIOR" then
@@ -156,7 +157,7 @@ function LocalPlayer:Dispel(Spell)
     --name, icon, count, debuffType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId
     local AuraReturn
     for _, Aura in pairs(AuraCache) do
-        if (self.Friend and Aura.Type == "HARMFUL") or (not self.Friend and Aura.Type == "HELPFUL") then
+        if Aura.Type == "HARMFUL" then
             AuraReturn = Aura.AuraReturn 
             Elapsed = AuraReturn[5] - (AuraReturn[6] - DMW.Time)
             if AuraReturn[4] and DispelTypes[AuraReturn[4]] and Elapsed > Delay then
