@@ -134,6 +134,13 @@ function LocalPlayer:TTM()
     end
 end
 
+function LocalPlayer:Sitting()
+    if ObjectDescriptor("player", GetOffset("CGUnitData__AnimTier"), Types.Byte) == 1 then
+        return true
+    end
+    return false
+end
+
 function LocalPlayer:Dispel(Spell)
     local AuraCache = DMW.Tables.AuraCache[self.Pointer]
     if not AuraCache or not Spell then
