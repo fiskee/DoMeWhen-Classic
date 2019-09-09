@@ -48,7 +48,7 @@ function LocalPlayer:Update()
     end
     if self.Class == "ROGUE" or self.Class == "DRUID" then
         self.ComboPoints = GetComboPoints("player", "target")
-        self.ComboMax = UnitPowerMax(self.Pointer, 4)
+        self.ComboMax = 5 --UnitPowerMax(self.Pointer, 4)
         self.ComboDeficit = self.ComboMax - self.ComboPoints
     end
     self.Instance = select(2, IsInInstance())
@@ -69,7 +69,7 @@ function LocalPlayer:Update()
         -- end
         if #self.OverpowerUnit > 0 then
             for i = 1, #self.OverpowerUnit do
-                if DMW.Time > self.OverpowerUnit[i].overpowerTime then
+                if self.OverpowerUnit[i].overpowerTime and DMW.Time > self.OverpowerUnit[i].overpowerTime then
                     table.remove(self.OverpowerUnit, i)
                 end
             end
