@@ -51,6 +51,7 @@ Spells.WARLOCK = {
         DemonArmor = {Ranks = {706, 1086, 11733, 11734, 11735}},
         DemonSkin = {Ranks = {687, 696}},
         Nightfall = {Ranks = {18094, 18095}},
+        ShadowTrance = {Ranks = {17941}},
         ShadowWard = {Ranks = {6229, 11739, 11740, 28610}}
     },
     Debuffs = {
