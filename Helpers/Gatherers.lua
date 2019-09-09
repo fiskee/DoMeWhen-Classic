@@ -33,7 +33,7 @@ local function Line(sx, sy, sz, ex, ey, ez)
 end
 
 function DMW.Helpers.Gatherers.Run()
-    if not DMW.Player:Sitting() then
+    if not DMW.Player:Sitting() and not DMW.Player.Casting then
         if DMW.Settings.profile.Helpers.AutoLoot then
             if Looting and (DMW.Time - Looting) > 1.3 then
                 Looting = false
