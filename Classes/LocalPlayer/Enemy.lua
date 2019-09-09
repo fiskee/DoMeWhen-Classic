@@ -21,6 +21,18 @@ local function IsInside(x, y, ax, ay, bx, by, dx, dy) -- Stolen at BadRotations
     return true
 end
 
+function LocalPlayer:GetEnemy(Yards, Facing)
+    local Facing = Facing or false
+    if (not self.Target or self.Target.Dead) and self.Combat then
+        for _, Unit in ipairs(DMW.Enemies) do
+            if Unit.Distance <= Yards and (not Facing or Unit.Facing) then
+                return Unit
+            end
+        end
+    end
+    return nil
+end
+
 function LocalPlayer:AutoTarget(Yards, Facing)
     local Facing = Facing or false
     if (not self.Target or self.Target.Dead) and self.Combat then
