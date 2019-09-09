@@ -6,12 +6,13 @@ local QueueFrame
 
 function Queue.GetBindings()
     table.wipe(DMW.Tables.Bindings)
-    local Type, ID, Key1, Key2
+    local Type, ID, Key1, Key2, BindingID
     for k, frame in pairs(ActionBarButtonEventsFrame.frames) do
+        local BindingID = frame:GetAttribute('bindingid') or frame:GetID()
         if frame.buttonType then
-            Key1, Key2 = GetBindingKey(frame.buttonType .. frame:GetID())
+            Key1, Key2 = GetBindingKey(frame.buttonType .. BindingID)
         else
-            Key1, Key2 = GetBindingKey("ACTIONBUTTON" .. frame:GetID())
+            Key1, Key2 = GetBindingKey("ACTIONBUTTON" .. BindingID)
         end
         Type, ID = GetActionInfo(frame.action)
         if Key1 then
