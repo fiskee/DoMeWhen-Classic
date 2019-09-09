@@ -135,8 +135,8 @@ function LocalPlayer:TTM()
     end
 end
 
-function LocalPlayer:Sitting()
-    if ObjectDescriptor("player", GetOffset("CGUnitData__AnimTier"), Types.Byte) == 1 then
+function LocalPlayer:Standing()
+    if ObjectDescriptor("player", GetOffset("CGUnitData__AnimTier"), Types.Byte) == 0 then
         return true
     end
     return false
