@@ -1,11 +1,20 @@
 local DMW = DMW
 local Item = DMW.Classes.Item
+DMW.Tables.ItemInfo = {}
 
 function Item:New(ItemID)
     self.ItemID = ItemID
     self.ItemName = GetItemInfo(ItemID)
+    if not self.ItemName then
+        DMW.Tables.ItemInfo[ItemID] = self
+    end
     self.SpellName, self.SpellID = GetItemSpell(ItemID)
     self.Cache = {}
+end
+
+function Item:Refresh()
+    self.ItemName = GetItemInfo(self.ItemID)
+    self.SpellName, self.SpellID = GetItemSpell(self.ItemID)
 end
 
 function Item:Equipped()

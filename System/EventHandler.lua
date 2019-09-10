@@ -10,6 +10,7 @@ EHFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 EHFrame:RegisterEvent("CHARACTER_POINTS_CHANGED")
 EHFrame:RegisterEvent("LOOT_OPENED")
 EHFrame:RegisterEvent("LOOT_CLOSED")
+EHFrame:RegisterEvent("GET_ITEM_INFO_RECEIVED")
 
 local function EventHandler(self, event, ...)
     if EWT then
@@ -45,6 +46,12 @@ local function EventHandler(self, event, ...)
             DMW.Player.Looting = true
         elseif event == "LOOT_CLOSED" then
             DMW.Player.Looting = false
+        elseif event == "GET_ITEM_INFO_RECEIVED" then
+            local ItemID = select(1, ...)
+            if DMW.Tables.ItemInfo[ItemID] then
+                DMW.Tables.ItemInfo[ItemID]:Refresh()
+                DMW.Tables.ItemInfo[ItemID] = nil
+            end
         end
     end
 end
