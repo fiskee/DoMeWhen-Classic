@@ -24,6 +24,7 @@ Spells.WARRIOR = {
 		HeroicStrike = {Ranks = {78, 284, 285, 1608, 11564, 11565, 11566, 11567, 25286}},
 		IntimShout = {Ranks = {5246}},
 		Intercept = {Ranks = {20252, 20616, 20617}},
+        LastStand = {Ranks = {12975}},
 		MockingBlow = {Ranks = {694, 7400, 7402, 20559, 20560}},
         MortalStrike = {Ranks = {12294, 21551, 21552, 21553}},
 		Overpower = {Ranks = {7384, 7887, 11584, 11585}},
