@@ -90,6 +90,7 @@ Note not all functions work in classic yet
 - :CDs()
 - :CritPct()
 - :TTM()
+- :GetEnemy(Yards, Facing)
 - :AutoTarget(Yards, Facing)
 - :AutoTargetQuest(Yards, Facing)
 - :AutoTargetAny(Yards, Facing)

@@ -8,6 +8,8 @@ EHFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 EHFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 EHFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 EHFrame:RegisterEvent("CHARACTER_POINTS_CHANGED")
+EHFrame:RegisterEvent("LOOT_OPENED")
+EHFrame:RegisterEvent("LOOT_CLOSED")
 
 local function EventHandler(self, event, ...)
     if EWT then
@@ -39,6 +41,10 @@ local function EventHandler(self, event, ...)
             DMW.Player:UpdateEquipment()
         elseif event == "CHARACTER_POINTS_CHANGED" then
             DMW.Player:GetTalents()
+        elseif event == "LOOT_OPENED" then
+            DMW.Player.Looting = true
+        elseif event == "LOOT_CLOSED" then
+            DMW.Player.Looting = false
         end
     end
 end
