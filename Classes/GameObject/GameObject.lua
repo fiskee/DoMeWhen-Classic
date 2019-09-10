@@ -15,6 +15,9 @@ function GameObject:Update(Pointer)
     self.Herb = self:IsHerb()
     self.Ore = self:IsOre()
     self.Trackable = self:IsTrackable()
+    if not self.Name or self.Name == "" then
+        self.Name = ObjectName(Pointer)
+    end
 end
 
 function GameObject:GetDistance(OtherUnit)
