@@ -205,6 +205,19 @@ local Options = {
                     set = function(info, value)
                         DMW.Settings.profile.Helpers.TrackObjects = value
                     end
+                },
+                TrackSound = {
+                    type = "toggle",
+                    order = 16,
+                    name = "Sound if Trackable",
+                    desc = "Making a sound if tracking something and WoW is in a background",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackSound
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackSound = value
+                    end
                 }
             }
         },

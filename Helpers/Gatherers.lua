@@ -97,6 +97,7 @@ function DMW.Helpers.Gatherers.Run()
     LibDraw.SetColor(255, 0, 0)
     for _, Object in pairs(DMW.GameObjects) do
         if Object.Herb or Object.Ore or Object.Trackable then
+            if DMW.Settings.profile.Helpers.TrackSound and not IsForeground() then PlaySound(416) end
             LibDraw.Text(Object.Name .. " - " .. math.floor(Object.Distance) .. " Yards", "GameFontNormal", Object.PosX, Object.PosY, Object.PosZ + 2)
             if DMW.Settings.profile.Helpers.LineToNodes then
                 Line(Object.PosX, Object.PosY, Object.PosZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)

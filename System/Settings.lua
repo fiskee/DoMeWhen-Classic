@@ -36,7 +36,8 @@ local defaults = {
             AutoGather = false,
             Herbs = false,
             Ore = false,
-            LineToNodes = false
+            LineToNodes = false,
+            TrackSound = false
         }
     }
 }
