@@ -46,6 +46,7 @@ function Unit:Update()
     self.Moving = GetUnitSpeed(self.Pointer) > 0
     self.Facing = ObjectIsFacing("Player", self.Pointer)
     self.Quest = self:IsQuest()
+    self.Trackable = self:IsTrackable()
 end
 
 function Unit:GetDistance(OtherUnit)
@@ -311,4 +312,15 @@ end
 
 function Unit:ChannelInfo()
     return LibCC:UnitChannelInfo(self.Pointer)
+end
+
+function Unit:IsTrackable()
+    if DMW.Settings.profile.Helpers.TrackUnits and DMW.Settings.profile.Helpers.TrackUnits ~= "" then
+        for k in string.gmatch(DMW.Settings.profile.Helpers.TrackUnits, "([^,]+)") do
+            if strmatch(string.lower(self.Name), string.lower(string.trim(k))) then
+                return true
+            end
+        end
+    end
+    return false
 end

@@ -3,6 +3,7 @@ DMW.Helpers.Gatherers = {}
 local LibDraw = LibStub("LibDraw-1.0")
 local Looting = false
 local Skinning = false
+local AlertTimer = GetTime()
 
 local function Line(sx, sy, sz, ex, ey, ez)
     local function WorldToScreen(wX, wY, wZ)
@@ -74,30 +75,33 @@ function DMW.Helpers.Gatherers.Run()
             end
         end
     end
-    LibDraw.SetColor(0, 0, 255)
-    if DMW.Settings.profile.Helpers.TrackUnits then
-        local TrackUnits = {}
+    if DMW.Settings.profile.Helpers.TrackUnits and DMW.Settings.profile.Helpers.TrackUnits ~= "" then
+        LibDraw.SetColor(0, 0, 255)
         local s = 1
         local tX, tY, tZ
-        for k in string.gmatch(DMW.Settings.profile.Helpers.TrackUnits, "([^,]+)") do
-            table.insert(TrackUnits, string.trim(k))
-        end
         for _, Unit in pairs(DMW.Units) do
-            for i = 1, #TrackUnits do
-                if strmatch(Unit.Name, TrackUnits[i]) and not Unit.Dead and not Unit.Target then
-                    tX, tY, tZ = Unit.PosX, Unit.PosY, Unit.PosZ
-                    LibDraw.SetWidth(4)
-                    LibDraw.Line(tX, tY, tZ + s * 1.3, tX, tY, tZ)
-                    LibDraw.Line(tX - s, tY, tZ, tX + s, tY, tZ)
-                    LibDraw.Line(tX, tY - s, tZ, tX, tY + s, tZ)
+            if Unit.Trackable and not Unit.Dead and not Unit.Target then
+                if DMW.Settings.profile.Helpers.TrackAlert and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+                    FlashClientIcon()
+                    PlaySound(416)
+                    AlertTimer = DMW.Time
                 end
+                tX, tY, tZ = Unit.PosX, Unit.PosY, Unit.PosZ
+                LibDraw.SetWidth(4)
+                LibDraw.Line(tX, tY, tZ + s * 1.3, tX, tY, tZ)
+                LibDraw.Line(tX - s, tY, tZ, tX + s, tY, tZ)
+                LibDraw.Line(tX, tY - s, tZ, tX, tY + s, tZ)
             end
         end
     end
     LibDraw.SetColor(255, 0, 0)
     for _, Object in pairs(DMW.GameObjects) do
         if Object.Herb or Object.Ore or Object.Trackable then
-            if DMW.Settings.profile.Helpers.TrackSound and not IsForeground() then PlaySound(416) end
+            if DMW.Settings.profile.Helpers.TrackAlert and (AlertTimer + 3) < DMW.Time and not IsForeground() then
+                FlashClientIcon()
+                PlaySound(416)
+                AlertTimer = DMW.Time
+            end
             LibDraw.Text(Object.Name .. " - " .. math.floor(Object.Distance) .. " Yards", "GameFontNormal", Object.PosX, Object.PosY, Object.PosZ + 2)
             if DMW.Settings.profile.Helpers.LineToNodes then
                 Line(Object.PosX, Object.PosY, Object.PosZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)

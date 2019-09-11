@@ -206,17 +206,17 @@ local Options = {
                         DMW.Settings.profile.Helpers.TrackObjects = value
                     end
                 },
-                TrackSound = {
+                TrackAlert = {
                     type = "toggle",
                     order = 16,
-                    name = "Sound if Trackable",
-                    desc = "Making a sound if tracking something and WoW is in a background",
+                    name = "Alert If Tracked Unit/Object Found",
+                    desc = "Will play sound and flash icon if WoW is in background, does not include quest units",
                     width = "full",
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackSound
+                        return DMW.Settings.profile.Helpers.TrackAlert
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackSound = value
+                        DMW.Settings.profile.Helpers.TrackAlert = value
                     end
                 }
             }
