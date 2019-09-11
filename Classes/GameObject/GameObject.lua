@@ -7,7 +7,7 @@ function GameObject:New(Pointer)
     self.ObjectID = ObjectID(Pointer)
 end
 
-function GameObject:Update(Pointer)
+function GameObject:Update()
     self.NextUpdate = DMW.Time + (math.random(100, 400) / 1000)
     self.PosX, self.PosY, self.PosZ = ObjectPosition(self.Pointer)
     self.Distance = self:GetDistance()
@@ -16,7 +16,7 @@ function GameObject:Update(Pointer)
     self.Ore = self:IsOre()
     self.Trackable = self:IsTrackable()
     if not self.Name or self.Name == "" then
-        self.Name = ObjectName(Pointer)
+        self.Name = ObjectName(self.Pointer)
     end
 end
 
