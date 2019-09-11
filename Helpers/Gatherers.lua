@@ -97,7 +97,7 @@ function DMW.Helpers.Gatherers.Run()
     LibDraw.SetColor(255, 0, 0)
     for _, Object in pairs(DMW.GameObjects) do
         if Object.Herb or Object.Ore or Object.Trackable then
-            if DMW.Settings.profile.Helpers.TrackAlert and (AlertTimer + 3) < DMW.Time and not IsForeground() then
+            if DMW.Settings.profile.Helpers.TrackAlert and (AlertTimer + 5) < DMW.Time and not IsForeground() then
                 FlashClientIcon()
                 PlaySound(416)
                 AlertTimer = DMW.Time
