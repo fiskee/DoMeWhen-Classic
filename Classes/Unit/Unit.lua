@@ -54,7 +54,11 @@ function Unit:GetDistance(OtherUnit)
     if OtherUnit == DMW.Player and DMW.Enums.MeleeSpell[DMW.Player.Class] and IsSpellInRange(GetSpellInfo(DMW.Enums.MeleeSpell[DMW.Player.Class]), self.Pointer) == 1 then
         return 0
     end
-    return sqrt(((self.PosX - OtherUnit.PosX) ^ 2) + ((self.PosY - OtherUnit.PosY) ^ 2) + ((self.PosZ - OtherUnit.PosZ) ^ 2)) - ((self.CombatReach or 0) + (OtherUnit.CombatReach or 0))
+    local Dist = sqrt(((self.PosX - OtherUnit.PosX) ^ 2) + ((self.PosY - OtherUnit.PosY) ^ 2) + ((self.PosZ - OtherUnit.PosZ) ^ 2)) - ((self.CombatReach or 0) + (OtherUnit.CombatReach or 0))
+    if Dist < 0 then
+        return 0
+    end
+    return Dist
 end
 
 function Unit:LineOfSight(OtherUnit)
