@@ -52,6 +52,7 @@ Spells.MAGE = {
     },
     Debuffs = {
         Chilled = {Ranks = {12484, 12485, 12486}},
+        Frostbolt = {Ranks = {116, 205, 837, 7322, 8406, 8407, 8408, 10179, 10180, 10181, 25304}},
         FrostNova = {Ranks = {122, 865, 6131, 10230}},
         Polymorph = {Ranks = {118, 12824, 12825, 12826}},
         PolymorphPig = {Ranks = {28272}},
