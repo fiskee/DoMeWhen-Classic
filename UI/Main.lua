@@ -384,6 +384,15 @@ function UI.Init()
 end
 
 function UI.AddHeader(Text)
+    if RotationOrder > 1 then
+        Options.args.RotationTab.args["Blank" .. RotationOrder] = {
+            type = "description",
+            order = RotationOrder,
+            name = " ",
+            width = "full"
+        }
+        RotationOrder = RotationOrder + 1
+    end
     local Setting = Text:gsub("%s+", "")
     Options.args.RotationTab.args[Setting .. "Header"] = {
         type = "header",
@@ -466,10 +475,8 @@ function UI.AddBlank(FullWidth)
     Options.args.RotationTab.args["Blank" .. RotationOrder] = {
         type = "description",
         order = RotationOrder,
-        name = "",
-        --desc = Desc,
-        width = Width,
-        --values = Values,
+        name = " ",
+        width = Width
     }
     RotationOrder = RotationOrder + 1
 end
