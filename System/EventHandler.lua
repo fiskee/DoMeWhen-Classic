@@ -11,6 +11,7 @@ EHFrame:RegisterEvent("CHARACTER_POINTS_CHANGED")
 EHFrame:RegisterEvent("LOOT_OPENED")
 EHFrame:RegisterEvent("LOOT_CLOSED")
 EHFrame:RegisterEvent("GET_ITEM_INFO_RECEIVED")
+EHFrame:RegisterEvent("UNIT_INVENTORY_CHANGED")
 
 local function EventHandler(self, event, ...)
     if EWT then
