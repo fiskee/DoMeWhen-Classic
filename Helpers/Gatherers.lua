@@ -34,7 +34,7 @@ local function Line(sx, sy, sz, ex, ey, ez)
 end
 
 function DMW.Helpers.Gatherers.Run()
-    if DMW.Player:Standing() and not DMW.Player.Casting then
+    if DMW.Player:Standing() and not DMW.Player.Casting and not IsMounted() and not UnitIsDeadOrGhost("player") then
         if DMW.Settings.profile.Helpers.AutoLoot then
             if Looting and (DMW.Time - Looting) > 0.3 and not DMW.Player.Looting then
                 Looting = false
