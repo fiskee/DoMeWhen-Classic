@@ -393,13 +393,14 @@ function UI.AddHeader(Text)
     RotationOrder = RotationOrder + 1
 end
 
-function UI.AddToggle(Name, Desc, Default)
+function UI.AddToggle(Name, Desc, Default, FullWidth)
+    local Width = FullWidth and "full" or 0.9
     Options.args.RotationTab.args[Name] = {
         type = "toggle",
         order = RotationOrder,
         name = Name,
         desc = Desc,
-        width = "full",
+        width = Width,
         get = function()
             return DMW.Settings.profile.Rotation[Name]
         end,
@@ -413,13 +414,14 @@ function UI.AddToggle(Name, Desc, Default)
     RotationOrder = RotationOrder + 1
 end
 
-function UI.AddRange(Name, Desc, Min, Max, Step, Default)
+function UI.AddRange(Name, Desc, Min, Max, Step, Default, FullWidth)
+    local Width = FullWidth and "full" or 0.9
     Options.args.RotationTab.args[Name] = {
         type = "range",
         order = RotationOrder,
         name = Name,
         desc = Desc,
-        width = "full",
+        width = Width,
         min = Min,
         max = Max,
         step = Step,
@@ -436,13 +438,14 @@ function UI.AddRange(Name, Desc, Min, Max, Step, Default)
     RotationOrder = RotationOrder + 1
 end
 
-function UI.AddDropdown(Name, Desc, Values, Default)
+function UI.AddDropdown(Name, Desc, Values, Default, FullWidth)
+    local Width = FullWidth and "full" or 0.9
     Options.args.RotationTab.args[Name] = {
         type = "select",
         order = RotationOrder,
         name = Name,
         desc = Desc,
-        width = "full",
+        width = Width,
         values = Values,
         style = "dropdown",
         get = function()
@@ -455,6 +458,19 @@ function UI.AddDropdown(Name, Desc, Values, Default)
     if Default and DMW.Settings.profile.Rotation[Name] == nil then
         DMW.Settings.profile.Rotation[Name] = Default
     end
+    RotationOrder = RotationOrder + 1
+end
+
+function UI.AddBlank(FullWidth)
+    local Width = FullWidth and "full" or 0.9
+    Options.args.RotationTab.args["Blank" .. RotationOrder] = {
+        type = "description",
+        order = RotationOrder,
+        name = "",
+        --desc = Desc,
+        width = Width,
+        --values = Values,
+    }
     RotationOrder = RotationOrder + 1
 end
 
