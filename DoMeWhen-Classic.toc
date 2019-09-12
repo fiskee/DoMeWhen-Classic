@@ -34,6 +34,7 @@ System\SlashHandler.lua
 Classes\Unit\Unit.lua
 Classes\Unit\TimeToDie.lua
 Classes\Unit\Friend.lua
+Classes\Unit\Position.lua
 Classes\Spell\Spell.lua
 Classes\Spell\Cast.lua
 Classes\Spell\LastCast.lua
