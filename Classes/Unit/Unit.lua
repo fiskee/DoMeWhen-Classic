@@ -328,3 +328,9 @@ function Unit:IsTrackable()
     end
     return false
 end
+
+function Unit:PowerPct()
+    local Power = UnitPower(self.Pointer)
+    local PowerMax = UnitPowerMax(self.Pointer)
+    return Power / PowerMax * 100
+end
