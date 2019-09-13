@@ -37,7 +37,7 @@ Note not all functions work in classic yet
 - :IsEnemy()
 - :IsBoss()
 - :HasThreat()
-- :GetEnemies(Yards)
+- :GetEnemies(Yards, TTD)
 - :GetFriends(Yards, HP)
 - :HardCC()
 - :Interrupt()

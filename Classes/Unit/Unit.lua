@@ -105,12 +105,13 @@ function Unit:HasThreat()
     return false
 end
 
-function Unit:GetEnemies(Yards)
+function Unit:GetEnemies(Yards, TTD)
     local Table = {}
     local Count = 0
-    for _, v in pairs(DMW.Enemies) do
-        if self:GetDistance(v) <= Yards then
-            table.insert(Table, v)
+    TTD = TTD or 0
+    for _, Unit in pairs(DMW.Enemies) do
+        if self:GetDistance(Unit) <= Yards and Unit.TTD >= TTD then
+            table.insert(Table, Unit)
             Count = Count + 1
         end
     end
