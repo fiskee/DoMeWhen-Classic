@@ -7,6 +7,9 @@ function Unit:New(Pointer)
     self.Name = UnitName(Pointer)
     self.GUID = UnitGUID(Pointer)
     self.Player = UnitIsPlayer(Pointer)
+    if self.Player then
+        self.Class = select(2, UnitClass(Pointer)):gsub("%s+", "")
+    end
     self.Friend = UnitIsFriend("player", self.Pointer)
     self.CombatReach = UnitCombatReach(Pointer)
     self.PosX, self.PosY, self.PosZ = ObjectPosition(Pointer)
