@@ -72,7 +72,7 @@ function Spell:CastPool(Unit, Extra, Rank)
 end
 
 function Spell:CastGround(X, Y, Z, Rank)
-    if self:IsReady() then
+    if self:IsReady(Rank) then
         local MouseLooking = false
         local PX, PY, PZ = DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ
         local Distance = sqrt(((X - PX) ^ 2) + ((Y - PY) ^ 2) + ((Z - PZ) ^ 2))
