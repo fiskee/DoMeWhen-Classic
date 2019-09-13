@@ -49,6 +49,8 @@ Note not all functions work in classic yet
 - :GetTTD(targetPercentage)
 - :CastingInfo()
 - :ChannelInfo()
+- :UnitDetailedThreatSituation(OtherUnit)
+- :UnitThreatSituation(OtherUnit)
 
 # Player
 ## Constants
