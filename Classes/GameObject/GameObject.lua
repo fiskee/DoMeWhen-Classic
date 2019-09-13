@@ -38,7 +38,6 @@ function GameObject:IsQuest()
 end
 
 function GameObject:IsHerb() --TODO: Add check if we have high enough skill
-    --ObjectDescriptor(self.Pointer, GetOffset("CGObjectData__DynamicFlags"), Types.Byte) > 0 if they don't disappear after looting
     if DMW.Settings.profile.Helpers.Herbs and DMW.Enums.Herbs[self.ObjectID] then
         return true
     end

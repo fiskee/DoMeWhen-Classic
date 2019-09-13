@@ -48,7 +48,8 @@ Classes\Item\Item.lua
 Classes\GameObject\GameObject.lua
 
 Helpers\Gatherers.lua
-Helpers\Quest.lua
+Helpers\Trackers.lua
+Helpers\QuestieHelper.lua
 Helpers\Queue.lua
 Helpers\Rotation.lua
 Helpers\Dump.lua

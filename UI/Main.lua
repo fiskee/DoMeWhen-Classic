@@ -218,6 +218,19 @@ local Options = {
                     set = function(info, value)
                         DMW.Settings.profile.Helpers.TrackAlert = value
                     end
+                },
+                TrackPlayers = {
+                    type = "toggle",
+                    order = 17,
+                    name = "Track Enemy Players",
+                    desc = "Track enemy players outside nameplate range",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackPlayers
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackPlayers = value
+                    end
                 }
             }
         },

@@ -37,7 +37,8 @@ local defaults = {
             Herbs = false,
             Ore = false,
             LineToNodes = false,
-            TrackAlert = false
+            TrackAlert = false,
+            TrackPlayers = false
         }
     }
 }

@@ -41,7 +41,8 @@ f:SetScript(
                 Init()
             end
             DMW.UpdateOM()
-            DMW.Helpers.Quest.Run()
+            DMW.Helpers.QuestieHelper.Run()
+            DMW.Helpers.Trackers.Run()
             DMW.Helpers.Gatherers.Run()
             if not DMW.Player.Rotation then
                 FindRotation()

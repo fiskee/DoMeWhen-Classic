@@ -1,8 +1,8 @@
 local LibDraw = LibStub("LibDraw-1.0")
 local DMW = DMW
-DMW.Helpers.Quest = {}
+DMW.Helpers.QuestieHelper = {}
 
-function DMW.Helpers.Quest.Run()
+function DMW.Helpers.QuestieHelper.Run()
     LibDraw.clearCanvas()
     if DMW.Settings.profile.Helpers.QuestieHelper then
         local s = 1

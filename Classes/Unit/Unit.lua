@@ -47,6 +47,9 @@ function Unit:Update()
     self.Facing = ObjectIsFacing("Player", self.Pointer)
     self.Quest = self:IsQuest()
     self.Trackable = self:IsTrackable()
+    if self.Name == "Unknown" then
+        self.Name = UnitName(self.Pointer)
+    end
 end
 
 function Unit:GetDistance(OtherUnit)
