@@ -71,7 +71,7 @@ function DMW.Helpers.Trackers.Run()
             if Unit.Player and not Unit.Dead and not UnitIsFriend("player", Unit.Pointer) and not C_NamePlate.GetNamePlateForUnit(Unit.Pointer) and not UnitIsUnit("target", Unit.Pointer) then
                 Color = DMW.Enums.ClassColor[Unit.Class]
                 LibDraw.SetColor(Color.r, Color.g, Color.b)
-                LibDraw.Text(Unit.Name .. " (" .. Unit.Level .. ") - HP: " .. Unit.HP .. " - " .. math.floor(Unit.Distance) .. " Yards", "GameFontHighlight", Unit.PosX, Unit.PosY, Unit.PosZ + 2)
+                LibDraw.Text(Unit.Name .. " (" .. Unit.Level .. ") - HP: " .. Unit.HP .. " - " .. math.floor(Unit.Distance) .. " Yards", "GameFontNormalSmall", Unit.PosX, Unit.PosY, Unit.PosZ + 2)
             end
         end
     end
