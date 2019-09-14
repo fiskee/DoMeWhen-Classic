@@ -65,3 +65,12 @@ function Unit:UnitThreatSituation(OtherUnit)
     OtherUnit = OtherUnit or DMW.Player
 	return select(2, self:UnitDetailedThreatSituation(OtherUnit))
 end
+
+function Unit:IsTanking()
+	for _, Unit in pairs(DMW.Enemies) do
+		if Unit:UnitThreatSituation(self) and Unit:UnitThreatSituation(self) > 1 then
+			return true
+		end
+	end
+	return false
+end

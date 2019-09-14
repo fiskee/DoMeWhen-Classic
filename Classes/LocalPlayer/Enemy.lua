@@ -134,3 +134,12 @@ function LocalPlayer:GetEnemiesCone(Length, Angle, TTD)
     end
     return Count
 end
+
+function LocalPlayer:IsTanking()
+	for _, Unit in pairs(DMW.Enemies) do
+		if Unit:UnitThreatSituation(self) and Unit:UnitThreatSituation(self) > 1 then
+			return true
+		end
+	end
+	return false
+end
