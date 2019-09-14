@@ -4,8 +4,8 @@ DMW.Functions.AuraCache = {}
 local AuraCache = DMW.Functions.AuraCache
 local Buff = DMW.Classes.Buff
 local Debuff = DMW.Classes.Debuff
-local LCD = LibStub("LibClassicDurationsDMW")
-LCD:Register("DMW")
+local DurationLib = LibStub("LibClassicDurationsDMW")
+DurationLib:Register("DMW")
 
 function AuraCache.Refresh(Unit)
     if DMW.Tables.AuraCache[Unit] ~= nil then
@@ -19,7 +19,7 @@ function AuraCache.Refresh(Unit)
             break
         end
         Name, Source = GetSpellInfo(AuraReturn[10]), AuraReturn[7]
-        DurationNew, ExpirationTimeNew = LCD:GetAuraDurationByUnit(Unit, AuraReturn[10], Source, Name)
+        DurationNew, ExpirationTimeNew = DurationLib:GetAuraDurationByUnit(Unit, AuraReturn[10], Source, Name)
         if AuraReturn[5] == 0 and DurationNew then
             AuraReturn[5] = DurationNew
             AuraReturn[6] = ExpirationTimeNew
@@ -47,7 +47,7 @@ function AuraCache.Refresh(Unit)
             break
         end
         Name, Source = GetSpellInfo(AuraReturn[10]), AuraReturn[7]
-        DurationNew, ExpirationTimeNew = LCD:GetAuraDurationByUnit(Unit, AuraReturn[10], Source, Name)
+        DurationNew, ExpirationTimeNew = DurationLib:GetAuraDurationByUnit(Unit, AuraReturn[10], Source, Name)
         if AuraReturn[5] == 0 and DurationNew then
             AuraReturn[5] = DurationNew
             AuraReturn[6] = ExpirationTimeNew
