@@ -68,7 +68,7 @@ end
 
 function Unit:IsTanking()
 	for _, Unit in pairs(DMW.Enemies) do
-		if Unit:UnitThreatSituation(self) and Unit:UnitThreatSituation(self) > 1 then
+		if (Unit:UnitThreatSituation(self) and Unit:UnitThreatSituation(self) > 1) or (Unit.Target and UnitIsUnit(self.Pointer, Unit.Target)) then
 			return true
 		end
 	end
