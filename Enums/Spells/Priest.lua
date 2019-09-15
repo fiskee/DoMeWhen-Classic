@@ -37,6 +37,7 @@ Spells.PRIEST = {
         Renew = {Ranks = {139, 6074, 6075, 6076, 6077, 6078, 10927, 10928, 10929, 25315}},
         Resurrection = {Ranks = {2006, 2010, 10880, 10881, 20770}},
         ShackleUndead = {Ranks = {9484, 9485, 10955}},
+        Shadowguard = {Ranks = {18137}},
         ShadowProtection = {Ranks = {976, 10957, 10958}},
         ShadowWordPain = {Ranks = {589, 594, 970, 992, 2767, 10892, 10893, 10894}},
         Smite = {Ranks = {585, 591, 598, 984, 1004, 6060, 10933, 10934}},
@@ -54,6 +55,7 @@ Spells.PRIEST = {
         PrayerOfShadowProtection = {Ranks = {27683}},
         PrayerOfSpirit = {Ranks = {27681}},
         Renew = {Ranks = {139, 6074, 6075, 6076, 6077, 6078, 10927, 10928, 10929, 25315}},
+        Shadowguard = {Ranks = {18137}},
         ShadowProtection = {Ranks = {976, 10957, 10958}}
     },
     Debuffs = {
