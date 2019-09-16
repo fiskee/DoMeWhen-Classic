@@ -50,6 +50,9 @@ function Unit:Update()
     if self.Name == "Unknown" then
         self.Name = UnitName(self.Pointer)
     end
+    if self.Attackable and not self.Player then
+        DMW.Helpers.Swing.AddUnit(self.Pointer)
+    end
 end
 
 function Unit:GetDistance(OtherUnit)

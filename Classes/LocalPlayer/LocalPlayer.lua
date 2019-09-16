@@ -19,9 +19,6 @@ function LocalPlayer:New(Pointer)
     self:GetTalents()
     self.Equipment = {}
     self.Items = {}
-    self.SwingNext = 0
-    self.SwingLast = 0
-    self.SwingLeft = 0
     self.Looting = false
     self:UpdateEquipment()
     self:GetItems()
@@ -29,6 +26,8 @@ function LocalPlayer:New(Pointer)
         self.OverpowerUnit = {}
         self.RevengeUnit = {}
     end
+    self.SwingMH = 0
+    self.SwingOH = false
     DMW.Helpers.Queue.GetBindings()
 end
 
@@ -56,26 +55,25 @@ function LocalPlayer:Update()
     self.Moving = GetUnitSpeed(self.Pointer) > 0
     self.PetActive = UnitIsVisible("pet")
     self.InGroup = IsInGroup()
-    self.SwingLeft = (self.SwingNext ~= 0 and self.SwingNext - DMW.Time > 0 and self.SwingNext - DMW.Time) or 0
     self.CombatTime = self.Combat and (DMW.Time - self.Combat) or 0
     self.CombatLeftTime = self.CombatLeft and (DMW.Time - self.CombatLeft) or 0
-    if self.Class == "WARRIOR" then
-        -- if self.overpowerTime ~= false and DMW.Time >= self.overpowerTime then
-        --     self.overpowerTime = false
-        --     self.overpowerUnit = nil
-        -- end
-        -- if self.revengeTime ~= false and DMW.Time >= self.revengeTime then
-        --     self.revengeTime = false
-        --     self.revengeUnit = nil
-        -- end
-        if #self.OverpowerUnit > 0 then
-            for i = 1, #self.OverpowerUnit do
-                if self.OverpowerUnit[i].overpowerTime and DMW.Time > self.OverpowerUnit[i].overpowerTime then
-                    table.remove(self.OverpowerUnit, i)
-                end
-            end
-        end
-    end
+    -- if self.Class == "WARRIOR" then
+    --     -- if self.overpowerTime ~= false and DMW.Time >= self.overpowerTime then
+    --     --     self.overpowerTime = false
+    --     --     self.overpowerUnit = nil
+    --     -- end
+    --     -- if self.revengeTime ~= false and DMW.Time >= self.revengeTime then
+    --     --     self.revengeTime = false
+    --     --     self.revengeUnit = nil
+    --     -- end
+    --     -- if #self.OverpowerUnit > 0 then
+    --     --     for i = 1, #self.OverpowerUnit do
+    --     --         if self.OverpowerUnit[i].overpowerTime and DMW.Time > self.OverpowerUnit[i].overpowerTime then
+    --     --             table.remove(self.OverpowerUnit, i)
+    --     --         end
+    --     --     end
+    --     -- end
+    -- end
 end
 
 function LocalPlayer:PredictedPower()

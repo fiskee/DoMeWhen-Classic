@@ -53,6 +53,7 @@ Helpers\QuestieHelper.lua
 Helpers\Queue.lua
 Helpers\Rotation.lua
 Helpers\Dump.lua
+Helpers\Swing.lua
 
 Enums\Spells\Global.lua
 Enums\Spells\Druid.lua

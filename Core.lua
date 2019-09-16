@@ -51,6 +51,7 @@ f:SetScript(
                 if DMW.Helpers.Queue.Run() then
                     return
                 end
+                DMW.Helpers.Swing.OnUpdate(elapsed)
                 if DMW.Helpers.Rotation.Active() then
                     DMW.Player.Rotation()
                 end

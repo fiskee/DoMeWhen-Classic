@@ -9,6 +9,9 @@ local function Remove(Pointer)
     if Units[Pointer] ~= nil then
         Units[Pointer] = nil
     end
+    if DMW.Tables.Swing.Units[Pointer] ~= nil then
+        DMW.Tables.Swing.Units[Pointer] = nil
+    end
     if DMW.Tables.TTD[Pointer] ~= nil then
         DMW.Tables.TTD[Pointer] = nil
     end
