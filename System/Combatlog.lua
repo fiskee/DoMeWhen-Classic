@@ -72,7 +72,7 @@ function frame:Reader(event, ...)
                 elseif param == "SPELL_DAMAGE" or param == "SPELL_MISSED" then
                     local resetSpell = select(7, GetSpellInfo(spellName))
                     -- print(resetSpell)
-                    if resetSpell and DMW.Tables.Swing.Reset[Player.Class][spell] then
+                    if resetSpell and DMW.Tables.Swing.Reset[Player.Class] and DMW.Tables.Swing.Reset[Player.Class][spell] then
                         DMW.Helpers.Swing.SwingOHReset(sourceobj)
                     end
                 end
