@@ -55,9 +55,9 @@ local Options = {
                     set = function(info, value)
                         DMW.Settings.profile.MinimapIcon.hide = not value
                         if value then
-                            UI.MinimapIcon:Show("MinimapIcon")
+                            UI.MinimapIcon:Show("DMWMinimapIcon")
                         else
-                            UI.MinimapIcon:Hide("MinimapIcon")
+                            UI.MinimapIcon:Hide("DMWMinimapIcon")
                         end
                     end
                 },

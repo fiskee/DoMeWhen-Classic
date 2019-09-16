@@ -1,37 +1,37 @@
 local DMW = DMW
 local Unit = DMW.Classes.Unit
-local PI = PI
 
-function Unit:GetAngle(OtherUnit)
-    OtherUnit = OtherUnit or DMW.Player
-    local Angle = rad(atan2(OtherUnit.PosY - self.PosY, OtherUnit.PosX - self.PosX))
-    if Angle >= 0 then
-        return Angle
-    else
-        return PI * 2 + Angle
-    end
+function Unit:RawFacing()
+    return select(2, ObjectFacing(self.Pointer))
 end
 
-function Unit:InArc(Arc, OtherUnit)
+function Unit:GetFacingAngle(OtherUnit)
     OtherUnit = OtherUnit or DMW.Player
-    if OtherUnit == self then
+    local X = OtherUnit.PosX - self.PosX
+    local Y = OtherUnit.PosY - self.PosY
+    local Angle = self:RawFacing()
+    if Angle > math.pi then
+        Angle = Angle - (2 * math.pi)
+    end
+    local DX = math.cos(Angle)
+    local DY = math.sin(Angle)
+    return(math.abs(math.atan2(X * DY - Y * DX,  X * DX + Y * DY ) * (180 / math.pi)))
+end
+
+
+function Unit:InArc(Arc, OtherUnit)
+    if self:GetFacingAngle() < Arc then
         return true
     end
-    local Angle = self:GetAngle(OtherUnit) - ObjectFacing(self.Pointer)
-    if Angle > PI then
-        Angle = Angle - (PI * 2)
-    end
-    local LeftBorder = -1 * Arc
-    local RightBorder = Arc
-    return Angle >= LeftBorder and Angle <= RightBorder
+    return false
 end
 
 function Unit:IsBehind(OtherUnit)
     OtherUnit = OtherUnit or DMW.Player
-    return not self:InArc(PI, OtherUnit)
+    return not self:InArc(90, OtherUnit)
 end
 
 function Unit:IsInFront(OtherUnit)
     OtherUnit = OtherUnit or DMW.Player
-    return self:InArc(PI, OtherUnit)
+    return self:InArc(90, OtherUnit)
 end

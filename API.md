@@ -49,6 +49,9 @@ Note not all functions work in classic yet
 - :GetTTD(targetPercentage)
 - :CastingInfo()
 - :ChannelInfo()
+- :UnitDetailedThreatSituation(OtherUnit)
+- :UnitThreatSituation(OtherUnit)
+- :IsTanking()
 
 # Player
 ## Constants
@@ -100,6 +103,7 @@ Note not all functions work in classic yet
 - :GetEnemiesCone(Length, Angle, TTD)
 - :GetFriends(Yards, HP)
 - :GetFriendsCone(Length, Angle, HP)
+- :IsTanking()
 
 ## Tables
 - Buffs

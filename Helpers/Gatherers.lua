@@ -6,7 +6,7 @@ local Skinning = false
 function DMW.Helpers.Gatherers.Run()
     if DMW.Player:Standing() and not DMW.Player.Casting and not IsMounted() and not UnitIsDeadOrGhost("player") then
         if DMW.Settings.profile.Helpers.AutoLoot then
-            if Looting and (DMW.Time - Looting) > 0.3 and not DMW.Player.Looting then
+            if Looting and (DMW.Time - Looting) > 0.6 and not DMW.Player.Looting then
                 Looting = false
             end
             if not Looting and not DMW.Player.Combat then

@@ -1,5 +1,6 @@
 local DMW = DMW
 local Spell = DMW.Classes.Spell
+local CastTimer = GetTime()
 
 function Spell:FacingCast(Unit, Rank)
 	if DMW.Settings.profile.Enemy.AutoFace and self:CastTime(Rank) == 0 and not Unit.Facing and not UnitIsUnit("Player", Unit.Pointer) then
@@ -46,7 +47,8 @@ function Spell:Cast(Unit, Rank)
             MoveForwardStart()
             MoveForwardStop()
             return true
-        elseif self:CD(Rank) == 0 then
+        elseif self:CD(Rank) == 0 and (DMW.Time - CastTimer) > 0.1 then
+            CastTimer = DMW.Time
             if self.CastType == "Ground" then
                 if self:CastGround(Unit.PosX, Unit.PosY, Unit.PosZ) then
                     self.LastBotTarget = Unit.Pointer

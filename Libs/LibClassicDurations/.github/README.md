@@ -7,9 +7,20 @@ Also can show enemy buff info. That's a completely optional feature with no impa
 Usage example 1:
 -----------------
 
+    -- Using UnitAura wrapper
+
+    local LibClassicDurations = LibStub("LibClassicDurationsDMW", true)
+    if LibClassicDurations then
+        LibClassicDurations:Register("YourAddon")
+        UnitAura = LibClassicDurations.UnitAuraWrapper
+    end
+
+Usage example 2:
+-----------------
+
     -- Simply get the expiration time and duration
 
-    local LibClassicDurations = LibStub("LibClassicDurations")
+    local LibClassicDurations = LibStub("LibClassicDurationsDMW")
     LibClassicDurations:Register("YourAddon") -- tell library it's being used and should start working
 
     hooksecurefunc("CompactUnitFrame_UtilSetBuff", function(buffFrame, unit, index, filter)
@@ -29,6 +40,8 @@ Usage example 1:
             CooldownFrame_Clear(buffFrame.cooldown);
         end
     end)
+
+
 
 
 Embedding in .pkgmeta
