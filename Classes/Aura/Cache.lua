@@ -8,7 +8,7 @@ local DurationLib = LibStub("LibClassicDurationsDMW")
 DurationLib:Register("DMW")
 
 function AuraCache.Refresh(Unit)
-    if DMW.Tables.AuraCache[Unit] ~= nil then
+    while (DMW.Tables.AuraCache[Unit] ~= nil) do
         DMW.Tables.AuraCache[Unit] = nil
     end
     local AuraReturn, Name, Source, DurationNew, ExpirationTimeNew
@@ -32,7 +32,7 @@ function AuraCache.Refresh(Unit)
                 ["AuraReturn"] = AuraReturn,
                 Type = "HELPFUL"
             }
-        end        
+        end
         if Source ~= nil and Source == "player" then
             DMW.Tables.AuraCache[Unit][Name]["player"] = {
                 ["AuraReturn"] = AuraReturn,
@@ -60,7 +60,7 @@ function AuraCache.Refresh(Unit)
                 ["AuraReturn"] = AuraReturn,
                 Type = "HARMFUL"
             }
-        end        
+        end
         if Source ~= nil and Source == "player" then
             DMW.Tables.AuraCache[Unit][Name]["player"] = {
                 ["AuraReturn"] = AuraReturn,

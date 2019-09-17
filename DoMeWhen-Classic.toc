@@ -80,3 +80,4 @@ Enums\Gatherables.lua
 
 UI\Main.lua
 UI\HUD.lua
+UI\Debug.lua

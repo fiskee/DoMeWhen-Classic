@@ -3,7 +3,6 @@ DMW.UI.HUD = {}
 local HUD = DMW.UI.HUD
 HUD.Frame = CreateFrame("BUTTON", "DMWHUD", UIParent)
 local HUDFrame = HUD.Frame
-local Status = CreateFrame("BUTTON", "DMWHUDStatusText", HUDFrame)
 local Settings
 
 function HUD.Init()
