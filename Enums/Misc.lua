@@ -1,5 +1,6 @@
 DMW.Enums.MeleeSpell = {
-    WARRIOR = 5308
+    WARRIOR = 5308,
+    ROGUE = 1752
 }
 
 DMW.Enums.CreatureType = {
