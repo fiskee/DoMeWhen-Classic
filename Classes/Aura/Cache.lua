@@ -71,10 +71,8 @@ function AuraCache.Refresh(Unit)
 end
 
 function AuraCache.Event(...)
-
 	local timeStamp, event, hideCaster, sourceGUID, sourceName, sourceFlags,
           sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = ...
-          
     local dest = GetObjectWithGUID(destGUID)
     if dest and (event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" or event == "SPELL_AURA_REFRESH" or event == "SPELL_AURA_REMOVED" or event == "SPELL_PERIODIC_AURA_REMOVED") then
         AuraCache.Refresh(dest)

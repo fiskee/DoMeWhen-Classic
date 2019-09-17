@@ -28,9 +28,13 @@ Player.OHSpeedChanged = false
 Swing.Reset = {}
 
 Swing.Reset['WARRIOR'] = {
-    845, 7369, 11608, 11609, 20569, -- cleave
-    78, 284, 285, 1608, 11564, 11565, 11566, 11567, 25286, -- hs
-    1464, 8820, 11604, 11605 -- slam
+    ["Cleave"] = true,
+    ["Heroic Strike"] = true,
+    ["Slam"] = true
+}
+
+Swing.Reset['DRUID'] = {
+    ["Maul"] = true
 }
 --===============================================--=================================================--=================================================--=================================================--=================================================
 DMW.Helpers.Swing.AddUnit = function (unit)
@@ -42,11 +46,6 @@ DMW.Helpers.Swing.AddUnit = function (unit)
         DMW.Tables.Swing.Units[unit].MHSpeed = 2
         DMW.Tables.Swing.Units[unit].MHSpeedChanged = false
 
-        -- DMW.Tables.Swing.Units[unit].SwingOH = 0.00001
-        -- DMW.Tables.Swing.Units[unit].OldOHSpeed = 2
-        -- DMW.Tables.Swing.Units[unit].OHSpeed = 2
-        -- DMW.Tables.Swing.Units[unit].HasOH = false
-        -- DMW.Tables.Swing.Units[unit].OHSpeedChanged = false
     end
 end
 
@@ -71,7 +70,9 @@ DMW.Helpers.Swing.SwingOHReset = function(unit)
         Swing.Units[unit].SwingOH = Swing.Units[unit].OHSpeed
     end
 end
-sitenrage = true
+
+-- sitenrage = true
+
 DMW.Helpers.Swing.SwingMHUpdate = function(elapsed, unit)
     if unit == "player" or unit == DMW.Player.Pointer then
         if Player.SwingMH > 0 then
@@ -89,11 +90,11 @@ DMW.Helpers.Swing.SwingMHUpdate = function(elapsed, unit)
             end
             DMW.Units[unit].SwingMH = Swing.Units[unit].SwingMH
 
-            -- if DMW.Units[unit].SwingMH <= 0.15 and DMW.Units[unit].SwingMH > 0.01 and DMW.Units[unit].Target == DMW.Player.Pointer and not DMW.Player.Moving and not DMW.Player.Buffs.BloodCraze:Exist() and DMW.Player.HP > 20 and sitenrage then
+            -- if DMW.Units[unit].SwingMH <= 0.15 and DMW.Units[unit].SwingMH > 0.01 and DMW.Units[unit].Target == DMW.Player.Pointer and not DMW.Player.Moving and DMW.Player.HP > 20 and sitenrage then
             --     RunMacroText("/sit")
+            --     -- print(DMW.Time - batchTime)
             --     sitenrage = false
             -- end
-
 
         end
     end

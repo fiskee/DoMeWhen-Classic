@@ -53,8 +53,11 @@ local function EventHandler(self, event, ...)
                 DMW.Tables.ItemInfo[ItemID]:Refresh()
                 DMW.Tables.ItemInfo[ItemID] = nil
             end
-        elseif event == "GET_ITEM_INFO_RECEIVED" then
-            DMW.Helpers.Swing.OnInventoryChange()
+        elseif event == "UNIT_INVENTORY_CHANGED" then
+            local unit = select(1, ...)
+            if unit == "player" then
+                DMW.Helpers.Swing.OnInventoryChange()
+            end
         end
     end
 end
