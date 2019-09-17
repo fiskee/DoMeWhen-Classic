@@ -40,10 +40,19 @@ local defaults = {
             TrackAlert = false,
             TrackPlayers = false
         }
+    },
+    char = {
+        SelectedProfile = select(2, UnitClass("player")):gsub("%s+", "")
     }
 }
 
 function DMW.InitSettings()
     DMW.Settings = LibStub("AceDB-3.0"):New("DMWSettings", defaults, "Default")
-    DMW.Settings:SetProfile(select(2, UnitClass("player")):gsub("%s+", ""))
+    DMW.Settings:SetProfile(DMW.Settings.char.SelectedProfile)
+    DMW.Settings.RegisterCallback(DMW, "OnProfileChanged", "OnProfileChanged")
+end
+
+function DMW:OnProfileChanged(self, db, profile)
+    DMW.Settings.char.SelectedProfile = profile
+    ReloadUI()
 end
