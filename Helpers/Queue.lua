@@ -29,7 +29,7 @@ local function SpellSuccess(self, event, ...)
         local SourceUnit = select(1, ...)
         local SpellID = select(3, ...)
         if SourceUnit == "player" then
-            if Queue.Spell and Queue.Spell.SpellID == SpellID then
+            if Queue.Spell and Queue.Spell.SpellName == GetSpellInfo(SpellID) then
                 --print("Queue Casted: " .. Queue.Spell.SpellName)
                 Queue.Spell = false
                 Queue.Target = false
