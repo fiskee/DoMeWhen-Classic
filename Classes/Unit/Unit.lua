@@ -343,7 +343,10 @@ function Unit:PowerPct()
 end
 
 function Unit:HasFlag(Flag)
-    return bit.band(ObjectDescriptor(self.Pointer, GetOffset("CGUnitData__Flags"), "int"), Flag) > 0
+    if not self.UnitFlags then
+        self.UnitFlags = ObjectDescriptor(self.Pointer, GetOffset("CGUnitData__Flags"), "int")
+    end
+    return bit.band(self.UnitFlags, Flag) > 0
 end
 
 function Unit:IsFeared()
@@ -351,5 +354,8 @@ function Unit:IsFeared()
 end
 
 function Unit:HasNPCFlag(Flag)
-    return bit.band(ObjectDescriptor(self.Pointer, GetOffset("CGUnitData__NPCFlags"), "int"), Flag) > 0
+    if not self.NPCFlags then
+        self.NPCFlags = ObjectDescriptor(self.Pointer, GetOffset("CGUnitData__NPCFlags"), "int")
+    end
+    return bit.band(self.NPCFlags, Flag) > 0
 end
