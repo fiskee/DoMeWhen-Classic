@@ -77,7 +77,7 @@ Frame:AddChild(Label)
 Label = AceGUI:Create("Label")
 Label:SetFullWidth(true)
 Label.Update = function(self)
-    self:SetText("Unit Flags: " .. string.format("%X", ObjectDescriptor(DMW.Player.Pointer, GetOffset("CGUnitData__Flags"), "int")))
+    self:SetText("Unit Flags: " .. string.format("%X", ObjectDescriptor(DMW.Player.Pointer, GetOffset("CGUnitData__Flags"), "int")) .. " - Unit Flags2: " .. string.format("%X", ObjectDescriptor(DMW.Player.Pointer, GetOffset("CGUnitData__Flags2"), "int")) .. " - Unit Flags3: " .. string.format("%X", ObjectDescriptor(DMW.Player.Pointer, GetOffset("CGUnitData__Flags3"), "int")))
 end
 Frame:AddChild(Label)
 

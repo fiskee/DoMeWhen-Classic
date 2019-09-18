@@ -33,6 +33,10 @@ end
 
 function LocalPlayer:Update()
     self.PosX, self.PosY, self.PosZ = ObjectPosition(self.Pointer)
+    if DMW.Tables.AuraUpdate[self.Pointer] then
+        DMW.Functions.AuraCache.Refresh(self.Pointer)
+        DMW.Tables.AuraUpdate[self.Pointer] = nil
+    end
     self.Health = UnitHealth(self.Pointer)
     self.HealthMax = UnitHealthMax(self.Pointer)
     self.HP = self.Health / self.HealthMax * 100

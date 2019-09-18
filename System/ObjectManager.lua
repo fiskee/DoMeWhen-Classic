@@ -21,6 +21,9 @@ local function Remove(Pointer)
     if GameObjects[Pointer] ~= nil then
         GameObjects[Pointer] = nil
     end
+    if DMW.Tables.AuraUpdate[Pointer] then
+        DMW.Tables.AuraUpdate[Pointer] = nil
+    end
 end
 
 local function SortEnemies()

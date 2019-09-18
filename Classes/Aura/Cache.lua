@@ -1,5 +1,6 @@
 local DMW = DMW
 DMW.Tables.AuraCache = {}
+DMW.Tables.AuraUpdate = {}
 DMW.Functions.AuraCache = {}
 local AuraCache = DMW.Functions.AuraCache
 local Buff = DMW.Classes.Buff
@@ -8,7 +9,10 @@ local DurationLib = LibStub("LibClassicDurationsDMW")
 DurationLib:Register("DMW")
 
 function AuraCache.Refresh(Unit)
-    while (DMW.Tables.AuraCache[Unit] ~= nil) do
+    if DMW.Tables.AuraCache[Unit] ~= nil then
+        DMW.Tables.AuraCache[Unit] = nil
+    end
+    if DMW.Tables.AuraCache[Unit] ~= nil then
         DMW.Tables.AuraCache[Unit] = nil
     end
     local AuraReturn, Name, Source, DurationNew, ExpirationTimeNew
@@ -75,7 +79,8 @@ function AuraCache.Event(...)
           sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = ...
     local dest = GetObjectWithGUID(destGUID)
     if dest and (event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" or event == "SPELL_AURA_REFRESH" or event == "SPELL_AURA_REMOVED" or event == "SPELL_PERIODIC_AURA_REMOVED") then
-        AuraCache.Refresh(dest)
+        DMW.Tables.AuraUpdate[dest] = true
+        --AuraCache.Refresh(dest)
     end
 end
 
