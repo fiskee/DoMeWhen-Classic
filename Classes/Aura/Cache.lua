@@ -13,27 +13,23 @@ function AuraCache.Refresh(Unit)
     if not UnitAura then
         UnitAura = _G.UnitAura
     end
-    if DMW.Tables.AuraCache[Unit] ~= nil then
-        DMW.Tables.AuraCache[Unit] = nil
-    end
-    if DMW.Tables.AuraCache[Unit] ~= nil then
-        DMW.Tables.AuraCache[Unit] = nil
+    if DMW.Tables.AuraCache[Unit] then
+        table.wipe(DMW.Tables.AuraCache[Unit])
     end
     local AuraReturn, Name, Source, DurationNew, ExpirationTimeNew
-
     for i = 1, 40 do
         AuraReturn = {UnitAura(Unit, i, "HELPFUL")}
         if AuraReturn[10] == nil then
             break
+        end
+        if DMW.Tables.AuraCache[Unit] == nil then
+            DMW.Tables.AuraCache[Unit] = {}
         end
         Name, Source = GetSpellInfo(AuraReturn[10]), AuraReturn[7]
         DurationNew, ExpirationTimeNew = DurationLib:GetAuraDurationByUnit(Unit, AuraReturn[10], Source, Name)
         if AuraReturn[5] == 0 and DurationNew then
             AuraReturn[5] = DurationNew
             AuraReturn[6] = ExpirationTimeNew
-        end
-        if DMW.Tables.AuraCache[Unit] == nil then
-            DMW.Tables.AuraCache[Unit] = {}
         end
         if DMW.Tables.AuraCache[Unit][Name] == nil then
             DMW.Tables.AuraCache[Unit][Name] = {
@@ -54,14 +50,14 @@ function AuraCache.Refresh(Unit)
         if AuraReturn[10] == nil then
             break
         end
+        if DMW.Tables.AuraCache[Unit] == nil then
+            DMW.Tables.AuraCache[Unit] = {}
+        end
         Name, Source = GetSpellInfo(AuraReturn[10]), AuraReturn[7]
         DurationNew, ExpirationTimeNew = DurationLib:GetAuraDurationByUnit(Unit, AuraReturn[10], Source, Name)
         if AuraReturn[5] == 0 and DurationNew then
             AuraReturn[5] = DurationNew
             AuraReturn[6] = ExpirationTimeNew
-        end
-        if DMW.Tables.AuraCache[Unit] == nil then
-            DMW.Tables.AuraCache[Unit] = {}
         end
         if DMW.Tables.AuraCache[Unit][Name] == nil then
             DMW.Tables.AuraCache[Unit][Name] = {

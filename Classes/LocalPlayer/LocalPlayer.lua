@@ -14,7 +14,6 @@ function LocalPlayer:New(Pointer)
     self.EID = false
     self.NoControl = false
     self.Level = UnitLevel(Pointer)    
-    DMW.Functions.AuraCache.Refresh(Pointer)
     self:GetSpells()
     self:GetTalents()
     self.Equipment = {}
@@ -33,10 +32,6 @@ end
 
 function LocalPlayer:Update()
     self.PosX, self.PosY, self.PosZ = ObjectPosition(self.Pointer)
-    if DMW.Tables.AuraUpdate[self.Pointer] then
-        DMW.Functions.AuraCache.Refresh(self.Pointer)
-        DMW.Tables.AuraUpdate[self.Pointer] = nil
-    end
     self.Health = UnitHealth(self.Pointer)
     self.HealthMax = UnitHealthMax(self.Pointer)
     self.HP = self.Health / self.HealthMax * 100
