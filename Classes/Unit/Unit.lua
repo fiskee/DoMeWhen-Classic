@@ -20,7 +20,6 @@ function Unit:New(Pointer)
     self.ObjectID = ObjectID(Pointer)
     self.Level = UnitLevel(Pointer)
     self.CreatureType = DMW.Enums.CreatureType[UnitCreatureTypeID(Pointer)]
-    self.NPC = DMW.Settings.profile.Helpers.TrackNPC and self:HasNPCFlag() or false
     DMW.Functions.AuraCache.Refresh(Pointer)
 end
 
@@ -344,13 +343,19 @@ function Unit:PowerPct()
 end
 
 function Unit:HasFlag(Flag)
-    return bit.band(ObjectDescriptor(self.Pointer, GetOffset("CGUnitData__Flags"), "int"), Flag) > 0
+    if not self.UnitFlags then
+        self.UnitFlags = ObjectDescriptor(self.Pointer, GetOffset("CGUnitData__Flags"), "int")
+    end
+    return bit.band(self.UnitFlags, Flag) > 0
 end
 
 function Unit:IsFeared()
     return self:HasFlag(DMW.Enums.UnitFlags.Feared)
 end
 
-function Unit:HasNPCFlag()
-    return bit.band(ObjectDescriptor(self.Pointer, GetOffset("CGUnitData__NPCFlags"), "int")) > 0 and ObjectDescriptor(self.Pointer, GetOffset("CGUnitData__NPCFlags"), "int") or false
+function Unit:HasNPCFlag(Flag)
+    if not self.NPCFlags then
+        self.NPCFlags = ObjectDescriptor(self.Pointer, GetOffset("CGUnitData__NPCFlags"), "int")
+    end
+    return bit.band(self.NPCFlags, Flag) > 0
 end

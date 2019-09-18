@@ -11,13 +11,13 @@ function GameObject:Update()
     self.NextUpdate = DMW.Time + (math.random(100, 400) / 1000)
     self.PosX, self.PosY, self.PosZ = ObjectPosition(self.Pointer)
     self.Distance = self:GetDistance()
+    if not self.Name or self.Name == "" then
+        self.Name = ObjectName(self.Pointer)
+    end
     self.Quest = self:IsQuest()
     self.Herb = self:IsHerb()
     self.Ore = self:IsOre()
     self.Trackable = self:IsTrackable()
-    if not self.Name or self.Name == "" then
-        self.Name = ObjectName(self.Pointer)
-    end
 end
 
 function GameObject:GetDistance(OtherUnit)
