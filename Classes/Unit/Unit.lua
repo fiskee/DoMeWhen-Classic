@@ -1,8 +1,12 @@
 local DMW = DMW
 local Unit = DMW.Classes.Unit
 local LibCC = LibStub("LibClassicCasterinoDMW", true)
+local UnitIsUnit
 
 function Unit:New(Pointer)
+    if not UnitIsUnit then
+        UnitIsUnit = _G.UnitIsUnit
+    end
     self.Pointer = Pointer
     self.Name = UnitName(Pointer)
     self.GUID = UnitGUID(Pointer)

@@ -7,8 +7,12 @@ local Buff = DMW.Classes.Buff
 local Debuff = DMW.Classes.Debuff
 local DurationLib = LibStub("LibClassicDurationsDMW")
 DurationLib:Register("DMW")
+local UnitAura
 
 function AuraCache.Refresh(Unit)
+    if not UnitAura then
+        UnitAura = _G.UnitAura
+    end
     if DMW.Tables.AuraCache[Unit] ~= nil then
         DMW.Tables.AuraCache[Unit] = nil
     end

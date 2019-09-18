@@ -12,8 +12,11 @@ function Unit:UnitDetailedThreatSituation(OtherUnit)
 		return isTanking, threatStatus, threatPercent, rawThreatPercent, threatValue
 	end
 
-	local targetTargetGUID = UnitGUID(self.Target)
-	local targetTargetVal = ThreatLib:GetThreat(unitGUID, targetTargetGUID) or 0
+	local targetTargetVal = 0
+	if self.Target then
+		local targetTargetGUID = UnitGUID(self.Target)
+		targetTargetVal = ThreatLib:GetThreat(unitGUID, targetTargetGUID) or 0
+	end
 
 	local isPlayer
 	if OtherUnit == DMW.Player then isPlayer = true end
@@ -36,7 +39,7 @@ function Unit:UnitDetailedThreatSituation(OtherUnit)
 	local hasTarget = self.Target or false
 
 	if threatValue >= aggroVal then
-		if UnitIsUnit(OtherUnit.Pointer, self.Target) then
+		if hasTarget and UnitIsUnit(OtherUnit.Pointer, self.Target) then
 			isTanking = 1
 			if unitGUID == maxGUID then
 				threatStatus = 3
