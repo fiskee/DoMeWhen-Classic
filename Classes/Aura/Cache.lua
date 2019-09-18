@@ -14,7 +14,7 @@ function AuraCache.Refresh(Unit)
     local AuraReturn, Name, Source, DurationNew, ExpirationTimeNew
 
     for i = 1, 40 do
-        AuraReturn = {UnitBuff(Unit, i)}
+        AuraReturn = {UnitAura(Unit, i, "HELPFUL")}
         if AuraReturn[10] == nil then
             break
         end
@@ -42,7 +42,7 @@ function AuraCache.Refresh(Unit)
     end
 
     for i = 1, 40 do
-        AuraReturn = {UnitDebuff(Unit, i)}
+        AuraReturn = {UnitAura(Unit, i, "HARMFUL")}
         if AuraReturn[10] == nil then
             break
         end
