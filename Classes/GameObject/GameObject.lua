@@ -26,7 +26,7 @@ function GameObject:GetDistance(OtherUnit)
 end
 
 function GameObject:IsQuest()
-    if DMW.Settings.profile.Helpers.QuestieHelper and QuestieTooltips and QuestieTooltips.tooltipLookup["o_" .. self.Name] then
+    if self.Name and DMW.Settings.profile.Helpers.QuestieHelper and QuestieTooltips and QuestieTooltips.tooltipLookup["o_" .. self.Name] then
         for _, Tooltip in pairs(QuestieTooltips.tooltipLookup["o_" .. self.Name]) do
             Tooltip.Objective:Update()
             if not Tooltip.Objective.Completed then
