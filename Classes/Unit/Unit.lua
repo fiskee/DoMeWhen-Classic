@@ -62,9 +62,11 @@ function Unit:Update()
     if self.Name == "Unknown" then
         self.Name = UnitName(self.Pointer)
     end
-    
     if self.Attackable and not self.Player then
         DMW.Helpers.Swing.AddUnit(self.Pointer)
+    end
+    if self.NPC == nil then
+        self.NPC = DMW.Settings.profile.Helpers.TrackNPC and self:HasNPCFlag() or false
     end
 end
 
