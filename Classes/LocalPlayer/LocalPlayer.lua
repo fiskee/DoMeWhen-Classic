@@ -50,6 +50,12 @@ function LocalPlayer:Update()
         self.ComboPoints = GetComboPoints("player", "target")
         self.ComboMax = 5 --UnitPowerMax(self.Pointer, 4)
         self.ComboDeficit = self.ComboMax - self.ComboPoints
+        if self.TickTime and DMW.Time >= self.TickTime then
+            self.TickTime = self.TickTime + 2
+        end
+        if self.TickTime then
+            self.NextTick = self.TickTime - DMW.Time
+        end
     end
     self.Instance = select(2, IsInInstance())
     self.Moving = GetUnitSpeed(self.Pointer) > 0

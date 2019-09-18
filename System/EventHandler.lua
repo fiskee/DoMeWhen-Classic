@@ -1,5 +1,7 @@
 local DMW = DMW
 local EHFrame = CreateFrame("Frame")
+local class = select(2, UnitClass("player"))
+
 EHFrame:RegisterEvent("ENCOUNTER_START")
 EHFrame:RegisterEvent("ENCOUNTER_END")
 EHFrame:RegisterEvent("PLAYER_TOTEM_UPDATE")
@@ -12,6 +14,11 @@ EHFrame:RegisterEvent("LOOT_OPENED")
 EHFrame:RegisterEvent("LOOT_CLOSED")
 EHFrame:RegisterEvent("GET_ITEM_INFO_RECEIVED")
 EHFrame:RegisterEvent("UNIT_INVENTORY_CHANGED")
+if class == "ROGUE" or class == "DRUID" then 
+    EHFrame:RegisterEvent("UNIT_POWER_FREQUENT")
+    -- EHFrame:RegisterEvent("UNIT_POWER_UPDATE")
+end
+
 
 local function EventHandler(self, event, ...)
     if EWT then
@@ -57,6 +64,12 @@ local function EventHandler(self, event, ...)
             local unit = select(1, ...)
             if unit == "player" then
                 DMW.Helpers.Swing.OnInventoryChange()
+            end
+        elseif event == "UNIT_POWER_FREQUENT" then
+            local a,b = ...
+            if a == "player" and b == "ENERGY" and DMW.Player.Power < UnitPower("player") then
+                DMW.Player.TickTime = DMW.Time
+                -- EHFrame:UnregisterEvent("UNIT_POWER_FREQUENT")
             end
         end
     end

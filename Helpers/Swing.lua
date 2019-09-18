@@ -177,7 +177,7 @@ DMW.Helpers.Swing.SpeedOHUpdate = function(unit)
     end
 end
 
-DMW.Helpers.Swing.OnUpdate = function(elapsed)
+DMW.Helpers.Swing.Run = function(elapsed)
         DMW.Helpers.Swing.SpeedMHUpdate("player")
         DMW.Helpers.Swing.SpeedOHUpdate("player")
 
