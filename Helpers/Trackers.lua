@@ -37,9 +37,9 @@ function DMW.Helpers.Trackers.Run()
         local s = 1
         local tX, tY, tZ
         for _, Unit in pairs(DMW.Units) do
-            if DMW.Settings.profile.Helpers.TrackNPC and Unit.NPC then
+            if DMW.Settings.profile.Helpers.TrackNPC and not Unit.Player and Unit.Friend then
                 for k,v in pairs(DMW.Enums.NpcFlags) do
-                    if bit.band(Unit.NPC, v) > 0 then
+                    if Unit:HasNPCFlag(v) then
                         LibDraw.Text(k, "GameFontNormalSmall", Unit.PosX, Unit.PosY, Unit.PosZ + 2)
                         break
                     end

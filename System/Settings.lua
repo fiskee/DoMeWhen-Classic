@@ -38,7 +38,8 @@ local defaults = {
             Ore = false,
             LineToNodes = false,
             TrackAlert = false,
-            TrackPlayers = false
+            TrackPlayers = false,
+            TrackNPC = false
         }
     },
     char = {
