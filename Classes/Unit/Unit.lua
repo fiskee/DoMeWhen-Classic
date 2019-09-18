@@ -336,3 +336,11 @@ function Unit:PowerPct()
     local PowerMax = UnitPowerMax(self.Pointer)
     return Power / PowerMax * 100
 end
+
+function Unit:HasFlag(Flag)
+    return bit.band(ObjectDescriptor(self.Pointer, GetOffset("CGUnitData__Flags"), "int"), Flag) > 0
+end
+
+function Unit:IsFeared()
+    return self:HasFlag(DMW.Enums.UnitFlags.Feared)
+end

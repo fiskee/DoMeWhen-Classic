@@ -26,7 +26,7 @@ Label = AceGUI:Create("Label")
 Label:SetFullWidth(true)
 Label.Update = function(self)
     local Count = 0
-    for k,v in pairs(DMW.Units) do
+    for k, v in pairs(DMW.Units) do
         Count = Count + 1
     end
     self:SetText("Unit Table Count: " .. Count)
@@ -124,7 +124,7 @@ Label = AceGUI:Create("Label")
 Label:SetFullWidth(true)
 Label.Update = function(self)
     if DMW.Player.Target then
-        self:SetText("Unit Flags: " .. string.format("%X", ObjectDescriptor(DMW.Player.Target.Pointer, GetOffset("CGUnitData__Flags"), "int")))
+        self:SetText("Unit Flags: " .. string.format("%X", ObjectDescriptor(DMW.Player.Target.Pointer, GetOffset("CGUnitData__Flags"), "int")) .. " - Unit Flags2: " .. string.format("%X", ObjectDescriptor(DMW.Player.Target.Pointer, GetOffset("CGUnitData__Flags2"), "int")) .. " - Unit Flags3: " .. string.format("%X", ObjectDescriptor(DMW.Player.Target.Pointer, GetOffset("CGUnitData__Flags3"), "int")))
     else
         self:SetText("")
     end
@@ -174,7 +174,7 @@ Label = AceGUI:Create("Label")
 Label:SetFullWidth(true)
 Label.Update = function(self)
     if DMW.Player.Mouseover then
-        self:SetText("Unit Flags: " .. string.format("%X", ObjectDescriptor(DMW.Player.Mouseover.Pointer, GetOffset("CGUnitData__Flags"), "int")))
+        self:SetText("Unit Flags: " .. string.format("%X", ObjectDescriptor(DMW.Player.Mouseover.Pointer, GetOffset("CGUnitData__Flags"), "int")) .. " - Unit Flags2: " .. string.format("%X", ObjectDescriptor(DMW.Player.Mouseover.Pointer, GetOffset("CGUnitData__Flags2"), "int")) .. " - Unit Flags3: " .. string.format("%X", ObjectDescriptor(DMW.Player.Mouseover.Pointer, GetOffset("CGUnitData__Flags3"), "int")))
     else
         self:SetText("")
     end
@@ -183,7 +183,7 @@ Frame:AddChild(Label)
 
 function Debug.Run()
     if Frame:IsShown() then
-        for k,v in pairs(Frame.children) do
+        for k, v in pairs(Frame.children) do
             if v.Update then
                 v:Update()
             end

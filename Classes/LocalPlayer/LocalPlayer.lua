@@ -177,3 +177,7 @@ function LocalPlayer:Dispel(Spell)
     end
     return ReturnValue
 end
+
+function LocalPlayer:HasFlag(Flag)
+    return bit.band(ObjectDescriptor(self.Pointer, GetOffset("CGUnitData__Flags"), "int"), Flag) > 0
+end
