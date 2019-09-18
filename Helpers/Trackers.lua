@@ -32,12 +32,20 @@ local function DrawLine(sx, sy, sz, ex, ey, ez)
 end
 
 function DMW.Helpers.Trackers.Run()
-    if DMW.Settings.profile.Helpers.TrackUnits and DMW.Settings.profile.Helpers.TrackUnits ~= "" then
-        LibDraw.SetColor(0, 0, 255)
+    if (DMW.Settings.profile.Helpers.TrackUnits and DMW.Settings.profile.Helpers.TrackUnits ~= "") or DMW.Settings.profile.Helpers.TrackNPC then
+        LibDraw.SetColor(255, 165, 0)
         local s = 1
         local tX, tY, tZ
         for _, Unit in pairs(DMW.Units) do
-            if Unit.Trackable and not Unit.Dead and not Unit.Target then
+            if DMW.Settings.profile.Helpers.TrackNPC and Unit.NPC then
+                for k,v in pairs(DMW.Enums.NpcFlags) do
+                    if bit.band(Unit.NPC, v) > 0 then
+                        LibDraw.Text(k, "GameFontNormalSmall", Unit.PosX, Unit.PosY, Unit.PosZ + 2)
+                        break
+                    end
+                end
+            end
+            if (DMW.Settings.profile.Helpers.TrackUnits and DMW.Settings.profile.Helpers.TrackUnits ~= "") and Unit.Trackable and not Unit.Dead and not Unit.Target then
                 if DMW.Settings.profile.Helpers.TrackAlert and (AlertTimer + 5) < DMW.Time and not IsForeground() then
                     FlashClientIcon()
                     PlaySound(416)
@@ -49,6 +57,9 @@ function DMW.Helpers.Trackers.Run()
                 LibDraw.Line(tX - s, tY, tZ, tX + s, tY, tZ)
                 LibDraw.Line(tX, tY - s, tZ, tX, tY + s, tZ)
             end
+            -- if Unit.NPC ~= false then
+            --     LibDraw.Text(Unit.NPC, "GameFontNormal", self.PosX, self.PosY, self.PosZ + 2)
+            -- end
         end
     end
     LibDraw.SetColor(255, 0, 0)

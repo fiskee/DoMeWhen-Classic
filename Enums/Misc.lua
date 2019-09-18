@@ -60,3 +60,18 @@ DMW.Enums.UnitFlags = { --From trinity
     PreventEmotes = 0x20000000,
     Sheath = 0x40000000
 }
+
+DMW.Enums.NpcFlags = {
+    Repair              = 0x0000001000,
+    PoisonVendor        = 0x0000000400,
+    FlightMaster        = 0x0000002000,
+    ReagentVendor       = 0x0000000800,
+    Trainer             = 0x0000000010,
+    ClassTrainer        = 0x0000000020,
+    ProfessionTrainer   = 0x0000000040,
+    AmmoVendor          = 0x0000000100,
+    FoodVendor          = 0x0000000200,
+    BlackMarket         = 0x0080000000,
+    TradeskillNpc       = 0x4000000000,
+    Vendor              = 0x0000000080
+}

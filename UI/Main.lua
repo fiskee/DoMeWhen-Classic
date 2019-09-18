@@ -231,6 +231,19 @@ local Options = {
                     set = function(info, value)
                         DMW.Settings.profile.Helpers.TrackPlayers = value
                     end
+                },
+                TrackNPC = {
+                    type = "toggle",
+                    order = 18,
+                    name = "Track NPCs",
+                    desc = "Track important NPCs",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackNPC
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackNPC = value
+                    end
                 }
             }
         },
