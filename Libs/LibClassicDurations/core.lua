@@ -61,7 +61,7 @@ Usage example 2:
 --]================]
 if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then return end
 
-local MAJOR, MINOR = "LibClassicDurationsDMW", 20
+local MAJOR, MINOR = "LibClassicDurationsDMW", 21
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -113,6 +113,7 @@ local tinsert = table.insert
 local unpack = unpack
 local GetAuraDurationByUnitDirect
 local enableEnemyBuffTracking = false
+local COMBATLOG_OBJECT_CONTROL_PLAYER = COMBATLOG_OBJECT_CONTROL_PLAYER
 
 f:SetScript("OnEvent", function(self, event, ...)
     return self[event](self, event, ...)
@@ -362,8 +363,12 @@ local function SetTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName,
         applicationTable = spellTable
     end
 
-    -- local duration = cleanDuration(opts.duration, spellID, srcGUID)
     local duration = opts.duration
+    local isDstPlayer = bit_band(dstFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0
+    if isDstPlayer and opts.pvpduration then
+        duration = opts.pvpduration
+    end
+
     if not duration then
         return SetTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, auraType, true)
     end
@@ -377,6 +382,7 @@ local function SetTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName,
     --     -- local temporaryDuration = cleanDuration(opts.duration, spellID, srcGUID)
     --     expirationTime = now + duration
     -- end
+
     applicationTable[1] = duration
     applicationTable[2] = now
     -- applicationTable[2] = expirationTime
@@ -609,7 +615,6 @@ end
 enableEnemyBuffTracking = true
 f:RegisterEvent("NAME_PLATE_UNIT_ADDED")
 f:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
-
 
 ---------------------------
 -- PUBLIC FUNCTIONS
