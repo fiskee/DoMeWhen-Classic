@@ -104,14 +104,15 @@ Frame:AddChild(Label)
 Label = AceGUI:Create("Label")
 Label:SetFullWidth(true)
 Label.Update = function(self)
-    self:SetText("Position: " .. round(DMW.Player.PosX, 2) .. " - " .. round(DMW.Player.PosY, 2) .. " - " .. round(DMW.Player.PosZ, 2))
+    self:SetText("Position - X: " .. round(DMW.Player.PosX, 2) .. " - Y: " .. round(DMW.Player.PosY, 2) .. " - Z: " .. round(DMW.Player.PosZ, 2))
 end
 Frame:AddChild(Label)
 --Facing
 Label = AceGUI:Create("Label")
 Label:SetFullWidth(true)
 Label.Update = function(self)
-    self:SetText("Facing: " .. round(ObjectFacing("player"), 2))
+    local Facing1, Facing2 = ObjectFacing("player")
+    self:SetText("Facing: " .. round(Facing1, 2) .. " - Raw Facing: " .. round(Facing2, 2))
 end
 Frame:AddChild(Label)
 --Unit Flags
@@ -165,7 +166,7 @@ Label = AceGUI:Create("Label")
 Label:SetFullWidth(true)
 Label.Update = function(self)
     if DMW.Player.Target then
-        self:SetText("Position: " .. round(DMW.Player.Target.PosX, 2) .. " - " .. round(DMW.Player.Target.PosY, 2) .. " - " .. round(DMW.Player.Target.PosZ, 2))
+        self:SetText("Position - X: " .. round(DMW.Player.Target.PosX, 2) .. " - Y: " .. round(DMW.Player.Target.PosY, 2) .. " - Z: " .. round(DMW.Player.Target.PosZ, 2))
     else
         self:SetText("")
     end
@@ -187,7 +188,8 @@ Label = AceGUI:Create("Label")
 Label:SetFullWidth(true)
 Label.Update = function(self)
     if DMW.Player.Target then
-        self:SetText("Facing: " .. round(ObjectFacing(DMW.Player.Target.Pointer), 2))
+        local Facing1, Facing2 = ObjectFacing(DMW.Player.Target.Pointer)
+        self:SetText("Facing: " .. round(Facing1, 2) .. " - Raw Facing: " .. round(Facing2, 2))
     else
         self:SetText("")
     end
@@ -243,6 +245,18 @@ Label:SetFullWidth(true)
 Label.Update = function(self)
     if DMW.Player.Target then
         self:SetText("Valid Enemy: " .. tostring(DMW.Player.Target.ValidEnemy))
+    else
+        self:SetText("")
+    end
+end
+Frame:AddChild(Label)
+--Threat
+Label = AceGUI:Create("Label")
+Label:SetFullWidth(true)
+Label.Update = function(self)
+    if DMW.Player.Target then
+        local isTanking, threatStatus, threatPercent, rawThreatPercent, threatValue = DMW.Player.Target:UnitDetailedThreatSituation()
+        self:SetText("Player Threat - Is Tanking: " .. tostring(isTanking) .. " - Threat Status: " .. threatStatus .. " - Threat Pct: " .. tostring(threatPercent) .. " - Raw Threat Percent: " .. tostring(rawThreatPercent) .. " - Threat Value: " .. threatValue)
     else
         self:SetText("")
     end
