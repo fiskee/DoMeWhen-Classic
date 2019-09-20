@@ -132,7 +132,7 @@ Label = AceGUI:Create("Label")
 Label:SetFullWidth(true)
 Label.Update = function(self)
     if DMW.Player.Target then
-        self:SetText("Pointer: " .. DMW.Player.Target.Name)
+        self:SetText("Name: " .. DMW.Player.Target.Name)
     else
         self:SetText("")
     end
@@ -143,7 +143,7 @@ Label = AceGUI:Create("Label")
 Label:SetFullWidth(true)
 Label.Update = function(self)
     if DMW.Player.Target then
-        self:SetText("Pointer: " .. DMW.Player.Target.GUID)
+        self:SetText("GUID: " .. DMW.Player.Target.GUID)
     else
         self:SetText("")
     end
