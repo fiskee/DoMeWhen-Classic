@@ -2,9 +2,12 @@ local Spells = DMW.Enums.Spells
 
 Spells.PALADIN = {
     Abilities = {
-        SealOfRight = {Ranks = {20154, 20287, 20289, 20290, 20291, 20292, 20923, 21084}},
+        SealOfRight = {Ranks = {21084, 20287, 20288, 20289, 20290, 20291, 20292, 20293}},
         SealCrusader = {Ranks = {21082, 20162, 20305, 20306, 20307, 20308}},
         SealCommand = {Ranks = {20375, 20915, 20918, 20919, 20920}},
+		SealOfLight = {Ranks = {20165, 20347, 20348, 20349}},
+		SealOfWisdom = {Ranks = {20166, 20356, 20357}},
+		SealOfJustice = {Ranks = {1022}},
         DevotionAura = {Ranks = {465, 10290, 643, 10291, 1032, 10292, 10293}},
         RetriAura = {Ranks = {7294, 10298, 10299, 10300, 10301}},
         SanctityAura = {Ranks = {20218}},
@@ -34,24 +37,29 @@ Spells.PALADIN = {
         HolyLight = {Ranks = {635, 639, 647, 1026, 1042, 3472, 10328, 10329, 25929}}
     },
     Buffs = {
-        SealOfRight = {Ranks = {20154, 20287, 20289, 20290, 20291, 20292, 20923, 21084}},
+        SealOfRight = {Ranks = {21084, 20287, 20288, 20289, 20290, 20291, 20292, 20293}},
         SealCrusader = {Ranks = {21082, 20162, 20305, 20306, 20307, 20308}},
-        SealCommand = {Ranks = {20375}},
+        SealCommand = {Ranks = {20375, 20915, 20918, 20919, 20920}},
+		SealOfLight = {Ranks = {20165, 20347, 20348, 20349}},
+		SealOfWisdom = {Ranks = {20166, 20356, 20357}},
+		SealOfJustice = {Ranks = {1022}},
         BlessingMight = {Ranks = {19740, 19834, 19835, 19836, 19837, 19838, 25291}},
-        BlessingProtection = {Ranks = {1022}},
-        BlessingWisdom = {Ranks = {19742}},
+        BlessingProtection = {Ranks = {1022, 5599, 10278}},
+        BlessingWisdom = {Ranks = {19742, 19850, 19852, 19853, 19854, 25290}},
         BlessingKings = {Ranks = {20217}},
-        BlessingofMightG = {Ranks = {25782}},
-        BlessingofWisdomG = {Ranks = {25918}},
+        BlessingofMightG = {Ranks = {25782, 25916}},
+        BlessingofWisdomG = {Ranks = {25894, 25918}},
         BlessingofKingsG = {Ranks = {25898}},
         RighteousFury = {Ranks = {25780}},
-        RetriAura = {Ranks = {7294}},
+        RetriAura = {Ranks = {7294, 10298, 10299, 10300, 10301}},
         DevotionAura = {Ranks = {465, 10290, 643, 10291, 1032, 10292, 10293}},
         SanctityAura = {Ranks = {20218}},
-        DivineShield = {Ranks = {642}}
+        DivineShield = {Ranks = {642, 1020}}
     },
     Debuffs = {
-        SealCrusader = {Ranks = {21082, 20162, 20305, 20306, 20307, 20308}}
+		JudgementOfTheCrusader = {Ranks = {21183, 20188, 20300, 20301, 20302, 20303}},
+		JudgementOfLight = {Ranks = {20185, 20344, 20345, 20346}},
+		JudgementOfWisdom = {Ranks = {20186, 20354, 20355}}
     },
     Talents = {
         --Holy
