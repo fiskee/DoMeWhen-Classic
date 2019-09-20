@@ -1,6 +1,7 @@
 local DMW = DMW
 local Unit = DMW.Classes.Unit
 local ThreatLib = LibStub:GetLibrary("ThreatClassic-1.0")
+ThreatLib:RequestActiveOnSolo(true)
 
 function Unit:UnitDetailedThreatSituation(OtherUnit)
     OtherUnit = OtherUnit or DMW.Player
