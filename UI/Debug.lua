@@ -211,7 +211,7 @@ Label = AceGUI:Create("Label")
 Label:SetFullWidth(true)
 Label.Update = function(self)
     if DMW.Player.Target then
-        self:SetText("Time To Die: " .. DMW.Player.Target.TTD)
+        self:SetText("Time To Die: " .. round(DMW.Player.Target.TTD, 2))
     else
         self:SetText("")
     end
