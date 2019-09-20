@@ -8,7 +8,7 @@ function Unit:New(Pointer)
         UnitIsUnit = _G.UnitIsUnit
     end
     self.Pointer = Pointer
-    self.Name = UnitName(Pointer)
+    self.Name = not UnitIsUnit(Pointer, "player") and UnitName(Pointer) or "LocalPlayer"
     self.GUID = UnitGUID(Pointer)
     self.Player = UnitIsPlayer(Pointer)
     if self.Player then

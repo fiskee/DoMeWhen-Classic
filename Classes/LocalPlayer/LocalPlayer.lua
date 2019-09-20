@@ -3,7 +3,6 @@ local LocalPlayer = DMW.Classes.LocalPlayer
 
 function LocalPlayer:New(Pointer)
     self.Pointer = Pointer
-    self.Name = UnitName(Pointer)
     self.CombatReach = UnitCombatReach(Pointer)
     self.PosX, self.PosY, self.PosZ = ObjectPosition(Pointer)
     self.GUID = ObjectGUID(Pointer)
