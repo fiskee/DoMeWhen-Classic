@@ -22,6 +22,7 @@ Libs\LibClassicDurations\LibClassicDurations.xml
 Libs\LibClassicCasterino\LibClassicCasterino.lua
 Libs\!LibDraw\LibDraw.lua
 Libs\LibBossIDs-1.0\LibBossIDs-1.0.lua
+Libs\LibThreatClassic\embeds.xml
 Libs\LibThreatClassic\lib.xml
 
 Core.lua
