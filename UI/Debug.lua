@@ -5,6 +5,11 @@ local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 Debug.Frame = AceGUI:Create("Window")
 local Frame = Debug.Frame
 
+local function round(num, numDecimalPlaces)
+    local mult = 10^(numDecimalPlaces or 0)
+    return math.floor(num * mult + 0.5) / mult
+end
+
 Frame:SetTitle("DMW Debug")
 Frame:SetWidth(300)
 Frame:Hide()
@@ -13,13 +18,6 @@ Frame:Hide()
 local Label = AceGUI:Create("Heading")
 Label:SetFullWidth(true)
 Label:SetText("General:")
-Frame:AddChild(Label)
---Pulses
-Label = AceGUI:Create("Label")
-Label:SetFullWidth(true)
-Label.Update = function(self)
-    self:SetText("Pulses: " .. DMW.Pulses)
-end
 Frame:AddChild(Label)
 --Units
 Label = AceGUI:Create("Label")
@@ -54,6 +52,49 @@ Label.Update = function(self)
 end
 Frame:AddChild(Label)
 
+--Timers
+local Label = AceGUI:Create("Heading")
+Label:SetFullWidth(true)
+Label:SetText("Timers: (MS)")
+Frame:AddChild(Label)
+--OM
+Label = AceGUI:Create("Label")
+Label:SetFullWidth(true)
+Label.Update = function(self)
+    self:SetText("Object Manager - Average: " .. round(DMW.Timers.OM.Average,3) .. " - Last: " .. round(DMW.Timers.OM.Last,3))
+end
+Frame:AddChild(Label)
+--Questie Helper
+Label = AceGUI:Create("Label")
+Label:SetFullWidth(true)
+Label.Update = function(self)
+    self:SetText("Questie Helper - Average: " .. round(DMW.Timers.QuestieHelper.Average,3) .. " - Last: " .. round(DMW.Timers.QuestieHelper.Last,3))
+end
+Frame:AddChild(Label)
+--Trackers
+Label = AceGUI:Create("Label")
+Label:SetFullWidth(true)
+Label.Update = function(self)
+    self:SetText("Trackers - Average: " .. round(DMW.Timers.Trackers.Average,3) .. " - Last: " .. round(DMW.Timers.Trackers.Last,3))
+end
+Frame:AddChild(Label)
+--Gatherers
+Label = AceGUI:Create("Label")
+Label:SetFullWidth(true)
+Label.Update = function(self)
+    self:SetText("Gatherers - Average: " .. round(DMW.Timers.Gatherers.Average,3) .. " - Last: " .. round(DMW.Timers.Gatherers.Last,3))
+end
+Frame:AddChild(Label)
+--Rotation
+Label = AceGUI:Create("Label")
+Label:SetFullWidth(true)
+Label.Update = function(self)
+    if DMW.Timers.Rotation.Average then
+        self:SetText("Rotation (Combat) - Average: " .. round(DMW.Timers.Rotation.Average,3) .. " - Last: " .. round(DMW.Timers.Rotation.Last,3))
+    end
+end
+Frame:AddChild(Label)
+
 --Player
 Label = AceGUI:Create("Heading")
 Label:SetFullWidth(true)
@@ -63,7 +104,7 @@ Frame:AddChild(Label)
 Label = AceGUI:Create("Label")
 Label:SetFullWidth(true)
 Label.Update = function(self)
-    self:SetText("Position: " .. DMW.Player.PosX .. " - " .. DMW.Player.PosY .. " - " .. DMW.Player.PosZ)
+    self:SetText("Position: " .. round(DMW.Player.PosX,2) .. " - " .. round(DMW.Player.PosY,2) .. " - " .. round(DMW.Player.PosZ,2))
 end
 Frame:AddChild(Label)
 --Facing
@@ -102,7 +143,7 @@ Label = AceGUI:Create("Label")
 Label:SetFullWidth(true)
 Label.Update = function(self)
     if DMW.Player.Target then
-        self:SetText("Position: " .. DMW.Player.Target.PosX .. " - " .. DMW.Player.Target.PosY .. " - " .. DMW.Player.Target.PosZ)
+        self:SetText("Position: " .. round(DMW.Player.Target.PosX, 2) .. " - " .. round(DMW.Player.Target.PosY,2) .. " - " .. round(DMW.Player.Target.PosZ,2))
     else
         self:SetText("")
     end
@@ -152,7 +193,7 @@ Label = AceGUI:Create("Label")
 Label:SetFullWidth(true)
 Label.Update = function(self)
     if DMW.Player.Mouseover then
-        self:SetText("Position: " .. DMW.Player.Mouseover.PosX .. " - " .. DMW.Player.Mouseover.PosY .. " - " .. DMW.Player.Mouseover.PosZ)
+        self:SetText("Position: " .. round(DMW.Player.Mouseover.PosX,2) .. " - " .. round(DMW.Player.Mouseover.PosY,2) .. " - " .. round(DMW.Player.Mouseover.PosZ,2))
     else
         self:SetText("")
     end
