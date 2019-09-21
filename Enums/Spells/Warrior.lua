@@ -47,6 +47,8 @@ Spells.WARRIOR = {
 	},
 	Buffs = {
 		BattleShout = {Ranks = {6673, 5242, 6192, 11549, 11550, 11551, 25289}},
+		BersRage = {Ranks = {18499}},
+		Bloodrage = {Ranks = {2687}},
 		Enrage = {Ranks = {12880}},
 		BloodCraze = {Ranks = {16491}},
 		ShieldBlock = {Ranks = {2565}},
