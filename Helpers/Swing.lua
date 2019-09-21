@@ -254,8 +254,8 @@ DMW.Helpers.Swing.MissHandler = function(unit, missType, offhand, destination)
                 end
                 if not offhand then
                     DMW.Helpers.Swing.SwingMHReset(unit)
-                else
-                    DMW.Helpers.Swing.SwingOHReset(unit)
+                -- else
+                --     DMW.Helpers.Swing.SwingOHReset(unit)
                 end
             end
         end
@@ -270,8 +270,8 @@ DMW.Helpers.Swing.MissHandler = function(unit, missType, offhand, destination)
             if DMW.Tables.Swing.Units[unit] then
                 if not offhand then
                     DMW.Helpers.Swing.SwingMHReset(unit)
-                else
-                    DMW.Helpers.Swing.SwingOHReset(unit)
+                -- else
+                --     DMW.Helpers.Swing.SwingOHReset(unit)
                 end 
             end
         end
