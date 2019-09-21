@@ -110,7 +110,7 @@ function Queue.Run()
     elseif GetKeyState(0x06) then
         CheckPress(nil, "BUTTON5")
     end
-    if Queue.Spell and (DMW.Time - Queue.Time) > 2 then
+    if (Queue.Spell or Queue.Item) and (DMW.Time - Queue.Time) > 2 then
         Queue.Spell = false
         Queue.Target = false
         Queue.Item = false
