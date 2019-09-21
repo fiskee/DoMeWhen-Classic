@@ -31,12 +31,12 @@ local function FindRotation()
 end
 
 local function Init()
+    Initialized = true
     DMW.InitSettings()
     DMW.UI.Init()
     DMW.UI.HUD.Init()
     DMW.Player = DMW.Classes.LocalPlayer(ObjectPointer("player"))
     DMW.UI.InitQueue()
-    Initialized = true
 end
 
 local f = CreateFrame("Frame", "DoMeWhen", UIParent)
