@@ -31,19 +31,19 @@ local function FindRotation()
 end
 
 local function Init()
-    Initialized = true
     DMW.InitSettings()
     DMW.UI.Init()
     DMW.UI.HUD.Init()
     DMW.Player = DMW.Classes.LocalPlayer(ObjectPointer("player"))
     DMW.UI.InitQueue()
+    Initialized = true
 end
 
 local f = CreateFrame("Frame", "DoMeWhen", UIParent)
 f:SetScript(
     "OnUpdate",
     function(self, elapsed)  
-        if EWT ~= nil then
+        if EasyWoWToolbox ~= nil then
             DMW.Time = GetTime()
             DMW.Pulses = DMW.Pulses + 1
             if not Initialized then
