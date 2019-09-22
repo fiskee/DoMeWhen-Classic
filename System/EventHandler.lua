@@ -18,8 +18,6 @@ if class == "ROGUE" or class == "DRUID" then
     EHFrame:RegisterEvent("UNIT_POWER_FREQUENT")
     -- EHFrame:RegisterEvent("UNIT_POWER_UPDATE")
 end
-
-
 local function EventHandler(self, event, ...)
     if EWT then
         if event == "ENCOUNTER_START" then
@@ -67,12 +65,13 @@ local function EventHandler(self, event, ...)
             end
         elseif event == "UNIT_POWER_FREQUENT" then
             local a,b = ...
-            if a == "player" and b == "ENERGY" and DMW.Player.Power < UnitPower("player") then
-                DMW.Player.TickTime = DMW.Time
-                -- EHFrame:UnregisterEvent("UNIT_POWER_FREQUENT")
+            if class == "ROGUE" or (class == "DRUID" and GetShapeshiftForm() == 3)then
+                if a == "player" and b == "ENERGY" and DMW.Player.Power < UnitPower("player") then
+                    DMW.Player.TickTime = DMW.Time
+                    -- EHFrame:UnregisterEvent("UNIT_POWER_FREQUENT")
+                end
             end
         end
     end
 end
-
 EHFrame:SetScript("OnEvent", EventHandler)
