@@ -3,7 +3,6 @@ local DMW = DMW
 DMW.Helpers.QuestieHelper = {}
 
 function DMW.Helpers.QuestieHelper.Run()
-    LibDraw.clearCanvas()
     if DMW.Settings.profile.Helpers.QuestieHelper then
         local s = 1
         local tX, tY, tZ

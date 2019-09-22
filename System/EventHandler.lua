@@ -14,9 +14,9 @@ EHFrame:RegisterEvent("LOOT_OPENED")
 EHFrame:RegisterEvent("LOOT_CLOSED")
 EHFrame:RegisterEvent("GET_ITEM_INFO_RECEIVED")
 EHFrame:RegisterEvent("UNIT_INVENTORY_CHANGED")
-if class == "ROGUE" or class == "DRUID" then 
+if class == "ROGUE" or class == "DRUID" then
     EHFrame:RegisterEvent("UNIT_POWER_FREQUENT")
-    -- EHFrame:RegisterEvent("UNIT_POWER_UPDATE")
+-- EHFrame:RegisterEvent("UNIT_POWER_UPDATE")
 end
 local function EventHandler(self, event, ...)
     if EWT then
@@ -64,11 +64,11 @@ local function EventHandler(self, event, ...)
                 DMW.Helpers.Swing.OnInventoryChange()
             end
         elseif event == "UNIT_POWER_FREQUENT" then
-            local a,b = ...
-            if class == "ROGUE" or (class == "DRUID" and GetShapeshiftForm() == 3)then
+            local a, b = ...
+            if class == "ROGUE" or (class == "DRUID" and GetShapeshiftForm() == 3) then
                 if a == "player" and b == "ENERGY" and DMW.Player.Power < UnitPower("player") then
                     DMW.Player.TickTime = DMW.Time
-                    -- EHFrame:UnregisterEvent("UNIT_POWER_FREQUENT")
+                -- EHFrame:UnregisterEvent("UNIT_POWER_FREQUENT")
                 end
             end
         end

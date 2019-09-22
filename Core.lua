@@ -51,6 +51,7 @@ f:SetScript(
     "OnUpdate",
     function(self, elapsed)
         if EasyWoWToolbox ~= nil then
+            LibStub("LibDraw-1.0").clearCanvas()
             DMW.Time = GetTime()
             DMW.Pulses = DMW.Pulses + 1
             if not Initialized then
