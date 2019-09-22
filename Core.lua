@@ -42,7 +42,9 @@ end
 
 local function ExecutePlugins()
     for _, Plugin in pairs(DMW.Plugins) do
-        Plugin()
+        if type(Plugin) == "function" then
+            Plugin()
+        end
     end
 end
 
