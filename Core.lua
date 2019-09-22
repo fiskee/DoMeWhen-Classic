@@ -5,6 +5,7 @@ DMW.Enums = {}
 DMW.Functions = {}
 DMW.Rotations = {}
 DMW.Player = {}
+DMW.Plugins = {}
 DMW.UI = {}
 DMW.Settings = {}
 DMW.Helpers = {}
@@ -13,7 +14,7 @@ DMW.Timers = {
     QuestieHelper = {},
     Trackers = {},
     Gatherers = {},
-    Rotation = {},
+    Rotation = {}
 }
 DMW.Pulses = 0
 local Initialized = false
@@ -39,10 +40,16 @@ local function Init()
     Initialized = true
 end
 
+local function ExecutePlugins()
+    for _, Plugin in pairs(DMW.Plugins) do
+        Plugin()
+    end
+end
+
 local f = CreateFrame("Frame", "DoMeWhen", UIParent)
 f:SetScript(
     "OnUpdate",
-    function(self, elapsed)  
+    function(self, elapsed)
         if EasyWoWToolbox ~= nil then
             DMW.Time = GetTime()
             DMW.Pulses = DMW.Pulses + 1
@@ -63,6 +70,7 @@ f:SetScript(
             DMW.Helpers.Gatherers.Run()
             DMW.Timers.Gatherers.Last = debugprofilestop() - DebugStart
             DMW.Helpers.Swing.Run(elapsed)
+            ExecutePlugins()
             if not DMW.Player.Rotation then
                 FindRotation()
                 return
