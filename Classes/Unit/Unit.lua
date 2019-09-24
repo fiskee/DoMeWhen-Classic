@@ -24,7 +24,7 @@ function Unit:New(Pointer)
 end
 
 function Unit:Update()
-    self.NextUpdate = DMW.Time + (math.random(100, 600) / 10000)
+    self.NextUpdate = DMW.Time + (math.random(100, 1500) / 10000)
     self.PosX, self.PosY, self.PosZ = ObjectPosition(self.Pointer)
     if DMW.Tables.AuraUpdate[self.Pointer] then
         DMW.Functions.AuraCache.Refresh(self.Pointer)
@@ -61,7 +61,6 @@ function Unit:Update()
     if self.Name == "Unknown" then
         self.Name = UnitName(self.Pointer)
     end
-    
     if self.Attackable and not self.Player then
         DMW.Helpers.Swing.AddUnit(self.Pointer)
     end
@@ -220,13 +219,13 @@ function Unit:Dispel(Spell)
     local AuraReturn
     for _, Aura in pairs(AuraCache) do
         if (self.Friend and Aura.Type == "HARMFUL") or (not self.Friend and Aura.Type == "HELPFUL") then
-            AuraReturn = Aura.AuraReturn 
+            AuraReturn = Aura.AuraReturn
             Elapsed = AuraReturn[5] - (AuraReturn[6] - DMW.Time)
             if AuraReturn[4] and DispelTypes[AuraReturn[4]] and Elapsed > Delay then
                 if DMW.Enums.NoDispel[AuraReturn[10]] then
                     ReturnValue = false
-                    break                
-                elseif DMW.Enums.SpecialDispel[AuraReturn[10]] and DMW.Enums.SpecialDispel[AuraReturn[10]].Stacks then 
+                    break
+                elseif DMW.Enums.SpecialDispel[AuraReturn[10]] and DMW.Enums.SpecialDispel[AuraReturn[10]].Stacks then
                     if AuraReturn[3] >= DMW.Enums.SpecialDispel[AuraReturn[10]].Stacks then
                         ReturnValue = true
                     else
