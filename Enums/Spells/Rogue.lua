@@ -47,7 +47,13 @@ Spells.ROGUE = {
         Sprint = {Ranks = {2983, 8696, 11305}},
         InstantPoison = {Ranks = {323, 8681, 8687, 8691, 11341, 11342, 11343}}
     },
-    Debuffs = {},
+    Debuffs = {
+        Blind = {Ranks = {2094}},
+        CheapShot = {Ranks = {1833}},
+        Gouge = {Ranks = {1776, 1777, 8629, 11285, 11286}},
+        KidneyShot = {Ranks = {408, 8643}},
+        Sap = {Ranks = {6770, 2070, 11297}}
+    },
     Talents = {
         -- Assassination
         ImprovedEviscerate = {1, 1},
