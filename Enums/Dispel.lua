@@ -10,7 +10,9 @@ DMW.Enums.DispelSpells = {
     [370] = {"Magic"},
     --Paladin
     [1152] = {"Poison", "Disease"},
-    [4987] = {"Poison", "Magic", "Disease"}
+    [4987] = {"Poison", "Magic", "Disease"},
+    --
+    [23595] = {"Physical"}
 }
 
 DMW.Enums.SpecialDispel = {}

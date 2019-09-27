@@ -7,7 +7,9 @@ DMW.Enums.Spells = {
             BloodFury = {Ranks = {20572}},
             Shoot = {Ranks = {5019}}
         },
-        Buffs = {},
+        Buffs = {
+            SoulstoneResurrection = {Ranks = {20707}}
+        },
         Debuffs = {},
         Talents = {}
     }

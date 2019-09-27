@@ -56,3 +56,21 @@ function Item:Use(Unit)
     end
     return false
 end
+
+function Item:InBag()
+    if self.ItemName then
+        local TempName, TempID
+        for Bag = 0, 4, 1 do
+            for Slot = 1, GetContainerNumSlots(Bag), 1 do
+                TempID = GetContainerItemID(Bag, Slot)
+                if TempID then
+                    TempName = GetItemInfo(TempID)
+                    if TempName == self.ItemName then
+                        return true
+                    end
+                end
+            end
+        end
+    end
+    return false
+end
