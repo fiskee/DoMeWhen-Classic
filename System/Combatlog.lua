@@ -87,5 +87,21 @@ function frame:Reader(event, ...)
                 end
             end
         end
+        if param == "SPELL_PERIODIC_DAMAGE" and destination == Player.GUID then
+            if DMW.Tables.AuraCache[Player.Pointer][spellName] ~= nil then
+                if not Player.DOTed then
+                    Player.DOTed = {}
+                end
+                Player.DOTed[spellName] = DMW.Tables.AuraCache[DMW.Player.Pointer][spellName].AuraReturn[6]
+            end
+        end
+
+        -- if param == "SPELL_DISPELL" and destination == Player.GUID then
+        --     if Player.DOTed then
+        --         if Player.DOTed[spellName] ~= nil then
+        --             Player.DOTed[spellName] = nil
+        --         end
+        --     end
+        -- end
     end
 end

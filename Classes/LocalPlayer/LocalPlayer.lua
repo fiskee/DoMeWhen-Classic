@@ -62,6 +62,18 @@ function LocalPlayer:Update()
     self.InGroup = IsInGroup()
     self.CombatTime = self.Combat and (DMW.Time - self.Combat) or 0
     self.CombatLeftTime = self.CombatLeft and (DMW.Time - self.CombatLeft) or 0
+    if self.DOTed then
+        local count = 0
+        for spell in pairs(self.DOTed) do
+            count = count + 1
+            if DMW.Time > self.DOTed[spell] then
+                self.DOTed[spell] = nil
+            end
+        end
+        if count == 0 then 
+            self.DOTed = nil
+        end
+    end
 end
 
 function LocalPlayer:PredictedPower()
