@@ -192,13 +192,13 @@ end
 function LocalPlayer:AuraByID(SpellID, OnlyPlayer)
     OnlyPlayer = OnlyPlayer or false
     local SpellName = GetSpellInfo(SpellID)
-    Unit = self.Pointer
-    if DMW.Tables.AuraCache[Unit] ~= nil and DMW.Tables.AuraCache[Unit][SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[Unit][SpellName]["player"] ~= nil) then
+    local Pointer = self.Pointer
+    if DMW.Tables.AuraCache[Pointer] ~= nil and DMW.Tables.AuraCache[Pointer][SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[Pointer][SpellName]["player"] ~= nil) then
         local AuraReturn
         if OnlyPlayer then
-            AuraReturn = DMW.Tables.AuraCache[Unit][SpellName]["player"].AuraReturn
+            AuraReturn = DMW.Tables.AuraCache[Pointer][SpellName]["player"].AuraReturn
         else
-            AuraReturn = DMW.Tables.AuraCache[Unit][SpellName].AuraReturn
+            AuraReturn = DMW.Tables.AuraCache[Pointer][SpellName].AuraReturn
         end
         return unpack(AuraReturn)
     end
