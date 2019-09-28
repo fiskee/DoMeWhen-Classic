@@ -57,7 +57,7 @@ function LocalPlayer:Update()
         end
     end
     self.Instance = select(2, IsInInstance())
-    self.Moving = GetUnitSpeed(self.Pointer) > 0
+    self.Moving = self:HasMovementFlag(DMW.Enums.MovementFlags.Moving)
     self.PetActive = UnitIsVisible("pet")
     self.InGroup = IsInGroup()
     self.CombatTime = self.Combat and (DMW.Time - self.Combat) or 0
@@ -203,4 +203,8 @@ function LocalPlayer:AuraByID(SpellID, OnlyPlayer)
         return unpack(AuraReturn)
     end
     return nil
+end
+
+function LocalPlayer:HasMovementFlag(Flag)
+    return bit.band(UnitMovementFlags(self.Pointer), Flag) > 0
 end

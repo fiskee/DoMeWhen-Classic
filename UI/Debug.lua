@@ -122,6 +122,13 @@ Label.Update = function(self)
     self:SetText("Unit Flags: " .. string.format("%X", ObjectDescriptor(DMW.Player.Pointer, GetOffset("CGUnitData__Flags"), "int")) .. " - Unit Flags2: " .. string.format("%X", ObjectDescriptor(DMW.Player.Pointer, GetOffset("CGUnitData__Flags2"), "int")) .. " - Unit Flags3: " .. string.format("%X", ObjectDescriptor(DMW.Player.Pointer, GetOffset("CGUnitData__Flags3"), "int")))
 end
 Frame:AddChild(Label)
+--Movement
+Label = AceGUI:Create("Label")
+Label:SetFullWidth(true)
+Label.Update = function(self)
+    self:SetText("Moving: " .. tostring(DMW.Player:HasMovementFlag(DMW.Enums.MovementFlags.Moving)) .. " - Movement Flag: " .. string.format("%X", UnitMovementFlags(DMW.Player.Pointer)))
+end
+Frame:AddChild(Label)
 
 --Target
 Label = AceGUI:Create("Heading")
@@ -257,6 +264,17 @@ Label.Update = function(self)
     if DMW.Player.Target then
         local isTanking, threatStatus, threatPercent, rawThreatPercent, threatValue = DMW.Player.Target:UnitDetailedThreatSituation()
         self:SetText("Player Threat - Is Tanking: " .. tostring(isTanking) .. " - Threat Status: " .. threatStatus .. " - Threat Pct: " .. tostring(threatPercent) .. " - Raw Threat Percent: " .. tostring(rawThreatPercent) .. " - Threat Value: " .. threatValue)
+    else
+        self:SetText("")
+    end
+end
+Frame:AddChild(Label)
+--Movement
+Label = AceGUI:Create("Label")
+Label:SetFullWidth(true)
+Label.Update = function(self)
+    if DMW.Player.Target then
+        self:SetText("Moving: " .. tostring(DMW.Player.Target:HasMovementFlag(DMW.Enums.MovementFlags.Moving)) .. " - Movement Flag: " .. string.format("%X", UnitMovementFlags(DMW.Player.Target.Pointer)))
     else
         self:SetText("")
     end

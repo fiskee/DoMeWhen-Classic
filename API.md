@@ -52,6 +52,7 @@ Note not all functions work in classic yet
 - :UnitDetailedThreatSituation(OtherUnit)
 - :UnitThreatSituation(OtherUnit)
 - :IsTanking()
+- :HasMovementFlag(Flag)
 
 # Player
 ## Constants
@@ -104,6 +105,7 @@ Note not all functions work in classic yet
 - :GetFriends(Yards, HP)
 - :GetFriendsCone(Length, Angle, HP)
 - :IsTanking()
+- :HasMovementFlag(Flag)
 
 ## Tables
 - Buffs

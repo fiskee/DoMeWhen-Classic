@@ -54,7 +54,7 @@ function Unit:Update()
     self.Attackable = self.LoS and UnitCanAttack("player", self.Pointer) or false
     self.ValidEnemy = self.Attackable and self:IsEnemy() or false
     self.Target = UnitTarget(self.Pointer)
-    self.Moving = GetUnitSpeed(self.Pointer) > 0
+    self.Moving = self:HasMovementFlag(DMW.Enums.MovementFlags.Moving)
     self.Facing = ObjectIsFacing("Player", self.Pointer)
     self.Quest = self:IsQuest()
     self.Trackable = self:IsTrackable()
@@ -354,4 +354,8 @@ function Unit:HasNPCFlag(Flag)
         self.NPCFlags = ObjectDescriptor(self.Pointer, GetOffset("CGUnitData__NPCFlags"), "int")
     end
     return bit.band(self.NPCFlags, Flag) > 0
+end
+
+function Unit:HasMovementFlag(Flag)
+    return bit.band(UnitMovementFlags(self.Pointer), Flag) > 0
 end
