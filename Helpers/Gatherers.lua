@@ -32,7 +32,7 @@ function DMW.Helpers.Gatherers.Run()
             end
         end
         if DMW.Settings.profile.Helpers.AutoGather then
-            if Looting and (DMW.Time - Looting) > 0.6 then
+            if Looting and (DMW.Time - Looting) > 0.6 and not DMW.Player.Looting then
                 Looting = false
             end
             if not Looting and not DMW.Player.Combat and not DMW.Player.Moving then
