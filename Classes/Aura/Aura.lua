@@ -17,19 +17,25 @@ function Debuff:New(SpellID, BaseDuration)
 end
 
 function Buff:Exist(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or false
+    if OnlyPlayer == nil then
+        OnlyPlayer = false
+    end
     Unit = Unit or DMW.Player
     return self:Query(Unit, OnlyPlayer) ~= nil
 end
 
 function Debuff:Exist(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or true
+    if OnlyPlayer == nil then
+        OnlyPlayer = true
+    end
     Unit = Unit or DMW.Player.Target
     return self:Query(Unit, OnlyPlayer) ~= nil
 end
 
 function Buff:Remain(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or false
+    if OnlyPlayer == nil then
+        OnlyPlayer = false
+    end
     Unit = Unit or DMW.Player
     local EndTime = select(6, self:Query(Unit, OnlyPlayer))
     if EndTime then
@@ -42,7 +48,9 @@ function Buff:Remain(Unit, OnlyPlayer)
 end
 
 function Debuff:Remain(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or true
+    if OnlyPlayer == nil then
+        OnlyPlayer = true
+    end
     Unit = Unit or DMW.Player.Target
     local EndTime = select(6, self:Query(Unit, OnlyPlayer))
     if EndTime then
@@ -55,7 +63,9 @@ function Debuff:Remain(Unit, OnlyPlayer)
 end
 
 function Buff:Duration(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or false
+    if OnlyPlayer == nil then
+        OnlyPlayer = false
+    end
     Unit = Unit or DMW.Player
     local Duration = select(5, self:Query(Unit, OnlyPlayer))
     if Duration then
@@ -65,7 +75,9 @@ function Buff:Duration(Unit, OnlyPlayer)
 end
 
 function Debuff:Duration(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or true
+    if OnlyPlayer == nil then
+        OnlyPlayer = true
+    end
     Unit = Unit or DMW.Player.Target
     local Duration = select(5, self:Query(Unit, OnlyPlayer))
     if Duration then
@@ -75,7 +87,9 @@ function Debuff:Duration(Unit, OnlyPlayer)
 end
 
 function Buff:Elapsed(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or false
+    if OnlyPlayer == nil then
+        OnlyPlayer = false
+    end
     Unit = Unit or DMW.Player
     local EndTime = select(6, self:Query(Unit, OnlyPlayer))
     local Duration = select(5, self:Query(Unit, OnlyPlayer))
@@ -89,7 +103,9 @@ function Buff:Elapsed(Unit, OnlyPlayer)
 end
 
 function Debuff:Elapsed(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or true
+    if OnlyPlayer == nil then
+        OnlyPlayer = true
+    end
     Unit = Unit or DMW.Player.Target
     local EndTime = select(6, self:Query(Unit, OnlyPlayer))
     local Duration = select(5, self:Query(Unit, OnlyPlayer))
@@ -103,7 +119,9 @@ function Debuff:Elapsed(Unit, OnlyPlayer)
 end
 
 function Buff:Refresh(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or false
+    if OnlyPlayer == nil then
+        OnlyPlayer = false
+    end
     Unit = Unit or DMW.Player
     local Remain = self:Remain(Unit, OnlyPlayer)
     if Remain > 0 then
@@ -114,7 +132,9 @@ function Buff:Refresh(Unit, OnlyPlayer)
 end
 
 function Debuff:Refresh(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or true
+    if OnlyPlayer == nil then
+        OnlyPlayer = true
+    end
     Unit = Unit or DMW.Player.Target
     local Remain = self:Remain(Unit, OnlyPlayer)
     if Remain > 0 then
@@ -125,7 +145,9 @@ function Debuff:Refresh(Unit, OnlyPlayer)
 end
 
 function Buff:Stacks(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or false
+    if OnlyPlayer == nil then
+        OnlyPlayer = false
+    end
     Unit = Unit or DMW.Player
     local Stacks = select(3, self:Query(Unit, OnlyPlayer))
     if Stacks then
@@ -135,7 +157,9 @@ function Buff:Stacks(Unit, OnlyPlayer)
 end
 
 function Debuff:Stacks(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or true
+    if OnlyPlayer == nil then
+        OnlyPlayer = true
+    end
     Unit = Unit or DMW.Player.Target
     local Stacks = select(3, self:Query(Unit, OnlyPlayer))
     if Stacks then
@@ -145,7 +169,9 @@ function Debuff:Stacks(Unit, OnlyPlayer)
 end
 
 function Buff:Rank(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or false
+    if OnlyPlayer == nil then
+        OnlyPlayer = false
+    end
     Unit = Unit or DMW.Player
     local SpellID = select(10, self:Query(Unit, OnlyPlayer))
     for i,v in ipairs(self.Ranks) do
@@ -157,7 +183,9 @@ function Buff:Rank(Unit, OnlyPlayer)
 end
 
 function Debuff:Rank(Unit, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or true
+    if OnlyPlayer == nil then
+        OnlyPlayer = true
+    end
     Unit = Unit or DMW.Player.Target
     local SpellID = select(10, self:Query(Unit, OnlyPlayer))
     for i,v in ipairs(self.Ranks) do
