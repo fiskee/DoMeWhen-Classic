@@ -206,5 +206,9 @@ function LocalPlayer:AuraByID(SpellID, OnlyPlayer)
 end
 
 function LocalPlayer:HasMovementFlag(Flag)
-    return bit.band(UnitMovementFlags(self.Pointer), Flag) > 0
+    local SelfFlag = UnitMovementFlags(self.Pointer)
+    if SelfFlag then
+        return bit.band(UnitMovementFlags(self.Pointer), Flag) > 0
+    end
+    return false
 end

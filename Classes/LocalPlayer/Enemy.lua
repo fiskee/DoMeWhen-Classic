@@ -22,7 +22,7 @@ local function IsInside(x, y, ax, ay, bx, by, dx, dy) -- Stolen at BadRotations
 end
 
 function LocalPlayer:GetEnemy(Yards, Facing)
-    local Facing = Facing or false
+    Facing = Facing or false
     if (not self.Target or self.Target.Dead) and self.Combat then
         for _, Unit in ipairs(DMW.Enemies) do
             if Unit.Distance <= Yards and (not Facing or Unit.Facing) then
@@ -34,7 +34,7 @@ function LocalPlayer:GetEnemy(Yards, Facing)
 end
 
 function LocalPlayer:AutoTarget(Yards, Facing)
-    local Facing = Facing or false
+    Facing = Facing or false
     if (not self.Target or self.Target.Dead) and self.Combat then
         for _, Unit in ipairs(DMW.Enemies) do
             if Unit.Distance <= Yards and (not Facing or Unit.Facing) then
@@ -46,7 +46,7 @@ function LocalPlayer:AutoTarget(Yards, Facing)
 end
 
 function LocalPlayer:AutoTargetQuest(Yards, Facing)
-    local Facing = Facing or false
+    Facing = Facing or false
     if not self.Target or self.Target.Dead then
         for _, Unit in ipairs(DMW.Attackable) do
             if Unit.Distance <= Yards and (not Facing or Unit.Facing) and Unit.Quest and not Unit.Dead and not Unit.Target and not UnitIsTapDenied(Unit.Pointer) then
@@ -59,7 +59,7 @@ function LocalPlayer:AutoTargetQuest(Yards, Facing)
 end
 
 function LocalPlayer:AutoTargetAny(Yards, Facing)
-    local Facing = Facing or false
+    Facing = Facing or false
     if not self.Target or self.Target.Dead then
         for _, Unit in ipairs(DMW.Attackable) do
             if Unit.Distance <= Yards and (not Facing or Unit.Facing) and not Unit.Dead and not Unit.Target and not UnitIsTapDenied(Unit.Pointer) then

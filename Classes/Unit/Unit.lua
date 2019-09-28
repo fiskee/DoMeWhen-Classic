@@ -357,5 +357,9 @@ function Unit:HasNPCFlag(Flag)
 end
 
 function Unit:HasMovementFlag(Flag)
-    return bit.band(UnitMovementFlags(self.Pointer), Flag) > 0
+    local SelfFlag = UnitMovementFlags(self.Pointer)
+    if SelfFlag then
+        return bit.band(UnitMovementFlags(self.Pointer), Flag) > 0
+    end
+    return false
 end
