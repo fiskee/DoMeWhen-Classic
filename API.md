@@ -161,7 +161,7 @@ Note not all functions work in classic yet
 - :Cast(Unit, Rank)
 - :CastPool(Unit, Extra, Rank)
 - :CastGround(X, Y, Z, Rank)
-- :Known()
+- :Known(Rank)
 - :Usable(Rank)
 
 # Item

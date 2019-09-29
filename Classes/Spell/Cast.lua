@@ -2,6 +2,20 @@ local DMW = DMW
 local Spell = DMW.Classes.Spell
 local CastTimer = GetTime()
 
+function Spell:HighestLevel(Unit)
+    local HighestRank
+    local SpellLevels = DMW.Enums.BuffLevels[self.Key]
+    if SpellLevels then
+        -- Find highest known rank for level
+        for i=1, #SpellLevels, 1 do
+            if Unit.Level >= (tonumber(SpellLevels[i]) - 10) and self:Known(i) then
+                HighestRank = i
+            end
+        end
+    end
+    return HighestRank
+end
+
 function Spell:FacingCast(Unit, Rank)
 	if DMW.Settings.profile.Enemy.AutoFace and self:CastTime(Rank) == 0 and not Unit.Facing and not UnitIsUnit("Player", Unit.Pointer) then
 		local Facing = ObjectFacing("Player")
@@ -42,7 +56,10 @@ function Spell:Cast(Unit, Rank)
             return false
         end
     end
-    if self:Known() and self:Usable(Rank) and ((Unit.Distance <= self.MaxRange and (self.MinRange == 0 or Unit.Distance >= self.MinRange)) or IsSpellInRange(self.SpellName, Unit.Pointer) == 1) then
+    if not Rank then
+        Rank = self:HighestLevel(Unit)
+    end
+    if self:Known(Rank) and self:Usable(Rank) and ((Unit.Distance <= self.MaxRange and (self.MinRange == 0 or Unit.Distance >= self.MinRange)) or IsSpellInRange(self.SpellName, Unit.Pointer) == 1) then
         if IsAutoRepeatSpell(DMW.Player.Spells.Shoot.SpellName) and self:CD(Rank) < 0.2 then
             MoveForwardStart()
             MoveForwardStop()
