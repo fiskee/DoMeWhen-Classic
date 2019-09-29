@@ -77,7 +77,7 @@ function Spell:CD(Rank)
 end
 
 function Spell:IsReady(Rank)
-    if self:Known() and self:Usable(Rank) and self:CD(Rank) == 0 then
+    if self:Known(Rank) and self:Usable(Rank) and self:CD(Rank) == 0 then
         return true
     end
     return false
@@ -141,7 +141,10 @@ function Spell:CastTime(Rank)
     return select(4, GetSpellInfo(self.SpellName)) / 1000
 end
 
-function Spell:Known()
+function Spell:Known(Rank)
+    if Rank then
+        return IsSpellKnown(self.Ranks[Rank])
+    end
     return GetSpellInfo(self.SpellName)
 end
 
