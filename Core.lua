@@ -56,7 +56,7 @@ f:SetScript(
             LibStub("LibDraw-1.0").clearCanvas()
             DMW.Time = GetTime()
             DMW.Pulses = DMW.Pulses + 1
-            if not Initialized then
+            if not Initialized and not DMW.UI.MinimapIcon then
                 Init()
             end
             DebugStart = debugprofilestop()
