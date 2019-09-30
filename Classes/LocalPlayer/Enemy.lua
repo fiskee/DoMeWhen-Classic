@@ -136,7 +136,7 @@ function LocalPlayer:GetEnemiesCone(Length, Angle, TTD)
 end
 
 function LocalPlayer:IsTanking()
-	for _, Unit in pairs(DMW.Enemies) do
+	for _, Unit in ipairs(DMW.Enemies) do
 		if Unit:UnitThreatSituation(self) and Unit:UnitThreatSituation(self) > 1 then
 			return true
 		end
