@@ -28,7 +28,6 @@ function Unit:Update()
     self.PosX, self.PosY, self.PosZ = ObjectPosition(self.Pointer)
     if self.ForceUpdate then
         self.ForceUpdate = nil
-        return
     end
     if DMW.Tables.AuraUpdate[self.Pointer] then
         DMW.Functions.AuraCache.Refresh(self.Pointer)
