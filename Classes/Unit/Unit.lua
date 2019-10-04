@@ -26,6 +26,10 @@ end
 function Unit:Update()
     self.NextUpdate = DMW.Time + (math.random(100, 1500) / 10000)
     self.PosX, self.PosY, self.PosZ = ObjectPosition(self.Pointer)
+    if self.ForceUpdate then
+        self.ForceUpdate = nil
+        return
+    end
     if DMW.Tables.AuraUpdate[self.Pointer] then
         DMW.Functions.AuraCache.Refresh(self.Pointer)
         DMW.Tables.AuraUpdate[self.Pointer] = nil

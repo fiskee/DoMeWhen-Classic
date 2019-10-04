@@ -51,6 +51,7 @@ function DMW.Helpers.Trackers.Run()
                     PlaySound(416)
                     AlertTimer = DMW.Time
                 end
+                Unit.ForceUpdate = true
                 tX, tY, tZ = Unit.PosX, Unit.PosY, Unit.PosZ
                 LibDraw.SetWidth(4)
                 LibDraw.Line(tX, tY, tZ + s * 1.3, tX, tY, tZ)
@@ -80,6 +81,7 @@ function DMW.Helpers.Trackers.Run()
         local Color
         for _, Unit in pairs(DMW.Units) do
             if Unit.Player and not Unit.Dead and not UnitIsFriend("player", Unit.Pointer) and not C_NamePlate.GetNamePlateForUnit(Unit.Pointer) and not UnitIsUnit("target", Unit.Pointer) then
+                Unit.ForceUpdate = true
                 Color = DMW.Enums.ClassColor[Unit.Class]
                 LibDraw.SetColor(Color.r, Color.g, Color.b)
                 LibDraw.Text(Unit.Name .. " (" .. Unit.Level .. ") - HP: " .. Unit.HP .. " - " .. math.floor(Unit.Distance) .. " Yards", "GameFontNormalSmall", Unit.PosX, Unit.PosY, Unit.PosZ + 2)
