@@ -12,7 +12,7 @@ function LocalPlayer:New(Pointer)
     self.CombatLeft = false
     self.EID = false
     self.NoControl = false
-    self.Level = UnitLevel(Pointer)    
+    self.Level = UnitLevel(Pointer)
     self:GetSpells()
     self:GetTalents()
     self.Equipment = {}
@@ -93,8 +93,29 @@ function LocalPlayer:PredictedPower()
     return self.Power
 end
 
+local GCDList = {
+    DRUID = {
+        NONE = 5176,
+        CAT = 5221,
+    },
+    HUNTER = 1978,
+    MAGE = 133,
+    PALADIN = 635,
+    PRIEST = 2050,
+    ROGUE = 1752,
+    SHAMAN = 403,
+    WARLOCK = 348,
+    WARRIOR = 772,
+}
+
 function LocalPlayer:GCDRemain()
-    local Start, CD = GetSpellCooldown(61304)
+    local GCDSpell = 61304
+    if self.Class == "DRUID" then
+        if self:AuraByID(768,true) then GCDSpell = GCDList[self.Class].CAT else GCDSpell = GCDList[self.Class].NONE end
+    else
+        GCDSpell = GCDList[self.Class]
+    end
+    local Start, CD = GetSpellCooldown(GCDSpell)
     if Start == 0 then
         return 0
     end
@@ -102,7 +123,7 @@ function LocalPlayer:GCDRemain()
 end
 
 function LocalPlayer:GCD()
-    if self.Class == "ROGUE" then
+    if self.Class == "ROGUE" or (self.Class == "DRUID" and self:AuraByID(768,true)) then
         return 1
     else
         return 1.5
