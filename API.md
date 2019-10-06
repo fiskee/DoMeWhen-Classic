@@ -53,6 +53,7 @@ Note not all functions work in classic yet
 - :UnitThreatSituation(OtherUnit)
 - :IsTanking()
 - :HasMovementFlag(Flag)
+- :UpdatePosition()
 
 # Player
 ## Constants

@@ -231,6 +231,7 @@ end
 
 DMW.Helpers.Swing.MissHandler = function(unit, missType, offhand, destination)
     if missType == "PARRY" then
+        local parryHaste
         if unit == DMW.Player.Pointer then
             ------------ check this ??????? -------------------------
             if DMW.Tables.Swing.Units[destination] ~= nil then

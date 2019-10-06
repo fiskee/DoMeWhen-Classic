@@ -102,7 +102,7 @@ local function UpdateUnits()
     DMW.Player.Pet = nil
 
     for Pointer, Unit in pairs(Units) do
-        if not Unit.NextUpdate or Unit.NextUpdate < DMW.Time or Unit.ForceUpdate then
+        if not Unit.NextUpdate or Unit.NextUpdate < DMW.Time then
             Unit:Update()
         end
         if not DMW.Player.Target and UnitIsUnit(Pointer, "target") then

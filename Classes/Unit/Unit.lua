@@ -25,10 +25,7 @@ end
 
 function Unit:Update()
     self.NextUpdate = DMW.Time + (math.random(100, 1500) / 10000)
-    self.PosX, self.PosY, self.PosZ = ObjectPosition(self.Pointer)
-    if self.ForceUpdate then
-        self.ForceUpdate = nil
-    end
+    self:UpdatePosition()
     if DMW.Tables.AuraUpdate[self.Pointer] then
         DMW.Functions.AuraCache.Refresh(self.Pointer)
         DMW.Tables.AuraUpdate[self.Pointer] = nil
@@ -67,6 +64,10 @@ function Unit:Update()
     if self.Attackable and not self.Player then
         DMW.Helpers.Swing.AddUnit(self.Pointer)
     end
+end
+
+function Unit:UpdatePosition()
+    self.PosX, self.PosY, self.PosZ = ObjectPosition(self.Pointer)
 end
 
 function Unit:LineOfSight(OtherUnit)

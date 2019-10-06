@@ -8,6 +8,7 @@ function DMW.Helpers.QuestieHelper.Run()
         local tX, tY, tZ
         for _, Unit in pairs(DMW.Units) do
             if Unit.Quest and (not Unit.Dead or UnitCanBeLooted(Unit.Pointer)) and not Unit.Target and not UnitIsTapDenied(Unit.Pointer) then
+                Unit:UpdatePosition()
                 tX, tY, tZ = Unit.PosX, Unit.PosY, Unit.PosZ
                 LibDraw.SetColor(0, 255, 0)
                 LibDraw.SetWidth(4)
