@@ -52,7 +52,7 @@ local f = CreateFrame("Frame", "DoMeWhen", UIParent)
 f:SetScript(
     "OnUpdate",
     function(self, elapsed)
-        if EasyWoWToolbox ~= nil then
+        if GetObjectWithGUID then
             LibStub("LibDraw-1.0").clearCanvas()
             DMW.Time = GetTime()
             DMW.Pulses = DMW.Pulses + 1

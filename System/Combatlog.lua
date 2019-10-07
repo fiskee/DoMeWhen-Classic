@@ -28,7 +28,7 @@ local function nilWarriorUnit(destobj)
 end
 
 function frame:Reader(event, ...)
-    if EWT then
+    if GetObjectWithGUID then
         timeStamp, param, hideCaster, source, sourceName, sourceFlags, sourceRaidFlags, destination, destName, destFlags, destRaidFlags, spell, spellName, _, spellType = ...
         Locals()
         DMW.Functions.AuraCache.Event(...)

@@ -19,7 +19,7 @@ if class == "ROGUE" or class == "DRUID" then
 -- EHFrame:RegisterEvent("UNIT_POWER_UPDATE")
 end
 local function EventHandler(self, event, ...)
-    if EWT then
+    if GetObjectWithGUID then
         if event == "ENCOUNTER_START" then
             DMW.Player.EID = select(1, ...)
         elseif event == "ENCOUNTER_END" then

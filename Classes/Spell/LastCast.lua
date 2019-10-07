@@ -33,7 +33,7 @@ end
 local function EventTracker(self, event, ...)
     local SourceUnit = select(1, ...)
     local SpellID = select(3, ...)
-    if SourceUnit == "player" and EWT and DMW.Player.Spells then
+    if SourceUnit == "player" and GetObjectWithGUID and DMW.Player.Spells then
         if event == "UNIT_SPELLCAST_START" then
             if AddSpell(SpellID) then
                 WaitForSuccess = SpellID
