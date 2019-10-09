@@ -309,8 +309,8 @@ function Unit:CCed()
 end
 
 function Unit:IsQuest()
-    if DMW.Settings.profile.Helpers.QuestieHelper and QuestieTooltips and QuestieTooltips.tooltipLookup["u_" .. self.Name] then
-        for _, Tooltip in pairs(QuestieTooltips.tooltipLookup["u_" .. self.Name]) do
+    if self.ObjectID and DMW.Settings.profile.Helpers.QuestieHelper and QuestieTooltips and QuestieTooltips.tooltipLookup["u_" .. self.ObjectID] then
+        for _, Tooltip in pairs(QuestieTooltips.tooltipLookup["u_" .. self.ObjectID]) do
             Tooltip.Objective:Update()
             if not Tooltip.Objective.Completed then
                 return true
