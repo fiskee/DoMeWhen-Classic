@@ -48,7 +48,11 @@ function DMW.Helpers.Trackers.Run()
             if (DMW.Settings.profile.Helpers.TrackUnits and DMW.Settings.profile.Helpers.TrackUnits ~= "") and Unit.Trackable and not Unit.Dead and not Unit.Target then
                 if DMW.Settings.profile.Helpers.TrackAlert and (AlertTimer + 5) < DMW.Time and not IsForeground() then
                     FlashClientIcon()
-                    PlaySound(416)
+                    if GetCVarBool("Sound_EnableSFX") then
+                        PlaySound(416)
+                    else
+                        PlaySound(416, "MASTER")
+                    end
                     AlertTimer = DMW.Time
                 end
                 Unit:UpdatePosition()
@@ -68,7 +72,11 @@ function DMW.Helpers.Trackers.Run()
         if Object.Herb or Object.Ore or Object.Trackable then
             if DMW.Settings.profile.Helpers.TrackAlert and (AlertTimer + 5) < DMW.Time and not IsForeground() then
                 FlashClientIcon()
-                PlaySound(416)
+                if GetCVarBool("Sound_EnableSFX") then
+                    PlaySound(416)
+                else
+                    PlaySound(416, "MASTER")
+                end
                 AlertTimer = DMW.Time
             end
             LibDraw.Text(Object.Name .. " - " .. math.floor(Object.Distance) .. " Yards", "GameFontNormal", Object.PosX, Object.PosY, Object.PosZ + 2)
