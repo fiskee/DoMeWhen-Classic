@@ -107,14 +107,14 @@ function DMW.Helpers.Trackers.Run()
             end
         end
     end
-    if DMW.Settings.profile.Helpers.TrackPlayersNamePlates or (DMW.Settings.profile.Helpers.TrackUnits and DMW.Settings.profile.Helpers.TrackUnits ~= "") then
+    if DMW.Settings.profile.Helpers.TrackPlayersNamePlates or (DMW.Settings.profile.Helpers.TrackPlayers and DMW.Settings.profile.Helpers.TrackPlayers ~= "") then
         local Color
         local s = 1
-        local r,b,g,a = DMW.Settings.profile.Helpers.TrackPlayersColor[1],DMW.Settings.profile.Helpers.TrackPlayersColor[2],DMW.Settings.profile.Helpers.TrackPlayersColor[3],DMW.Settings.profile.Helpers.TrackPlayersColor[4]
-        LibDraw.SetColorRaw(r, b, g, a)
+        
         for _, Unit in pairs(DMW.Units) do
-            if Unit.Player and Unit.Trackable and not UnitIsUnit("target", Unit.Pointer) and not Unit.Dead then
-                
+            if (DMW.Settings.profile.Helpers.TrackPlayers and DMW.Settings.profile.Helpers.TrackPlayers ~= "") and Unit.Player and Unit.Trackable and not UnitIsUnit("target", Unit.Pointer) and not Unit.Dead then
+                local r,b,g,a = DMW.Settings.profile.Helpers.TrackPlayersColor[1],DMW.Settings.profile.Helpers.TrackPlayersColor[2],DMW.Settings.profile.Helpers.TrackPlayersColor[3],DMW.Settings.profile.Helpers.TrackPlayersColor[4]
+                LibDraw.SetColorRaw(r, b, g, a)
                 if DMW.Settings.profile.Helpers.TrackPlayersAlert and (AlertTimer + 5) < DMW.Time and not IsForeground() then
                     FlashClientIcon()
                     if GetCVarBool("Sound_EnableSFX") then
