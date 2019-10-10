@@ -36,10 +36,26 @@ local defaults = {
             AutoGather = false,
             Herbs = false,
             Ore = false,
-            LineToNodes = false,
-            TrackAlert = false,
-            TrackPlayers = false,
-            TrackNPC = false
+            TrackNPC = false,
+            QuestieHelperColor = {0,0,0,1},
+            HerbsColor = {0,0,0,1},
+            OreColor = {0,0,0,1},
+            TrackUnitsColor = {0,0,0,1},
+            TrackObjectsColor = {0,0,0,1},
+            TrackPlayersColor = {0,0,0,1},
+            OreAlert = false,
+            HerbsAlert = false,
+            QuestieHelperAlert = false,
+            TrackUnitsAlert = false,
+            TrackObjectsAlert = false,
+            TrackPlayersAlert = false,
+            OreLine = 0,
+            HerbsLine = 0,
+            QuestieHelperLine = 0,
+            TrackUnitsLine = 0,
+            TrackObjectsLine = 0,
+            TrackPlayersLine = 0
+
         }
     },
     char = {

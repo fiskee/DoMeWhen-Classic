@@ -57,7 +57,11 @@ function Unit:Update()
     self.Moving = self:HasMovementFlag(DMW.Enums.MovementFlags.Moving)
     self.Facing = ObjectIsFacing("Player", self.Pointer)
     self.Quest = self:IsQuest()
-    self.Trackable = self:IsTrackable()
+    if not self.Player then
+        self.Trackable = self:IsTrackable()
+    else
+        self.Trackable = self:IsTrackablePVP()
+    end
     if self.Name == "Unknown" then
         self.Name = UnitName(self.Pointer)
     end
@@ -331,6 +335,17 @@ end
 function Unit:IsTrackable()
     if DMW.Settings.profile.Helpers.TrackUnits and DMW.Settings.profile.Helpers.TrackUnits ~= "" then
         for k in string.gmatch(DMW.Settings.profile.Helpers.TrackUnits, "([^,]+)") do
+            if strmatch(string.lower(self.Name), string.lower(string.trim(k))) then
+                return true
+            end
+        end
+    end
+    return false
+end
+
+function Unit:IsTrackablePVP()
+    if DMW.Settings.profile.Helpers.TrackPlayers and DMW.Settings.profile.Helpers.TrackPlayers ~= "" then
+        for k in string.gmatch(DMW.Settings.profile.Helpers.TrackPlayers, "([^,]+)") do
             if strmatch(string.lower(self.Name), string.lower(string.trim(k))) then
                 return true
             end

@@ -3,6 +3,431 @@ local DMW = DMW
 local UI = DMW.UI
 local RotationOrder = 1
 
+local TrackingOptionsTable = {
+    name = "Tracking",
+    handler = Track123,
+    type = "group",
+    childGroups = "tab",
+    args = {
+        FirstTab = {
+            name = "General",
+            type = "group",
+            order = 1,
+            args = {
+                -- GeneralHeader = {
+                --     type = "header",
+                --     order = 1,
+                --     name = "General"
+                -- },
+                QuestieHelper = {
+                    type = "toggle",
+                    order = 1,
+                    name = "Questie",
+                    desc = "Mark quest mobs using data from Questie addon",
+                    width = 0.4,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.QuestieHelper
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.QuestieHelper = value
+                    end
+                },
+                QuestieHelperLine = {
+                    type = "range",
+                    order = 2,
+                    name = "Line",
+                    desc = "Width of line to Unit",
+                    width = 0.6,
+                    min = 0,
+                    max = 5,
+                    step = 1,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.QuestieHelperLine
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.QuestieHelperLine = value
+                    end
+                },
+                QuestieHelperSound = {
+                    type = "input",
+                    order = 3,
+                    name = "Alert",
+                    desc = "Sound for Alert, 416 = Murlocs",
+                    width = 0.4,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.QuestieHelperAlert
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.QuestieHelperAlert = value
+                    end
+                },
+                QuestieHelperColor = {
+                    type = "color",
+                    order = 4,
+                    name = "",
+                    desc = "Color",
+                    width = 0.4,
+                    hasAlpha = true,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.QuestieHelperColor[1],DMW.Settings.profile.Helpers.QuestieHelperColor[2],DMW.Settings.profile.Helpers.QuestieHelperColor[3],DMW.Settings.profile.Helpers.QuestieHelperColor[4]
+                    end,
+                    set = function(info, r,g,b,a)
+                        DMW.Settings.profile.Helpers.QuestieHelperColor = {r,g,b,a}
+                    end
+                },
+                Herbs = {
+                    type = "toggle",
+                    order = 5,
+                    name = "Herbs",
+                    desc = "Mark herbs in the world",
+                    width = 0.4,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.Herbs
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.Herbs = value
+                    end
+                },
+                HerbsLine = {
+                    type = "range",
+                    order = 6,
+                    name = "Line",
+                    desc = "Width of line to Herb",
+                    width = 0.6,
+                    min = 0,
+                    max = 5,
+                    step = 1,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.HerbsLine
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.HerbsLine = value
+                    end
+                },
+                HerbsAlert = {
+                    type = "input",
+                    order = 7,
+                    name = "Alert",
+                    desc = "Sound for Alert, 416 = Murlocs",
+                    width = 0.4,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.HerbsAlert
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.HerbsAlert = value
+                    end
+                },
+                HerbsColor = {
+                    type = "color",
+                    order = 8,
+                    name = "",
+                    desc = "",
+                    width = 0.4,
+                    hasAlpha = true,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.HerbsColor[1],DMW.Settings.profile.Helpers.HerbsColor[2],DMW.Settings.profile.Helpers.HerbsColor[3],DMW.Settings.profile.Helpers.HerbsColor[4]
+                    end,
+                    set = function(info, r,g,b,a)
+                        DMW.Settings.profile.Helpers.HerbsColor = {r,g,b,a}
+                    end
+                },
+                Ore = {
+                    type = "toggle",
+                    order = 9,
+                    name = "Ores",
+                    desc = "Mark ores in the world",
+                    width = 0.4,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.Ore
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.Ore = value
+                    end
+                },
+                OreLine = {
+                    type = "range",
+                    order = 10,
+                    name = "Line Width",
+                    desc = "Width of line to Ore",
+                    width = 0.6,
+                    min = 0,
+                    max = 5,
+                    step = 1,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.OreLine
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.OreLine = value
+                    end
+                },
+                OreAlert = {
+                    type = "input",
+                    order = 11,
+                    name = "Sound",
+                    desc = "",
+                    width = 0.4,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.OreAlert
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.OreAlert = value
+                    end
+                },
+                OreColor = {
+                    type = "color",
+                    order = 12,
+                    name = "",
+                    desc = "",
+                    width = 0.4,
+                    hasAlpha = true,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.OreColor[1],DMW.Settings.profile.Helpers.OreColor[2],DMW.Settings.profile.Helpers.OreColor[3],DMW.Settings.profile.Helpers.OreColor[4]
+                    end,
+                    set = function(info, r,g,b,a)
+                        DMW.Settings.profile.Helpers.OreColor = {r,g,b,a}
+                    end
+                },
+                Trackable = {
+                    type = "toggle",
+                    order = 13,
+                    name = "Track Special Objects",
+                    desc = "Mark special objects in the world (chests, containers ect.)",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.Trackable
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.Trackable = value
+                    end
+                },
+                TrackNPC = {
+                    type = "toggle",
+                    order = 14,
+                    name = "Track NPCs",
+                    desc = "Track important NPCs",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackNPC
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackNPC = value
+                    end
+                }
+            }
+        },
+        SecondTab = {
+            name = "Units",
+            type = "group",
+            order = 2,
+            args = {
+                TrackUnits = {
+                    type = "input",
+                    order = 1,
+                    name = "Track Units By Name",
+                    desc = "Mark units by name or part of name, seperated by comma",
+                    width = "full",
+                    multiline = true ,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackUnits
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackUnits = value
+                    end
+                },
+                TrackUnitsLine = {
+                    type = "range",
+                    order = 2,
+                    name = "Line",
+                    desc = "Width of line to Unit",
+                    width = 0.6,
+                    min = 0,
+                    max = 5,
+                    step = 1,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackUnitsLine
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackUnitsLine = value
+                    end
+                },
+                TrackUnitsAlert = {
+                    type = "input",
+                    order = 3,
+                    name = "Alert",
+                    desc = "Sound for Alert, 416 = Murlocs",
+                    width = 0.4,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackUnitsAlert
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackUnitsAlert = value
+                    end
+                },
+                TrackUnitsColor = {
+                    type = "color",
+                    order = 4,
+                    name = "",
+                    desc = "Color",
+                    width = 0.4,
+                    hasAlpha = true,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackUnitsColor[1],DMW.Settings.profile.Helpers.TrackUnitsColor[2],DMW.Settings.profile.Helpers.TrackUnitsColor[3],DMW.Settings.profile.Helpers.TrackUnitsColor[4]
+                    end,
+                    set = function(info, r,g,b,a)
+                        DMW.Settings.profile.Helpers.TrackUnitsColor = {r,g,b,a}
+                    end
+                }
+            }
+        },
+        ThirdTab = {
+            name = "Objects",
+            type = "group",
+            order = 3,
+            args = {
+                TrackObjects = {
+                    type = "input",
+                    order = 1,
+                    name = "Track Objects By Name",
+                    desc = "Mark objects by name or part of name, seperated by comma",
+                    width = "full",
+                    multiline = true ,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackObjects
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackObjects = value
+                    end
+                },
+                TrackObjectsLine = {
+                    type = "range",
+                    order = 2,
+                    name = "Line",
+                    desc = "Width of line to Object",
+                    width = 0.6,
+                    min = 0,
+                    max = 5,
+                    step = 1,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackObjectsLine
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackObjectsLine = value
+                    end
+                },
+                TrackObjectsAlert = {
+                    type = "input",
+                    order = 3,
+                    name = "Alert",
+                    desc = "Sound for Alert, 416 = Murlocs",
+                    width = 0.4,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackObjectsAlert
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackObjectsAlert = value
+                    end
+                },
+                TrackObjectsColor = {
+                    type = "color",
+                    order = 4,
+                    name = "",
+                    desc = "Color",
+                    width = 0.4,
+                    hasAlpha = true,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackObjectsColor[1],DMW.Settings.profile.Helpers.TrackObjectsColor[2],DMW.Settings.profile.Helpers.TrackObjectsColor[3],DMW.Settings.profile.Helpers.TrackObjectsColor[4]
+                    end,
+                    set = function(info, r,g,b,a)
+                        DMW.Settings.profile.Helpers.TrackObjectsColor = {r,g,b,a}
+                    end
+                }
+            }
+        },
+        FourthTab = {
+            name = "Players",
+            type = "group",
+            order = 4,
+            args = {
+                TrackPlayers = {
+                    type = "input",
+                    order = 1,
+                    name = "Track Players By Name",
+                    desc = "Mark Players by name or part of name, seperated by comma",
+                    width = "full",
+                    multiline = true ,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackPlayers
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackPlayers = value
+                    end
+                },
+                TrackPlayersLine = {
+                    type = "range",
+                    order = 2,
+                    name = "Line",
+                    desc = "Width of line to Player",
+                    width = 0.6,
+                    min = 0,
+                    max = 5,
+                    step = 1,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackPlayersLine
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackPlayersLine = value
+                    end
+                },
+                TrackPlayersAlert = {
+                    type = "input",
+                    order = 3,
+                    name = "Alert",
+                    desc = "Sound for Alert, 416 = Murlocs",
+                    width = 0.4,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackPlayersAlert
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackPlayersAlert = value
+                    end
+                },
+                TrackPlayersColor = {
+                    type = "color",
+                    order = 4,
+                    name = "",
+                    desc = "Color",
+                    width = 0.4,
+                    hasAlpha = true,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackPlayersColor[1],DMW.Settings.profile.Helpers.TrackPlayersColor[2],DMW.Settings.profile.Helpers.TrackPlayersColor[3],DMW.Settings.profile.Helpers.TrackPlayersColor[4]
+                    end,
+                    set = function(info, r,g,b,a)
+                        DMW.Settings.profile.Helpers.TrackPlayersColor = {r,g,b,a}
+                    end
+                },
+                TrackPlayersNameplates = {
+                    type = "toggle",
+                    order = 5,
+                    name = "Track Enemy Players Nameplates",
+                    desc = "Track enemy players outside nameplate range",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackPlayersNamePlates
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackPlayersNamePlates = value
+                    end
+                }
+            }
+        }
+    }
+}
+
+    
+
+
+
+
 local Options = {
     name = "DoMeWhen",
     handler = DMW,
@@ -103,19 +528,6 @@ local Options = {
                         DMW.Settings.profile.Helpers.AutoSkinning = value
                     end
                 },
-                QuestieHelper = {
-                    type = "toggle",
-                    order = 8,
-                    name = "Questie Helper",
-                    desc = "Mark quest mobs using data from Questie addon",
-                    width = "full",
-                    get = function()
-                        return DMW.Settings.profile.Helpers.QuestieHelper
-                    end,
-                    set = function(info, value)
-                        DMW.Settings.profile.Helpers.QuestieHelper = value
-                    end
-                },
                 AutoGather = {
                     type = "toggle",
                     order = 9,
@@ -128,123 +540,22 @@ local Options = {
                         DMW.Settings.profile.Helpers.AutoGather = value
                     end
                 },
-                Herbs = {
-                    type = "toggle",
-                    order = 10,
-                    name = "Track Herbs",
-                    desc = "Mark herbs in the world",
+                Trackshit = {
+                    type = "execute",
+                    order = 19,
+                    name = "Advanced Tracking",
+                    desc = "Track options",
                     width = "full",
-                    get = function()
-                        return DMW.Settings.profile.Helpers.Herbs
-                    end,
-                    set = function(info, value)
-                        DMW.Settings.profile.Helpers.Herbs = value
+                    func = function() 
+                        if not TrackingFrame:IsShown() then
+                            LibStub("AceConfigDialog-3.0"):Open("Track123", TrackingFrame)
+                        else
+                            TrackingFrame:Hide()
+                        end
                     end
-                },
-                Ore = {
-                    type = "toggle",
-                    order = 11,
-                    name = "Track Ore",
-                    desc = "Mark ore in the world",
-                    width = "full",
-                    get = function()
-                        return DMW.Settings.profile.Helpers.Ore
-                    end,
-                    set = function(info, value)
-                        DMW.Settings.profile.Helpers.Ore = value
-                    end
-                },
-                Trackable = {
-                    type = "toggle",
-                    order = 12,
-                    name = "Track Special Objects",
-                    desc = "Mark special objects in the world (chests, containers ect.)",
-                    width = "full",
-                    get = function()
-                        return DMW.Settings.profile.Helpers.Trackable
-                    end,
-                    set = function(info, value)
-                        DMW.Settings.profile.Helpers.Trackable = value
-                    end
-                },
-                LineToNodes = {
-                    type = "toggle",
-                    order = 13,
-                    name = "Show Lines To Nodes",
-                    desc = "Draw a line from player to herbs/ore",
-                    width = "full",
-                    get = function()
-                        return DMW.Settings.profile.Helpers.LineToNodes
-                    end,
-                    set = function(info, value)
-                        DMW.Settings.profile.Helpers.LineToNodes = value
-                    end
-                },
-                TrackUnits = {
-                    type = "input",
-                    order = 14,
-                    name = "Track Units By Name",
-                    desc = "Mark units by name or part of name, seperated by comma",
-                    width = "full",
-                    get = function()
-                        return DMW.Settings.profile.Helpers.TrackUnits
-                    end,
-                    set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackUnits = value
-                    end
-                },
-                TrackObjects = {
-                    type = "input",
-                    order = 15,
-                    name = "Track Objects By Name",
-                    desc = "Mark objects by name or part of name, seperated by comma",
-                    width = "full",
-                    get = function()
-                        return DMW.Settings.profile.Helpers.TrackObjects
-                    end,
-                    set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackObjects = value
-                    end
-                },
-                TrackAlert = {
-                    type = "toggle",
-                    order = 16,
-                    name = "Alert If Tracked Unit/Object Found",
-                    desc = "Will play sound and flash icon if WoW is in background, does not include quest units",
-                    width = "full",
-                    get = function()
-                        return DMW.Settings.profile.Helpers.TrackAlert
-                    end,
-                    set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackAlert = value
-                    end
-                },
-                TrackPlayers = {
-                    type = "toggle",
-                    order = 17,
-                    name = "Track Enemy Players",
-                    desc = "Track enemy players outside nameplate range",
-                    width = "full",
-                    get = function()
-                        return DMW.Settings.profile.Helpers.TrackPlayers
-                    end,
-                    set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackPlayers = value
-                    end
-                },
-                TrackNPC = {
-                    type = "toggle",
-                    order = 18,
-                    name = "Track NPCs",
-                    desc = "Track important NPCs",
-                    width = "full",
-                    get = function()
-                        return DMW.Settings.profile.Helpers.TrackNPC
-                    end,
-                    set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackNPC = value
-                    end
+                    
                 }
+
             }
         },
         EnemyTab = {
@@ -405,6 +716,14 @@ end
 function UI.Init()
     LibStub("AceConfig-3.0"):RegisterOptionsTable("DMW", Options)
     LibStub("AceConfigDialog-3.0"):SetDefaultSize("DMW", 400, 750)
+    LibStub("AceConfig-3.0"):RegisterOptionsTable("Track123", TrackingOptionsTable)
+    LibStub("AceConfigDialog-3.0"):SetDefaultSize("Track123", 400, 350)
+    if not TrackingFrame then
+        TrackingFrame = AceGUI:Create("Frame")
+        TrackingFrame:Hide()
+        _G["TrackingFrameConfig"] = TrackingFrame.frame
+        table.insert(UISpecialFrames, "TrackingFrameConfig")
+    end
     UI.MinimapIcon = LibStub("LibDBIcon-1.0")
     UI.MinimapIcon:Register("DMWMinimapIcon", MinimapIcon, DMW.Settings.profile.MinimapIcon)
 end
