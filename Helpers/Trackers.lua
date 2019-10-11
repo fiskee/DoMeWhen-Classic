@@ -6,12 +6,13 @@ local LibDraw = LibStub("LibDraw-1.0")
 
 function DMW.Helpers.Trackers.Run()
     if (DMW.Settings.profile.Helpers.TrackUnits and DMW.Settings.profile.Helpers.TrackUnits ~= "") or DMW.Settings.profile.Helpers.TrackNPC then
-        LibDraw.SetColor(255, 165, 0)
+        
         local s = 1
         local tX, tY, tZ
         for _, Unit in pairs(DMW.Units) do
             -- if Unit.Player then return end
             if DMW.Settings.profile.Helpers.TrackNPC and not Unit.Player and Unit.Friend then
+                LibDraw.SetColor(255, 165, 0)
                 for k,v in pairs(DMW.Enums.NpcFlags) do
                     if Unit:HasNPCFlag(v) then
                         LibDraw.Text(k, "GameFontNormalSmall", Unit.PosX, Unit.PosY, Unit.PosZ + 2)
@@ -19,10 +20,10 @@ function DMW.Helpers.Trackers.Run()
                     end
                 end
             end
-            if (DMW.Settings.profile.Helpers.TrackUnits and DMW.Settings.profile.Helpers.TrackUnits ~= "") and Unit.Trackable and not Unit.Dead and not Unit.Target then
+            if (DMW.Settings.profile.Helpers.TrackUnits ~= nil and DMW.Settings.profile.Helpers.TrackUnits ~= "") and not Unit.Player and Unit.Trackable and not Unit.Dead and not Unit.Target then
                 local r,b,g,a = DMW.Settings.profile.Helpers.TrackUnitsColor[1],DMW.Settings.profile.Helpers.TrackUnitsColor[2],DMW.Settings.profile.Helpers.TrackUnitsColor[3],DMW.Settings.profile.Helpers.TrackUnitsColor[4]
                 LibDraw.SetColorRaw(r, b, g, a)
-                if DMW.Settings.profile.Helpers.TrackUnitsAlert and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+                if tonumber(DMW.Settings.profile.Helpers.TrackUnitsAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
                     FlashClientIcon()
                     if GetCVarBool("Sound_EnableSFX") then
                         PlaySound(DMW.Settings.profile.Helpers.TrackUnitsAlert)
@@ -40,19 +41,20 @@ function DMW.Helpers.Trackers.Run()
                 if DMW.Settings.profile.Helpers.TrackUnitsLine > 0 then
                     local w = DMW.Settings.profile.Helpers.TrackUnitsLine
                     LibDraw.SetWidth(w)
-                    DrawLine(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
+                    DrawLineDMWC(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
                 end
             end
             -- if Unit.NPC ~= false then
             --     LibDraw.Text(Unit.NPC, "GameFontNormal", self.PosX, self.PosY, self.PosZ + 2)
             -- end
+                
         end
     end
     for _, Object in pairs(DMW.GameObjects) do
         if Object.Herb then
             local r,b,g,a = DMW.Settings.profile.Helpers.HerbsColor[1],DMW.Settings.profile.Helpers.HerbsColor[2],DMW.Settings.profile.Helpers.HerbsColor[3],DMW.Settings.profile.Helpers.HerbsColor[4]
             LibDraw.SetColorRaw(r, b, g, a)
-            if DMW.Settings.profile.Helpers.HerbsAlert and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+            if tonumber(DMW.Settings.profile.Helpers.HerbsAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
                 FlashClientIcon()
                 if GetCVarBool("Sound_EnableSFX") then
                     PlaySound(DMW.Settings.profile.Helpers.HerbsAlert)
@@ -65,13 +67,13 @@ function DMW.Helpers.Trackers.Run()
             if DMW.Settings.profile.Helpers.HerbsLine > 0 then
                 local w = DMW.Settings.profile.Helpers.HerbsLine
                 LibDraw.SetWidth(w)
-                DrawLine(Object.PosX, Object.PosY, Object.PosZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
+                DrawLineDMWC(Object.PosX, Object.PosY, Object.PosZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
             end
         elseif Object.Ore then
             local r,b,g,a = DMW.Settings.profile.Helpers.OreColor[1],DMW.Settings.profile.Helpers.OreColor[2],DMW.Settings.profile.Helpers.OreColor[3],DMW.Settings.profile.Helpers.OreColor[4]
             LibDraw.SetColorRaw(r, b, g, a)
             ----------------------------------------------------------------------------
-            if DMW.Settings.profile.Helpers.OreAlert and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+            if tonumber(DMW.Settings.profile.Helpers.OreAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
                 FlashClientIcon()
                 if GetCVarBool("Sound_EnableSFX") then
                     PlaySound(DMW.Settings.profile.Helpers.OreAlert)
@@ -84,18 +86,19 @@ function DMW.Helpers.Trackers.Run()
             if DMW.Settings.profile.Helpers.OresLine > 0 then
                 local w = DMW.Settings.profile.Helpers.OresLine
                 LibDraw.SetWidth(w)
-                DrawLine(Object.PosX, Object.PosY, Object.PosZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
+                DrawLineDMWC(Object.PosX, Object.PosY, Object.PosZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
             end
         elseif Object.Trackable then
             local r,b,g,a = DMW.Settings.profile.Helpers.TrackObjectsColor[1],DMW.Settings.profile.Helpers.TrackObjectsColor[2],DMW.Settings.profile.Helpers.TrackObjectsColor[3],DMW.Settings.profile.Helpers.TrackObjectsColor[4]
             LibDraw.SetColorRaw(r, b, g, a)
             ----------------------------------------------------------------------------
-            if DMW.Settings.profile.Helpers.TrackObjectsAlert and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+            if tonumber(DMW.Settings.profile.Helpers.TrackObjectsAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+                local sound = tonumber(DMW.Settings.profile.Helpers.TrackObjectsAlert)
                 FlashClientIcon()
                 if GetCVarBool("Sound_EnableSFX") then
-                    PlaySound(DMW.Settings.profile.Helpers.TrackObjectsAlert)
+                    PlaySound(sound)
                 else
-                    PlaySound(DMW.Settings.profile.Helpers.TrackObjectsAlert, "MASTER")
+                    PlaySound(sound, "MASTER")
                 end
                 AlertTimer = DMW.Time
             end
@@ -103,37 +106,38 @@ function DMW.Helpers.Trackers.Run()
             if DMW.Settings.profile.Helpers.TrackObjectsLine > 0 then
                 local w = DMW.Settings.profile.Helpers.TrackObjectsLine
                 LibDraw.SetWidth(w)
-                DrawLine(Object.PosX, Object.PosY, Object.PosZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
+                DrawLineDMWC(Object.PosX, Object.PosY, Object.PosZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
             end
         end
     end
-    if DMW.Settings.profile.Helpers.TrackPlayersNamePlates or (DMW.Settings.profile.Helpers.TrackPlayers and DMW.Settings.profile.Helpers.TrackPlayers ~= "") then
+    if DMW.Settings.profile.Helpers.TrackPlayersNamePlates or (DMW.Settings.profile.Helpers.TrackPlayers ~= "") then
         local Color
         local s = 1
         
         for _, Unit in pairs(DMW.Units) do
-            if (DMW.Settings.profile.Helpers.TrackPlayers and DMW.Settings.profile.Helpers.TrackPlayers ~= "") and Unit.Player and Unit.Trackable and not UnitIsUnit("target", Unit.Pointer) and not Unit.Dead then
+            if (DMW.Settings.profile.Helpers.TrackPlayers ~= "") and Unit.Player and Unit.Trackable and not UnitIsUnit("target", Unit.Pointer) and not Unit.Dead then
                 local r,b,g,a = DMW.Settings.profile.Helpers.TrackPlayersColor[1],DMW.Settings.profile.Helpers.TrackPlayersColor[2],DMW.Settings.profile.Helpers.TrackPlayersColor[3],DMW.Settings.profile.Helpers.TrackPlayersColor[4]
                 LibDraw.SetColorRaw(r, b, g, a)
-                if DMW.Settings.profile.Helpers.TrackPlayersAlert and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+                if tonumber(DMW.Settings.profile.Helpers.TrackPlayersAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+                    local sound = tonumber(DMW.Settings.profile.Helpers.TrackPlayersAlert)
                     FlashClientIcon()
                     if GetCVarBool("Sound_EnableSFX") then
-                        PlaySound(DMW.Settings.profile.Helpers.TrackPlayersAlert)
+                        PlaySound(sound)
                     else
-                        PlaySound(DMW.Settings.profile.Helpers.TrackPlayersAlert, "MASTER")
+                        PlaySound(sound, "MASTER")
                     end
                     AlertTimer = DMW.Time
                 end
-                Unit:UpdatePosition()
-                tX, tY, tZ = Unit.PosX, Unit.PosY, Unit.PosZ
-                LibDraw.SetWidth(4)
-                LibDraw.Line(tX, tY, tZ + s * 1.3, tX, tY, tZ)
-                LibDraw.Line(tX - s, tY, tZ, tX + s, tY, tZ)
-                LibDraw.Line(tX, tY - s, tZ, tX, tY + s, tZ)
+                    Unit:UpdatePosition()
+                    tX, tY, tZ = Unit.PosX, Unit.PosY, Unit.PosZ
+                    LibDraw.SetWidth(4)
+                    LibDraw.Line(tX, tY, tZ + s * 1.3, tX, tY, tZ)
+                    LibDraw.Line(tX - s, tY, tZ, tX + s, tY, tZ)
+                    LibDraw.Line(tX, tY - s, tZ, tX, tY + s, tZ)
                 if DMW.Settings.profile.Helpers.TrackPlayersLine > 0 then
                     local w = DMW.Settings.profile.Helpers.TrackPlayersLine
                     LibDraw.SetWidth(w)
-                    DrawLine(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
+                    DrawLineDMWC(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
                 end
             elseif DMW.Settings.profile.Helpers.TrackPlayersNamePlates and Unit.Player and not Unit.Dead and not UnitIsFriend("player", Unit.Pointer) and not C_NamePlate.GetNamePlateForUnit(Unit.Pointer) and not UnitIsUnit("target", Unit.Pointer) then
                 Unit:UpdatePosition()

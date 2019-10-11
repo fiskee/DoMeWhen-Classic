@@ -3,7 +3,7 @@ local DMW = DMW
 local AlertTimer = GetTime()
 DMW.Helpers.QuestieHelper = {}
 
-function DrawLine(sx, sy, sz, ex, ey, ez)
+function DrawLineDMWC(sx, sy, sz, ex, ey, ez)
     local function WorldToScreen(wX, wY, wZ)
         local sX, sY = _G.WorldToScreen(wX, wY, wZ)
         if sX and sY then
@@ -57,7 +57,7 @@ function DMW.Helpers.QuestieHelper.Run()
                 if DMW.Settings.profile.Helpers.QuestieHelperLine > 0 then
                     local w = DMW.Settings.profile.Helpers.QuestieHelperLine
                     LibDraw.SetWidth(w)
-                    DrawLine(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
+                    DrawLineDMWC(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
                 end
             end
         end
@@ -80,7 +80,7 @@ function DMW.Helpers.QuestieHelper.Run()
                 if DMW.Settings.profile.Helpers.QuestieHelperLine > 0 then
                     local w = DMW.Settings.profile.Helpers.QuestieHelperLine
                     LibDraw.SetWidth(w)
-                    DrawLine(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
+                    DrawLineDMWC(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
                 end
             end
         end

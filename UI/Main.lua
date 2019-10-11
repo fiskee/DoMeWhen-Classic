@@ -48,7 +48,7 @@ local TrackingOptionsTable = {
                         DMW.Settings.profile.Helpers.QuestieHelperLine = value
                     end
                 },
-                QuestieHelperSound = {
+                QuestieHelperAlert = {
                     type = "input",
                     order = 3,
                     name = "Alert",

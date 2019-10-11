@@ -43,19 +43,18 @@ local defaults = {
             TrackUnitsColor = {0,0,0,1},
             TrackObjectsColor = {0,0,0,1},
             TrackPlayersColor = {0,0,0,1},
-            OreAlert = false,
-            HerbsAlert = false,
-            QuestieHelperAlert = false,
-            TrackUnitsAlert = false,
-            TrackObjectsAlert = false,
-            TrackPlayersAlert = false,
+            OreAlert = 0,
+            HerbsAlert = 0,
+            QuestieHelperAlert = 0,
+            TrackUnitsAlert = 0,
+            TrackObjectsAlert = 0,
+            TrackPlayersAlert = 0,
             OreLine = 0,
             HerbsLine = 0,
             QuestieHelperLine = 0,
             TrackUnitsLine = 0,
             TrackObjectsLine = 0,
             TrackPlayersLine = 0
-
         }
     },
     char = {

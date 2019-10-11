@@ -57,11 +57,7 @@ function Unit:Update()
     self.Moving = self:HasMovementFlag(DMW.Enums.MovementFlags.Moving)
     self.Facing = ObjectIsFacing("Player", self.Pointer)
     self.Quest = self:IsQuest()
-    if not self.Player then
-        self.Trackable = self:IsTrackable()
-    else
-        self.Trackable = self:IsTrackablePVP()
-    end
+    self.Trackable = self:IsTrackable()
     if self.Name == "Unknown" then
         self.Name = UnitName(self.Pointer)
     end
@@ -333,18 +329,13 @@ function Unit:ChannelInfo()
 end
 
 function Unit:IsTrackable()
-    if DMW.Settings.profile.Helpers.TrackUnits and DMW.Settings.profile.Helpers.TrackUnits ~= "" then
+    if DMW.Settings.profile.Helpers.TrackUnits ~= nil and DMW.Settings.profile.Helpers.TrackUnits ~= "" and not self.Player then
         for k in string.gmatch(DMW.Settings.profile.Helpers.TrackUnits, "([^,]+)") do
             if strmatch(string.lower(self.Name), string.lower(string.trim(k))) then
                 return true
             end
         end
-    end
-    return false
-end
-
-function Unit:IsTrackablePVP()
-    if DMW.Settings.profile.Helpers.TrackPlayers and DMW.Settings.profile.Helpers.TrackPlayers ~= "" then
+    elseif DMW.Settings.profile.Helpers.TrackPlayers ~= nil and DMW.Settings.profile.Helpers.TrackPlayers ~= "" and self.Player then
         for k in string.gmatch(DMW.Settings.profile.Helpers.TrackPlayers, "([^,]+)") do
             if strmatch(string.lower(self.Name), string.lower(string.trim(k))) then
                 return true
@@ -353,6 +344,7 @@ function Unit:IsTrackablePVP()
     end
     return false
 end
+
 
 function Unit:PowerPct()
     local Power = UnitPower(self.Pointer)
