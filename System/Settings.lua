@@ -43,6 +43,7 @@ local defaults = {
             TrackUnitsColor = {0,0,0,1},
             TrackObjectsColor = {0,0,0,1},
             TrackPlayersColor = {0,0,0,1},
+            TrackNPCColor = {1,0.6,0,1},
             OreAlert = 0,
             HerbsAlert = 0,
             QuestieHelperAlert = 0,

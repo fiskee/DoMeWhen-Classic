@@ -39,7 +39,7 @@ function DMW.Helpers.QuestieHelper.Run()
         LibDraw.SetColorRaw(r, b, g, a)
         for _, Unit in pairs(DMW.Units) do
             if Unit.Quest and (not Unit.Dead or UnitCanBeLooted(Unit.Pointer)) and not Unit.Target and not UnitIsTapDenied(Unit.Pointer) then
-                if DMW.Settings.profile.Helpers.QuestieHelperAlert and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+                if tonumber(DMW.Settings.profile.Helpers.QuestieHelperAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
                     FlashClientIcon()
                     if GetCVarBool("Sound_EnableSFX") then
                         PlaySound(DMW.Settings.profile.Helpers.QuestieHelperAlert)
@@ -63,7 +63,7 @@ function DMW.Helpers.QuestieHelper.Run()
         end
         for _, Object in pairs(DMW.GameObjects) do
             if Object.Quest then
-                if DMW.Settings.profile.Helpers.QuestieHelperAlert and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+                if tonumber(DMW.Settings.profile.Helpers.QuestieHelperAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
                     FlashClientIcon()
                     if GetCVarBool("Sound_EnableSFX") then
                         PlaySound(DMW.Settings.profile.Helpers.QuestieHelperAlert)

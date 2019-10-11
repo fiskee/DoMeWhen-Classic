@@ -205,12 +205,26 @@ local TrackingOptionsTable = {
                     order = 14,
                     name = "Track NPCs",
                     desc = "Track important NPCs",
-                    width = "full",
+                    width = 0.5,
                     get = function()
                         return DMW.Settings.profile.Helpers.TrackNPC
                     end,
                     set = function(info, value)
                         DMW.Settings.profile.Helpers.TrackNPC = value
+                    end
+                },
+                TrackNPCColor = {
+                    type = "color",
+                    order = 15,
+                    name = "",
+                    desc = "",
+                    width = 0.5,
+                    hasAlpha = true,
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackNPCColor[1],DMW.Settings.profile.Helpers.TrackNPCColor[2],DMW.Settings.profile.Helpers.TrackNPCColor[3],DMW.Settings.profile.Helpers.TrackNPCColor[4]
+                    end,
+                    set = function(info, r,g,b,a)
+                        DMW.Settings.profile.Helpers.TrackNPCColor = {r,g,b,a}
                     end
                 }
             }

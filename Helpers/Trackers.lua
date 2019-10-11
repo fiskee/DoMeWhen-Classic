@@ -12,7 +12,8 @@ function DMW.Helpers.Trackers.Run()
         for _, Unit in pairs(DMW.Units) do
             -- if Unit.Player then return end
             if DMW.Settings.profile.Helpers.TrackNPC and not Unit.Player and Unit.Friend then
-                LibDraw.SetColor(255, 165, 0)
+                local r,b,g,a = DMW.Settings.profile.Helpers.TrackNPCColor[1],DMW.Settings.profile.Helpers.TrackNPCColor[2],DMW.Settings.profile.Helpers.TrackNPCColor[3],DMW.Settings.profile.Helpers.TrackNPCColor[4]
+                LibDraw.SetColorRaw(r, b, g, a)
                 for k,v in pairs(DMW.Enums.NpcFlags) do
                     if Unit:HasNPCFlag(v) then
                         LibDraw.Text(k, "GameFontNormalSmall", Unit.PosX, Unit.PosY, Unit.PosZ + 2)
@@ -83,8 +84,8 @@ function DMW.Helpers.Trackers.Run()
                 AlertTimer = DMW.Time
             end
             LibDraw.Text(Object.Name .. " - " .. math.floor(Object.Distance) .. " Yards", "GameFontNormal", Object.PosX, Object.PosY, Object.PosZ + 2)
-            if DMW.Settings.profile.Helpers.OresLine > 0 then
-                local w = DMW.Settings.profile.Helpers.OresLine
+            if DMW.Settings.profile.Helpers.OreLine > 0 then
+                local w = DMW.Settings.profile.Helpers.OreLine
                 LibDraw.SetWidth(w)
                 DrawLineDMWC(Object.PosX, Object.PosY, Object.PosZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
             end
@@ -115,7 +116,7 @@ function DMW.Helpers.Trackers.Run()
         local s = 1
         
         for _, Unit in pairs(DMW.Units) do
-            if (DMW.Settings.profile.Helpers.TrackPlayers ~= "") and Unit.Player and Unit.Trackable and not UnitIsUnit("target", Unit.Pointer) and not Unit.Dead then
+            if (DMW.Settings.profile.Helpers.TrackPlayers ~= nil and DMW.Settings.profile.Helpers.TrackPlayers ~= "") and Unit.Player and Unit.Trackable and not UnitIsUnit("target", Unit.Pointer) and not Unit.Dead then
                 local r,b,g,a = DMW.Settings.profile.Helpers.TrackPlayersColor[1],DMW.Settings.profile.Helpers.TrackPlayersColor[2],DMW.Settings.profile.Helpers.TrackPlayersColor[3],DMW.Settings.profile.Helpers.TrackPlayersColor[4]
                 LibDraw.SetColorRaw(r, b, g, a)
                 if tonumber(DMW.Settings.profile.Helpers.TrackPlayersAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
