@@ -63,10 +63,22 @@ local defaults = {
     }
 }
 
+local function MigrateSettings()
+    local Reload = false
+    if type(DMW.Settings.profile.Helpers.TrackPlayers) == "boolean" then
+        DMW.Settings.profile.Helpers.TrackPlayers = nil
+        Reload = true
+    end
+    if Reload then
+        ReloadUI()
+    end
+end
+
 function DMW.InitSettings()
     DMW.Settings = LibStub("AceDB-3.0"):New("DMWSettings", defaults, "Default")
     DMW.Settings:SetProfile(DMW.Settings.char.SelectedProfile)
     DMW.Settings.RegisterCallback(DMW, "OnProfileChanged", "OnProfileChanged")
+    MigrateSettings()
 end
 
 function DMW:OnProfileChanged(self, db, profile)
