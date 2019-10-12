@@ -3801,6 +3801,9 @@ globals = {
 	"unpack",
 	"wipe",
 	"xpcall",
+	--Classic
+	"CastingInfo",
+	"ChannelInfo",
 	--EWT
 	"ObjectPointer",
 	"ObjectExists",
@@ -3906,21 +3909,19 @@ globals = {
 	"FaceDirection",
 	"SetMaximumClimbAngle",
 	"UnitCreatureTypeID",
+	"ScreenToWorld",
+	"GetMousePosition",
+	"Types",
 	--Extras
 	"DMW",
 	"QuestieTooltips",
 	"RealMobHealth_CreatureHealthCache",
 	"LibStub",
-	"CastingInfo",
-	"ChannelInfo",
 	"GameFontHighlightSmall",
 	"GameFontNormalSmall",
 	"UIParent",
 	"UISpecialFrames",
-	CombatLogGetCurrentEventInfo",
-	"ScreenToWorld",
-	"GetMousePosition",
+	"CombatLogGetCurrentEventInfo",
 	"ACtionBarButtonEventsFrame",
-	"Types",
 	"WorldFrame"
 }
