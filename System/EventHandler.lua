@@ -67,7 +67,7 @@ local function EventHandler(self, event, ...)
             local a, b = ...
             if class == "ROGUE" or (class == "DRUID" and GetShapeshiftForm() == 3) then
                 local Power = UnitPower("player") or 0
-                if a == "player" and b == "ENERGY" and DMW.Player.Power <Power then
+                if DMW.Player and DMW.Player.Power and a == "player" and b == "ENERGY" and DMW.Player.Power < Power then
                     DMW.Player.TickTime = DMW.Time
                 -- EHFrame:UnregisterEvent("UNIT_POWER_FREQUENT")
                 end
