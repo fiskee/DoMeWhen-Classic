@@ -3910,5 +3910,7 @@ globals = {
 	"DMW",
 	"QuestieTooltips",
 	"RealMobHealth_CreatureHealthCache",
-	"LibStub"
+	"LibStub",
+	"CastingInfo",
+	"ChannelInfo"
 }
