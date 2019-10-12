@@ -3912,5 +3912,15 @@ globals = {
 	"RealMobHealth_CreatureHealthCache",
 	"LibStub",
 	"CastingInfo",
-	"ChannelInfo"
+	"ChannelInfo",
+	"GameFontHighlightSmall",
+	"GameFontNormalSmall",
+	"UIParent",
+	"UISpecialFrames",
+	CombatLogGetCurrentEventInfo",
+	"ScreenToWorld",
+	"GetMousePosition",
+	"ACtionBarButtonEventsFrame",
+	"Types",
+	WorldFrame"
 }
