@@ -67,7 +67,9 @@ DMW.Helpers.Swing.SwingOHReset = function(unit)
             Player.SwingOH = Player.OHSpeed
         end
     else
-        Swing.Units[unit].SwingOH = Swing.Units[unit].OHSpeed
+        if Swing.Units[unit] ~= nil then
+            Swing.Units[unit].SwingOH = Swing.Units[unit].OHSpeed
+        end
     end
 end
 
