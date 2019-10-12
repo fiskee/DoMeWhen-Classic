@@ -25,7 +25,7 @@ function Queue.GetBindings()
 end
 
 local function SpellSuccess(self, event, ...)
-    if event == "UNIT_SPELLCAST_SUCCEEDED" and (Queue.Spell or Queue.Item) then
+    if (event == "UNIT_SPELLCAST_SUCCEEDED" or event == "UNIT_SPELLCAST_START") and (Queue.Spell or Queue.Item) then
         local SourceUnit = select(1, ...)
         local SpellID = select(3, ...)
         if SourceUnit == "player" then
@@ -103,6 +103,7 @@ function Queue.Run()
         QueueFrame:SetPropagateKeyboardInput(true)
         QueueFrame:SetScript("OnKeyDown", CheckPress)
         QueueFrame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
+        QueueFrame:RegisterEvent("UNIT_SPELLCAST_START")
         QueueFrame:SetScript("OnEvent", SpellSuccess)
     end
     if GetKeyState(0x05) then
