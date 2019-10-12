@@ -41,6 +41,13 @@ globals = {
 	"TradeSkillOnlyShowSkillUps",
 	"SetTradeSkillInvSlotFilter",
 	"ExpandTradeSkillSubClass",
+	"GameFontHighlightSmall",
+	"GameFontNormalSmall",
+	"UIParent",
+	"UISpecialFrames",
+	"CombatLogGetCurrentEventInfo",
+	"ActionBarButtonEventsFrame",
+	"WorldFrame",
 	-- API functions
 	"AbandonQuest",
 	"AbandonSkill",
@@ -3916,12 +3923,5 @@ globals = {
 	"DMW",
 	"QuestieTooltips",
 	"RealMobHealth_CreatureHealthCache",
-	"LibStub",
-	"GameFontHighlightSmall",
-	"GameFontNormalSmall",
-	"UIParent",
-	"UISpecialFrames",
-	"CombatLogGetCurrentEventInfo",
-	"ACtionBarButtonEventsFrame",
-	"WorldFrame"
+	"LibStub"
 }
