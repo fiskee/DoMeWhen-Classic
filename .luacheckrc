@@ -3906,6 +3906,9 @@ globals = {
 	"FaceDirection",
 	"SetMaximumClimbAngle",
 	"UnitCreatureTypeID",
-	--DMW
-	"DMW"
+	--Extras
+	"DMW",
+	"QuestieTooltips",
+	"RealMobHealth_CreatureHealthCache",
+	"LibStub"
 }
