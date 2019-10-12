@@ -105,7 +105,7 @@ function Unit:HasThreat()
         return false
     elseif DMW.Player.Instance ~= "none" and UnitAffectingCombat(self.Pointer) then
         return true
-    elseif DMW.Player.Instance == "none" and (DMW.Enums.Dummy[self.ObjectID] or UnitIsUnit(self.Pointer, "target")) then
+    elseif DMW.Player.Instance == "none" and (DMW.Enums.Dummy[self.ObjectID] or (UnitIsVisible("target") and UnitIsUnit(self.Pointer, "target"))) then
         return true
     end
     if not self.Player and self.Target and (UnitIsUnit(self.Target, "player") or UnitIsUnit(self.Target, "pet") or UnitInParty(self.Target)) then
@@ -335,7 +335,9 @@ function Unit:IsTrackable()
                 return true
             end
         end
-    elseif DMW.Settings.profile.Helpers.TrackPlayers ~= nil and DMW.Settings.profile.Helpers.TrackPlayers ~= "" and self.Player then
+    elseif self.Player and DMW.Settings.profile.Helpers.TrackPlayersAny then
+        return true
+    elseif self.Player and DMW.Settings.profile.Helpers.TrackPlayers ~= nil and DMW.Settings.profile.Helpers.TrackPlayers ~= "" then
         for k in string.gmatch(DMW.Settings.profile.Helpers.TrackPlayers, "([^,]+)") do
             if strmatch(string.lower(self.Name), string.lower(string.trim(k))) then
                 return true

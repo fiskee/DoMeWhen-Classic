@@ -3,7 +3,7 @@ local DMW = DMW
 local AlertTimer = GetTime()
 DMW.Helpers.QuestieHelper = {}
 
-function DrawLineDMWC(sx, sy, sz, ex, ey, ez)
+function DMW.Helpers.DrawLineDMWC(sx, sy, sz, ex, ey, ez)
     local function WorldToScreen(wX, wY, wZ)
         local sX, sY = _G.WorldToScreen(wX, wY, wZ)
         if sX and sY then
@@ -35,7 +35,7 @@ function DMW.Helpers.QuestieHelper.Run()
     if DMW.Settings.profile.Helpers.QuestieHelper then
         local s = 1
         local tX, tY, tZ
-        local r,b,g,a = DMW.Settings.profile.Helpers.QuestieHelperColor[1],DMW.Settings.profile.Helpers.QuestieHelperColor[2],DMW.Settings.profile.Helpers.QuestieHelperColor[3],DMW.Settings.profile.Helpers.QuestieHelperColor[4]
+        local r, b, g, a = DMW.Settings.profile.Helpers.QuestieHelperColor[1], DMW.Settings.profile.Helpers.QuestieHelperColor[2], DMW.Settings.profile.Helpers.QuestieHelperColor[3], DMW.Settings.profile.Helpers.QuestieHelperColor[4]
         LibDraw.SetColorRaw(r, b, g, a)
         for _, Unit in pairs(DMW.Units) do
             if Unit.Quest and (not Unit.Dead or UnitCanBeLooted(Unit.Pointer)) and not Unit.Target and not UnitIsTapDenied(Unit.Pointer) then
@@ -57,7 +57,7 @@ function DMW.Helpers.QuestieHelper.Run()
                 if DMW.Settings.profile.Helpers.QuestieHelperLine > 0 then
                     local w = DMW.Settings.profile.Helpers.QuestieHelperLine
                     LibDraw.SetWidth(w)
-                    DrawLineDMWC(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
+                    DMW.Helpers.DrawLineDMWC(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
                 end
             end
         end
@@ -80,7 +80,7 @@ function DMW.Helpers.QuestieHelper.Run()
                 if DMW.Settings.profile.Helpers.QuestieHelperLine > 0 then
                     local w = DMW.Settings.profile.Helpers.QuestieHelperLine
                     LibDraw.SetWidth(w)
-                    DrawLineDMWC(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
+                    DMW.Helpers.DrawLineDMWC(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
                 end
             end
         end

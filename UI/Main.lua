@@ -2,10 +2,11 @@ local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 local DMW = DMW
 local UI = DMW.UI
 local RotationOrder = 1
+local TrackingFrame, TrackerConfig
 
 local TrackingOptionsTable = {
     name = "Tracking",
-    handler = Track123,
+    handler = TrackerConfig,
     type = "group",
     childGroups = "tab",
     args = {
@@ -24,7 +25,7 @@ local TrackingOptionsTable = {
                     order = 1,
                     name = "Questie",
                     desc = "Mark quest mobs using data from Questie addon",
-                    width = 0.4,
+                    width = 0.5,
                     get = function()
                         return DMW.Settings.profile.Helpers.QuestieHelper
                     end,
@@ -64,15 +65,15 @@ local TrackingOptionsTable = {
                 QuestieHelperColor = {
                     type = "color",
                     order = 4,
-                    name = "",
+                    name = "Color",
                     desc = "Color",
                     width = 0.4,
                     hasAlpha = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.QuestieHelperColor[1],DMW.Settings.profile.Helpers.QuestieHelperColor[2],DMW.Settings.profile.Helpers.QuestieHelperColor[3],DMW.Settings.profile.Helpers.QuestieHelperColor[4]
+                        return DMW.Settings.profile.Helpers.QuestieHelperColor[1], DMW.Settings.profile.Helpers.QuestieHelperColor[2], DMW.Settings.profile.Helpers.QuestieHelperColor[3], DMW.Settings.profile.Helpers.QuestieHelperColor[4]
                     end,
-                    set = function(info, r,g,b,a)
-                        DMW.Settings.profile.Helpers.QuestieHelperColor = {r,g,b,a}
+                    set = function(info, r, g, b, a)
+                        DMW.Settings.profile.Helpers.QuestieHelperColor = {r, g, b, a}
                     end
                 },
                 Herbs = {
@@ -120,15 +121,15 @@ local TrackingOptionsTable = {
                 HerbsColor = {
                     type = "color",
                     order = 8,
-                    name = "",
-                    desc = "",
+                    name = "Color",
+                    desc = "Color",
                     width = 0.4,
                     hasAlpha = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.HerbsColor[1],DMW.Settings.profile.Helpers.HerbsColor[2],DMW.Settings.profile.Helpers.HerbsColor[3],DMW.Settings.profile.Helpers.HerbsColor[4]
+                        return DMW.Settings.profile.Helpers.HerbsColor[1], DMW.Settings.profile.Helpers.HerbsColor[2], DMW.Settings.profile.Helpers.HerbsColor[3], DMW.Settings.profile.Helpers.HerbsColor[4]
                     end,
-                    set = function(info, r,g,b,a)
-                        DMW.Settings.profile.Helpers.HerbsColor = {r,g,b,a}
+                    set = function(info, r, g, b, a)
+                        DMW.Settings.profile.Helpers.HerbsColor = {r, g, b, a}
                     end
                 },
                 Ore = {
@@ -176,15 +177,15 @@ local TrackingOptionsTable = {
                 OreColor = {
                     type = "color",
                     order = 12,
-                    name = "",
-                    desc = "",
+                    name = "Color",
+                    desc = "Color",
                     width = 0.4,
                     hasAlpha = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.OreColor[1],DMW.Settings.profile.Helpers.OreColor[2],DMW.Settings.profile.Helpers.OreColor[3],DMW.Settings.profile.Helpers.OreColor[4]
+                        return DMW.Settings.profile.Helpers.OreColor[1], DMW.Settings.profile.Helpers.OreColor[2], DMW.Settings.profile.Helpers.OreColor[3], DMW.Settings.profile.Helpers.OreColor[4]
                     end,
-                    set = function(info, r,g,b,a)
-                        DMW.Settings.profile.Helpers.OreColor = {r,g,b,a}
+                    set = function(info, r, g, b, a)
+                        DMW.Settings.profile.Helpers.OreColor = {r, g, b, a}
                     end
                 },
                 Trackable = {
@@ -205,7 +206,7 @@ local TrackingOptionsTable = {
                     order = 14,
                     name = "Track NPCs",
                     desc = "Track important NPCs",
-                    width = 0.5,
+                    width = 0.7,
                     get = function()
                         return DMW.Settings.profile.Helpers.TrackNPC
                     end,
@@ -216,15 +217,15 @@ local TrackingOptionsTable = {
                 TrackNPCColor = {
                     type = "color",
                     order = 15,
-                    name = "",
-                    desc = "",
+                    name = "Color",
+                    desc = "Color",
                     width = 0.5,
                     hasAlpha = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackNPCColor[1],DMW.Settings.profile.Helpers.TrackNPCColor[2],DMW.Settings.profile.Helpers.TrackNPCColor[3],DMW.Settings.profile.Helpers.TrackNPCColor[4]
+                        return DMW.Settings.profile.Helpers.TrackNPCColor[1], DMW.Settings.profile.Helpers.TrackNPCColor[2], DMW.Settings.profile.Helpers.TrackNPCColor[3], DMW.Settings.profile.Helpers.TrackNPCColor[4]
                     end,
-                    set = function(info, r,g,b,a)
-                        DMW.Settings.profile.Helpers.TrackNPCColor = {r,g,b,a}
+                    set = function(info, r, g, b, a)
+                        DMW.Settings.profile.Helpers.TrackNPCColor = {r, g, b, a}
                     end
                 }
             }
@@ -240,7 +241,7 @@ local TrackingOptionsTable = {
                     name = "Track Units By Name",
                     desc = "Mark units by name or part of name, seperated by comma",
                     width = "full",
-                    multiline = true ,
+                    multiline = true,
                     get = function()
                         return DMW.Settings.profile.Helpers.TrackUnits
                     end,
@@ -280,15 +281,15 @@ local TrackingOptionsTable = {
                 TrackUnitsColor = {
                     type = "color",
                     order = 4,
-                    name = "",
+                    name = "Color",
                     desc = "Color",
                     width = 0.4,
                     hasAlpha = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackUnitsColor[1],DMW.Settings.profile.Helpers.TrackUnitsColor[2],DMW.Settings.profile.Helpers.TrackUnitsColor[3],DMW.Settings.profile.Helpers.TrackUnitsColor[4]
+                        return DMW.Settings.profile.Helpers.TrackUnitsColor[1], DMW.Settings.profile.Helpers.TrackUnitsColor[2], DMW.Settings.profile.Helpers.TrackUnitsColor[3], DMW.Settings.profile.Helpers.TrackUnitsColor[4]
                     end,
-                    set = function(info, r,g,b,a)
-                        DMW.Settings.profile.Helpers.TrackUnitsColor = {r,g,b,a}
+                    set = function(info, r, g, b, a)
+                        DMW.Settings.profile.Helpers.TrackUnitsColor = {r, g, b, a}
                     end
                 }
             }
@@ -304,7 +305,7 @@ local TrackingOptionsTable = {
                     name = "Track Objects By Name",
                     desc = "Mark objects by name or part of name, seperated by comma",
                     width = "full",
-                    multiline = true ,
+                    multiline = true,
                     get = function()
                         return DMW.Settings.profile.Helpers.TrackObjects
                     end,
@@ -344,15 +345,15 @@ local TrackingOptionsTable = {
                 TrackObjectsColor = {
                     type = "color",
                     order = 4,
-                    name = "",
+                    name = "Color",
                     desc = "Color",
                     width = 0.4,
                     hasAlpha = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackObjectsColor[1],DMW.Settings.profile.Helpers.TrackObjectsColor[2],DMW.Settings.profile.Helpers.TrackObjectsColor[3],DMW.Settings.profile.Helpers.TrackObjectsColor[4]
+                        return DMW.Settings.profile.Helpers.TrackObjectsColor[1], DMW.Settings.profile.Helpers.TrackObjectsColor[2], DMW.Settings.profile.Helpers.TrackObjectsColor[3], DMW.Settings.profile.Helpers.TrackObjectsColor[4]
                     end,
-                    set = function(info, r,g,b,a)
-                        DMW.Settings.profile.Helpers.TrackObjectsColor = {r,g,b,a}
+                    set = function(info, r, g, b, a)
+                        DMW.Settings.profile.Helpers.TrackObjectsColor = {r, g, b, a}
                     end
                 }
             }
@@ -366,9 +367,9 @@ local TrackingOptionsTable = {
                     type = "input",
                     order = 1,
                     name = "Track Players By Name",
-                    desc = "Mark Players by name or part of name, seperated by comma, to track all players put in a space",
+                    desc = "Mark Players by name or part of name, seperated by comma",
                     width = "full",
-                    multiline = true ,
+                    multiline = true,
                     get = function()
                         return DMW.Settings.profile.Helpers.TrackPlayers
                     end,
@@ -408,20 +409,32 @@ local TrackingOptionsTable = {
                 TrackPlayersColor = {
                     type = "color",
                     order = 4,
-                    name = "",
+                    name = "Color",
                     desc = "Color",
                     width = 0.4,
                     hasAlpha = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackPlayersColor[1],DMW.Settings.profile.Helpers.TrackPlayersColor[2],DMW.Settings.profile.Helpers.TrackPlayersColor[3],DMW.Settings.profile.Helpers.TrackPlayersColor[4]
+                        return DMW.Settings.profile.Helpers.TrackPlayersColor[1], DMW.Settings.profile.Helpers.TrackPlayersColor[2], DMW.Settings.profile.Helpers.TrackPlayersColor[3], DMW.Settings.profile.Helpers.TrackPlayersColor[4]
                     end,
-                    set = function(info, r,g,b,a)
-                        DMW.Settings.profile.Helpers.TrackPlayersColor = {r,g,b,a}
+                    set = function(info, r, g, b, a)
+                        DMW.Settings.profile.Helpers.TrackPlayersColor = {r, g, b, a}
+                    end
+                },
+                TrackPlayersAny = {
+                    type = "toggle",
+                    order = 5,
+                    name = "Track All Enemy Players",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackPlayersAny
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackPlayersAny = value
                     end
                 },
                 TrackPlayersNameplates = {
                     type = "toggle",
-                    order = 5,
+                    order = 6,
                     name = "Track Enemy Players Nameplates",
                     desc = "Track enemy players outside nameplate range",
                     width = "full",
@@ -436,11 +449,6 @@ local TrackingOptionsTable = {
         }
     }
 }
-
-    
-
-
-
 
 local Options = {
     name = "DoMeWhen",
@@ -560,16 +568,14 @@ local Options = {
                     name = "Advanced Tracking",
                     desc = "Track options",
                     width = "full",
-                    func = function() 
+                    func = function()
                         if not TrackingFrame:IsShown() then
-                            LibStub("AceConfigDialog-3.0"):Open("Track123", TrackingFrame)
+                            LibStub("AceConfigDialog-3.0"):Open("TrackerConfig", TrackingFrame)
                         else
                             TrackingFrame:Hide()
                         end
                     end
-                    
                 }
-
             }
         },
         EnemyTab = {
@@ -730,8 +736,8 @@ end
 function UI.Init()
     LibStub("AceConfig-3.0"):RegisterOptionsTable("DMW", Options)
     LibStub("AceConfigDialog-3.0"):SetDefaultSize("DMW", 400, 750)
-    LibStub("AceConfig-3.0"):RegisterOptionsTable("Track123", TrackingOptionsTable)
-    LibStub("AceConfigDialog-3.0"):SetDefaultSize("Track123", 400, 350)
+    LibStub("AceConfig-3.0"):RegisterOptionsTable("TrackerConfig", TrackingOptionsTable)
+    LibStub("AceConfigDialog-3.0"):SetDefaultSize("TrackerConfig", 400, 350)
     if not TrackingFrame then
         TrackingFrame = AceGUI:Create("Frame")
         TrackingFrame:Hide()
