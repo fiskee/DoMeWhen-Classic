@@ -3922,5 +3922,5 @@ globals = {
 	"GetMousePosition",
 	"ACtionBarButtonEventsFrame",
 	"Types",
-	WorldFrame"
+	"WorldFrame"
 }
