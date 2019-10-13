@@ -134,6 +134,7 @@ Note not all functions work in classic yet
 - :Rank(Unit, OnlyPlayer)
 - :Count(Table)
 - :Lowest(Table)
+- :HighestKnown()
 - :Query(Unit, OnlyPlayer)
 
 # Spell

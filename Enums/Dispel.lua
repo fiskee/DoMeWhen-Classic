@@ -10,6 +10,8 @@ DMW.Enums.DispelSpells = {
     [475] = {"Curse"}, -- Remove Lesser Curse
     --Shaman
     [370] = {"Magic"},
+    [526] = {"Poison"}, -- Cure Poison
+	[2870] = {"Disease"}, -- Cure Disease
     --Paladin
     [1152] = {"Poison", "Disease"},
     [4987] = {"Poison", "Magic", "Disease"},

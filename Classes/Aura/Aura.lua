@@ -32,6 +32,28 @@ function Debuff:Exist(Unit, OnlyPlayer)
     return self:Query(Unit, OnlyPlayer) ~= nil
 end
 
+function Buff:HighestKnown()
+    local HighestKnown = 0
+    for i = 1, #self.Ranks do
+        local thisRank = self.Ranks[i]
+        if IsSpellKnown(thisRank) then
+            HighestKnown = i
+        end
+    end
+    return HighestKnown
+end
+
+function Debuff:HighestKnown()
+    local HighestKnown = 0
+    for i = 1, #self.Ranks do
+        local thisRank = self.Ranks[i]
+        if IsSpellKnown(thisRank) then
+            HighestKnown = i
+        end
+    end
+    return HighestKnown
+end
+
 function Buff:Remain(Unit, OnlyPlayer)
     if OnlyPlayer == nil then
         OnlyPlayer = false
@@ -39,8 +61,10 @@ function Buff:Remain(Unit, OnlyPlayer)
     Unit = Unit or DMW.Player
     local EndTime = select(6, self:Query(Unit, OnlyPlayer))
     if EndTime then
-        if EndTime == 0 then
+        if EndTime == 0 or self:Rank(Unit, OnlyPlayer) > self:HighestKnown() then
             return 999
+        elseif self:Rank(Unit, OnlyPlayer) < self:HighestKnown() then
+            return 0
         end
         return (EndTime - DMW.Time)
     end
@@ -54,8 +78,10 @@ function Debuff:Remain(Unit, OnlyPlayer)
     Unit = Unit or DMW.Player.Target
     local EndTime = select(6, self:Query(Unit, OnlyPlayer))
     if EndTime then
-        if EndTime == 0 then
+        if EndTime == 0 or self:Rank(Unit, OnlyPlayer) > self:HighestKnown()  then
             return 999
+        elseif self:Rank(Unit, OnlyPlayer) < self:HighestKnown() then
+            return 0
         end
         return (EndTime - DMW.Time)
     end
