@@ -6,6 +6,8 @@ DMW.Enums.DispelSpells = {
     --Priest
     [527] = {"Magic"},
     [988] = {"Magic"},
+    --Mage
+    [475] = {"Curse"}, -- Remove Lesser Curse
     --Shaman
     [370] = {"Magic"},
     --Paladin
