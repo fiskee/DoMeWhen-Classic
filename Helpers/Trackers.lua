@@ -106,6 +106,13 @@ function DMW.Helpers.Trackers.Run()
                 LibDraw.SetWidth(w)
                 DMW.Helpers.DrawLineDMWC(Object.PosX, Object.PosY, Object.PosZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
             end
+        elseif DMW.Settings.profile.Helpers.TrackObjectsMailbox and strmatch(string.lower(Object.Name), "mailbox") then
+            local r, b, g, a = DMW.Settings.profile.Helpers.TrackObjectsColor[1], DMW.Settings.profile.Helpers.TrackObjectsColor[2], DMW.Settings.profile.Helpers.TrackObjectsColor[3], DMW.Settings.profile.Helpers.TrackObjectsColor[4]
+            LibDraw.SetColorRaw(r, b, g, a)
+            LibDraw.Text(Object.Name .. " - " .. math.floor(Object.Distance) .. " Yards", "GameFontNormal", Object.PosX, Object.PosY, Object.PosZ + 2)
+            local w = DMW.Settings.profile.Helpers.TrackObjectsLine
+            LibDraw.SetWidth(w)
+            DMW.Helpers.DrawLineDMWC(Object.PosX, Object.PosY, Object.PosZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
         end
     end
     if DMW.Settings.profile.Helpers.TrackPlayersNamePlates or (DMW.Settings.profile.Helpers.TrackPlayers ~= "") or DMW.Settings.profile.Helpers.TrackPlayersAny or DMW.Settings.profile.Helpers.TrackPlayersEnemy then

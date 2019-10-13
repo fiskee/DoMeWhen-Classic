@@ -57,7 +57,8 @@ local defaults = {
             TrackObjectsLine = 0,
             TrackPlayersLine = 0,
             TrackPlayersEnemy = false,
-            TrackPlayersAny = false
+            TrackPlayersAny = false,
+            TrackObjectsMailbox = false
         }
     },
     char = {

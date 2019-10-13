@@ -355,7 +355,20 @@ local TrackingOptionsTable = {
                     set = function(info, r, g, b, a)
                         DMW.Settings.profile.Helpers.TrackObjectsColor = {r, g, b, a}
                     end
-                }
+                },
+                TrackObjectsMailbox = {
+                    type = "toggle",
+                    order = 5,
+                    name = "Track Mailbox",
+                    -- desc = "Track important NPCs",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackObjectsMailbox
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Helpers.TrackObjectsMailbox = value
+                    end
+                },
             }
         },
         FourthTab = {
