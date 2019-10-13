@@ -477,7 +477,6 @@ local TrackingOptionsTable = {
                         return DMW.Settings.profile.Helpers.TrackPlayersNamePlates
                     end,
                     set = function(info, value)
-                        
                         DMW.Settings.profile.Helpers.TrackPlayersNamePlates = value
                     end
                 }

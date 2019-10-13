@@ -108,13 +108,13 @@ function DMW.Helpers.Trackers.Run()
             end
         end
     end
-    if DMW.Settings.profile.Helpers.TrackPlayersNamePlates or (DMW.Settings.profile.Helpers.TrackPlayers ~= "") then
+    if DMW.Settings.profile.Helpers.TrackPlayersNamePlates or (DMW.Settings.profile.Helpers.TrackPlayers ~= "") or DMW.Settings.profile.Helpers.TrackPlayersAny or DMW.Settings.profile.Helpers.TrackPlayersEnemy then
         local Color
         local s = 1
 
         for _, Unit in pairs(DMW.Units) do
             if ((DMW.Settings.profile.Helpers.TrackPlayers ~= nil and DMW.Settings.profile.Helpers.TrackPlayers ~= "") or DMW.Settings.profile.Helpers.TrackPlayersAny or DMW.Settings.profile.Helpers.TrackPlayersEnemy)
-             and Unit.Player and Unit.Trackable and not UnitIsUnit("target", Unit.Pointer) and not Unit.Dead then
+             and Unit.Player and not Unit.Dead and Unit.Trackable and not UnitIsUnit("target", Unit.Pointer) then
                 local r, b, g, a = DMW.Settings.profile.Helpers.TrackPlayersColor[1], DMW.Settings.profile.Helpers.TrackPlayersColor[2], DMW.Settings.profile.Helpers.TrackPlayersColor[3], DMW.Settings.profile.Helpers.TrackPlayersColor[4]
                 LibDraw.SetColorRaw(r, b, g, a)
                 if tonumber(DMW.Settings.profile.Helpers.TrackPlayersAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
