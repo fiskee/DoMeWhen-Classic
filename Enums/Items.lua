@@ -1,4 +1,9 @@
 DMW.Enums.Items = {
+    --Manastones
+    ManaAgate = 5514,
+    ManaCitrine = 8007,
+    ManaJade = 5513,
+    ManaRuby = 8008,
     --Healthstones
     MinorHealthstone = 5512,
     LesserHealthstone = 5511,
