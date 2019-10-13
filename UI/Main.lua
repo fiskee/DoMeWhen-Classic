@@ -239,7 +239,7 @@ local TrackingOptionsTable = {
                     type = "input",
                     order = 1,
                     name = "Track Units By Name",
-                    desc = "Mark units by name or part of name, seperated by comma",
+                    desc = "Mark units by name or part of name, separated by comma",
                     width = "full",
                     multiline = true,
                     get = function()
@@ -303,7 +303,7 @@ local TrackingOptionsTable = {
                     type = "input",
                     order = 1,
                     name = "Track Objects By Name",
-                    desc = "Mark objects by name or part of name, seperated by comma",
+                    desc = "Mark objects by name or part of name, separated by comma",
                     width = "full",
                     multiline = true,
                     get = function()
@@ -367,7 +367,7 @@ local TrackingOptionsTable = {
                     type = "input",
                     order = 1,
                     name = "Track Players By Name",
-                    desc = "Mark Players by name or part of name, seperated by comma",
+                    desc = "Mark Players by name or part of name, separated by comma",
                     width = "full",
                     multiline = true,
                     get = function()
@@ -420,21 +420,56 @@ local TrackingOptionsTable = {
                         DMW.Settings.profile.Helpers.TrackPlayersColor = {r, g, b, a}
                     end
                 },
+                Trackshit = {
+                    type = "execute",
+                    order = 5,
+                    name = "Track Targeted Player",
+                    desc = "Add targeted player name to list",
+                    width = "full",
+                    func = function()
+                        if DMW.Player.Target and DMW.Player.Target.Player then
+                            for k in string.gmatch(DMW.Settings.profile.Helpers.TrackPlayers, "([^,]+)") do
+                                if strmatch(string.lower(DMW.Player.Target.Name), string.lower(string.trim(k))) then
+                                    return
+                                end
+                            end
+                            if DMW.Settings.profile.Helpers.TrackPlayers == nil or DMW.Settings.profile.Helpers.TrackPlayers == "" then
+                                DMW.Settings.profile.Helpers.TrackPlayers = DMW.Player.Target.Name
+                            else
+                                DMW.Settings.profile.Helpers.TrackPlayers = DMW.Settings.profile.Helpers.TrackPlayers..","..DMW.Player.Target.Name
+                            end
+                        end
+                    end
+                },
                 TrackPlayersAny = {
                     type = "toggle",
-                    order = 5,
-                    name = "Track All Enemy Players",
+                    order = 6,
+                    name = "Track All Players",
                     width = "full",
                     get = function()
                         return DMW.Settings.profile.Helpers.TrackPlayersAny
                     end,
                     set = function(info, value)
+                        if value and DMW.Settings.profile.Helpers.TrackPlayersEnemy then DMW.Settings.profile.Helpers.TrackPlayersEnemy = false end
                         DMW.Settings.profile.Helpers.TrackPlayersAny = value
+                    end
+                },
+                TrackPlayersEnemy = {
+                    type = "toggle",
+                    order = 7,
+                    name = "Track All Enemy Players",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Helpers.TrackPlayersEnemy
+                    end,
+                    set = function(info, value)
+                        if value and DMW.Settings.profile.Helpers.TrackPlayersAny then DMW.Settings.profile.Helpers.TrackPlayersAny = false end
+                        DMW.Settings.profile.Helpers.TrackPlayersEnemy = value
                     end
                 },
                 TrackPlayersNameplates = {
                     type = "toggle",
-                    order = 6,
+                    order = 8,
                     name = "Track Enemy Players Nameplates",
                     desc = "Track enemy players outside nameplate range",
                     width = "full",
@@ -442,6 +477,7 @@ local TrackingOptionsTable = {
                         return DMW.Settings.profile.Helpers.TrackPlayersNamePlates
                     end,
                     set = function(info, value)
+                        
                         DMW.Settings.profile.Helpers.TrackPlayersNamePlates = value
                     end
                 }
@@ -711,6 +747,8 @@ local MinimapIcon =
         OnClick = function(self, button)
             if button == "LeftButton" then
                 UI.Show()
+            elseif button == "RightButton" then
+                UI.ShowTracking()
             end
         end,
         OnTooltipShow = function(tooltip)
@@ -730,6 +768,14 @@ function UI.Show()
         LibStub("AceConfigDialog-3.0"):Open("DMW", UI.ConfigFrame)
     else
         UI.ConfigFrame:Hide()
+    end
+end
+
+function UI.ShowTracking()
+    if not TrackingFrame:IsShown() then
+        LibStub("AceConfigDialog-3.0"):Open("TrackerConfig", TrackingFrame)
+    else
+        TrackingFrame:Hide()
     end
 end
 

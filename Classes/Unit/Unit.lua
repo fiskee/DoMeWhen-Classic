@@ -335,7 +335,7 @@ function Unit:IsTrackable()
                 return true
             end
         end
-    elseif self.Player and DMW.Settings.profile.Helpers.TrackPlayersAny then
+    elseif self.Player and (DMW.Settings.profile.Helpers.TrackPlayersAny and DMW.Player.Pointer ~= self.Pointer) or (DMW.Settings.profile.Helpers.TrackPlayersEnemy and UnitCanAttack("player", self.Pointer)) then
         return true
     elseif self.Player and DMW.Settings.profile.Helpers.TrackPlayers ~= nil and DMW.Settings.profile.Helpers.TrackPlayers ~= "" then
         for k in string.gmatch(DMW.Settings.profile.Helpers.TrackPlayers, "([^,]+)") do

@@ -55,7 +55,9 @@ local defaults = {
             QuestieHelperLine = 0,
             TrackUnitsLine = 0,
             TrackObjectsLine = 0,
-            TrackPlayersLine = 0
+            TrackPlayersLine = 0,
+            TrackPlayersEnemy = false,
+            TrackPlayersAny = false
         }
     },
     char = {
