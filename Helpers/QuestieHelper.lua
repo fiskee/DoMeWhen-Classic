@@ -32,19 +32,19 @@ function DMW.Helpers.DrawLineDMWC(sx, sy, sz, ex, ey, ez)
 end
 
 function DMW.Helpers.QuestieHelper.Run()
-    if DMW.Settings.profile.Helpers.QuestieHelper then
+    if DMW.Settings.profile.Tracker.QuestieHelper then
         local s = 1
         local tX, tY, tZ
-        local r, b, g, a = DMW.Settings.profile.Helpers.QuestieHelperColor[1], DMW.Settings.profile.Helpers.QuestieHelperColor[2], DMW.Settings.profile.Helpers.QuestieHelperColor[3], DMW.Settings.profile.Helpers.QuestieHelperColor[4]
+        local r, b, g, a = DMW.Settings.profile.Tracker.QuestieHelperColor[1], DMW.Settings.profile.Tracker.QuestieHelperColor[2], DMW.Settings.profile.Tracker.QuestieHelperColor[3], DMW.Settings.profile.Tracker.QuestieHelperColor[4]
         LibDraw.SetColorRaw(r, b, g, a)
         for _, Unit in pairs(DMW.Units) do
             if Unit.Quest and (not Unit.Dead or UnitCanBeLooted(Unit.Pointer)) and not Unit.Target and not UnitIsTapDenied(Unit.Pointer) then
-                if tonumber(DMW.Settings.profile.Helpers.QuestieHelperAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+                if tonumber(DMW.Settings.profile.Tracker.QuestieHelperAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
                     FlashClientIcon()
                     if GetCVarBool("Sound_EnableSFX") then
-                        PlaySound(DMW.Settings.profile.Helpers.QuestieHelperAlert)
+                        PlaySound(DMW.Settings.profile.Tracker.QuestieHelperAlert)
                     else
-                        PlaySound(DMW.Settings.profile.Helpers.QuestieHelperAlert, "MASTER")
+                        PlaySound(DMW.Settings.profile.Tracker.QuestieHelperAlert, "MASTER")
                     end
                     AlertTimer = DMW.Time
                 end
@@ -54,8 +54,8 @@ function DMW.Helpers.QuestieHelper.Run()
                 LibDraw.Line(tX, tY, tZ + s * 1.3, tX, tY, tZ)
                 LibDraw.Line(tX - s, tY, tZ, tX + s, tY, tZ)
                 LibDraw.Line(tX, tY - s, tZ, tX, tY + s, tZ)
-                if DMW.Settings.profile.Helpers.QuestieHelperLine > 0 then
-                    local w = DMW.Settings.profile.Helpers.QuestieHelperLine
+                if DMW.Settings.profile.Tracker.QuestieHelperLine > 0 then
+                    local w = DMW.Settings.profile.Tracker.QuestieHelperLine
                     LibDraw.SetWidth(w)
                     DMW.Helpers.DrawLineDMWC(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
                 end
@@ -63,12 +63,12 @@ function DMW.Helpers.QuestieHelper.Run()
         end
         for _, Object in pairs(DMW.GameObjects) do
             if Object.Quest then
-                if tonumber(DMW.Settings.profile.Helpers.QuestieHelperAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+                if tonumber(DMW.Settings.profile.Tracker.QuestieHelperAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
                     FlashClientIcon()
                     if GetCVarBool("Sound_EnableSFX") then
-                        PlaySound(DMW.Settings.profile.Helpers.QuestieHelperAlert)
+                        PlaySound(DMW.Settings.profile.Tracker.QuestieHelperAlert)
                     else
-                        PlaySound(DMW.Settings.profile.Helpers.QuestieHelperAlert, "MASTER")
+                        PlaySound(DMW.Settings.profile.Tracker.QuestieHelperAlert, "MASTER")
                     end
                     AlertTimer = DMW.Time
                 end
@@ -77,8 +77,8 @@ function DMW.Helpers.QuestieHelper.Run()
                 LibDraw.Line(tX, tY, tZ + s * 1.3, tX, tY, tZ)
                 LibDraw.Line(tX - s, tY, tZ, tX + s, tY, tZ)
                 LibDraw.Line(tX, tY - s, tZ, tX, tY + s, tZ)
-                if DMW.Settings.profile.Helpers.QuestieHelperLine > 0 then
-                    local w = DMW.Settings.profile.Helpers.QuestieHelperLine
+                if DMW.Settings.profile.Tracker.QuestieHelperLine > 0 then
+                    local w = DMW.Settings.profile.Tracker.QuestieHelperLine
                     LibDraw.SetWidth(w)
                     DMW.Helpers.DrawLineDMWC(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
                 end

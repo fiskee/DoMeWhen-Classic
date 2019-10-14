@@ -19,6 +19,7 @@ function Unit:New(Pointer)
     self.PosX, self.PosY, self.PosZ = ObjectPosition(Pointer)
     self.ObjectID = ObjectID(Pointer)
     self.Level = UnitLevel(Pointer)
+    self.DistanceAggro = self:AggroDistance()
     self.CreatureType = DMW.Enums.CreatureType[UnitCreatureTypeID(Pointer)]
     DMW.Functions.AuraCache.Refresh(Pointer)
 end
@@ -31,6 +32,7 @@ function Unit:Update()
         DMW.Tables.AuraUpdate[self.Pointer] = nil
     end
     self.Distance = self:GetDistance()
+    
     self.Dead = UnitIsDeadOrGhost(self.Pointer)
     if RealMobHealth_CreatureHealthCache and self.ObjectID and RealMobHealth_CreatureHealthCache[self.ObjectID .. "-" .. self.Level] then
         self.HealthMax = RealMobHealth_CreatureHealthCache[self.ObjectID .. "-" .. self.Level]
@@ -309,7 +311,7 @@ function Unit:CCed()
 end
 
 function Unit:IsQuest()
-    if self.ObjectID and DMW.Settings.profile.Helpers.QuestieHelper and QuestieTooltips and QuestieTooltips.tooltipLookup["u_" .. self.ObjectID] then
+    if self.ObjectID and DMW.Settings.profile.Tracker.QuestieHelper and QuestieTooltips and QuestieTooltips.tooltipLookup["u_" .. self.ObjectID] then
         for _, Tooltip in pairs(QuestieTooltips.tooltipLookup["u_" .. self.ObjectID]) do
             Tooltip.Objective:Update()
             if not Tooltip.Objective.Completed then
@@ -329,16 +331,16 @@ function Unit:ChannelInfo()
 end
 
 function Unit:IsTrackable()
-    if DMW.Settings.profile.Helpers.TrackUnits ~= nil and DMW.Settings.profile.Helpers.TrackUnits ~= "" and not self.Player then
-        for k in string.gmatch(DMW.Settings.profile.Helpers.TrackUnits, "([^,]+)") do
+    if DMW.Settings.profile.Tracker.TrackUnits ~= nil and DMW.Settings.profile.Tracker.TrackUnits ~= "" and not self.Player then
+        for k in string.gmatch(DMW.Settings.profile.Tracker.TrackUnits, "([^,]+)") do
             if strmatch(string.lower(self.Name), string.lower(string.trim(k))) then
                 return true
             end
         end
-    elseif self.Player and (DMW.Settings.profile.Helpers.TrackPlayersAny and DMW.Player.Pointer ~= self.Pointer) or (DMW.Settings.profile.Helpers.TrackPlayersEnemy and UnitCanAttack("player", self.Pointer)) then
+    elseif self.Player and (DMW.Settings.profile.Tracker.TrackPlayersAny and DMW.Player.Pointer ~= self.Pointer) or (DMW.Settings.profile.Tracker.TrackPlayersEnemy and UnitCanAttack("player", self.Pointer)) then
         return true
-    elseif self.Player and DMW.Settings.profile.Helpers.TrackPlayers ~= nil and DMW.Settings.profile.Helpers.TrackPlayers ~= "" then
-        for k in string.gmatch(DMW.Settings.profile.Helpers.TrackPlayers, "([^,]+)") do
+    elseif self.Player and DMW.Settings.profile.Tracker.TrackPlayers ~= nil and DMW.Settings.profile.Tracker.TrackPlayers ~= "" then
+        for k in string.gmatch(DMW.Settings.profile.Tracker.TrackPlayers, "([^,]+)") do
             if strmatch(string.lower(self.Name), string.lower(string.trim(k))) then
                 return true
             end

@@ -32,11 +32,14 @@ local defaults = {
         Helpers = {
             AutoLoot = false,
             AutoSkinning = false,
-            QuestieHelper = false,
+
             AutoGather = false,
+        },
+        Tracker = {
             Herbs = false,
             Ore = false,
             TrackNPC = false,
+            QuestieHelper = false,
             QuestieHelperColor = {0,0,0,1},
             HerbsColor = {0,0,0,1},
             OreColor = {0,0,0,1},

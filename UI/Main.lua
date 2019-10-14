@@ -3,6 +3,93 @@ local DMW = DMW
 local UI = DMW.UI
 local RotationOrder = 1
 local TrackingFrame, TrackerConfig
+local base64 = LibStub('LibBase64-1.0')
+local serializer = LibStub('AceSerializer-3.0')
+
+local exportTypes = {
+	["rotation"] = "Rotation", 
+	["tracker"] = "Tracker",
+	["queue"] = "Queue"
+}
+
+local exportTypesOrder = {
+    "rotation",
+    "tracker",
+    "queue"
+}
+
+local exportString = ""
+local function export(value)
+    local Frame = AceGUI:Create("Frame")
+	Frame:SetTitle("Import/Export")
+	Frame:SetWidth(400)
+	Frame:SetHeight(350)
+	Frame.frame:SetFrameStrata("FULLSCREEN_DIALOG")
+    Frame:SetLayout("Flow")
+
+    local Box = AceGUI:Create("MultiLineEditBox")
+	Box:SetNumLines(15)
+	Box:DisableButton(true)
+	Box:SetWidth(600)
+	Box:SetLabel("")
+    Frame:AddChild(Box)
+
+    local ProfileTypeDropdown = AceGUI:Create("Dropdown")
+    ProfileTypeDropdown:SetMultiselect(false)
+    ProfileTypeDropdown:SetLabel("Settings To Export")
+    ProfileTypeDropdown:SetList(exportTypes, exportTypesOrder)
+    ProfileTypeDropdown:SetValue("rotation") 
+    Frame:AddChild(ProfileTypeDropdown)
+    ProfileTypeDropdown:SetRelativeWidth(0.5)
+
+    if value == "export" then
+		Frame:SetTitle("Export")
+		local exportButton = AceGUI:Create("Button")
+		exportButton:SetText("Export")
+        local function OnClick(self)
+            if ProfileTypeDropdown:GetValue() == "rotation" then
+                Box:SetText(base64:encode(serializer:Serialize(DMW.Settings.profile.Rotation)))
+            elseif ProfileTypeDropdown:GetValue() == "tracker" then
+                Box:SetText(base64:encode(serializer:Serialize(DMW.Settings.profile.Tracker)))
+            elseif ProfileTypeDropdown:GetValue() == "queue" then
+                Box:SetText(base64:encode(serializer:Serialize(DMW.Settings.profile.Queue)))
+            end
+            Box.editBox:HighlightText()
+            Box:SetFocus()
+		end
+		exportButton:SetCallback("OnClick", OnClick)
+        Frame:AddChild(exportButton)
+        exportButton:SetRelativeWidth(0.5)
+        -- ProfileTypeDropdown:SetCallback("OnValueChanged", function(self)
+        --     exportButton:SetText("Export "..exportTypes[ProfileTypeDropdown:GetValue()])
+        --     end
+        -- )
+	elseif value == "import" then
+		Frame:SetTitle("Import")
+		local importButton = AceGUI:Create("Button") 
+		importButton:SetText("Import")
+        importButton:SetRelativeWidth(0.5)
+        local function OnClick(self)
+            if type(Box:GetText()) == "string" then
+                local check, value = serializer:Deserialize(base64:decode(Box:GetText()))
+                if check then
+                    if ProfileTypeDropdown:GetValue() == "rotation" then
+                        DMW.Settings.profile.Rotation = value
+                    elseif ProfileTypeDropdown:GetValue() == "tracker" then
+                        DMW.Settings.profile.Tracker = value
+                    elseif ProfileTypeDropdown:GetValue() == "queue" then
+                        DMW.Settings.profile.Queue = value
+                    end
+                    Box:SetText("Import Successful")
+                else
+                    Box:SetText(value)
+                end
+            end
+		end
+		importButton:SetCallback("OnClick", OnClick)
+		Frame:AddChild(importButton)
+	end
+end
 
 local TrackingOptionsTable = {
     name = "Tracking",
@@ -27,10 +114,10 @@ local TrackingOptionsTable = {
                     desc = "Mark quest mobs using data from Questie addon",
                     width = 0.5,
                     get = function()
-                        return DMW.Settings.profile.Helpers.QuestieHelper
+                        return DMW.Settings.profile.Tracker.QuestieHelper
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.QuestieHelper = value
+                        DMW.Settings.profile.Tracker.QuestieHelper = value
                     end
                 },
                 QuestieHelperLine = {
@@ -43,10 +130,10 @@ local TrackingOptionsTable = {
                     max = 5,
                     step = 1,
                     get = function()
-                        return DMW.Settings.profile.Helpers.QuestieHelperLine
+                        return DMW.Settings.profile.Tracker.QuestieHelperLine
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.QuestieHelperLine = value
+                        DMW.Settings.profile.Tracker.QuestieHelperLine = value
                     end
                 },
                 QuestieHelperAlert = {
@@ -56,10 +143,10 @@ local TrackingOptionsTable = {
                     desc = "Sound for Alert, 416 = Murlocs",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Helpers.QuestieHelperAlert
+                        return DMW.Settings.profile.Tracker.QuestieHelperAlert
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.QuestieHelperAlert = value
+                        DMW.Settings.profile.Tracker.QuestieHelperAlert = value
                     end
                 },
                 QuestieHelperColor = {
@@ -70,10 +157,10 @@ local TrackingOptionsTable = {
                     width = 0.4,
                     hasAlpha = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.QuestieHelperColor[1], DMW.Settings.profile.Helpers.QuestieHelperColor[2], DMW.Settings.profile.Helpers.QuestieHelperColor[3], DMW.Settings.profile.Helpers.QuestieHelperColor[4]
+                        return DMW.Settings.profile.Tracker.QuestieHelperColor[1], DMW.Settings.profile.Tracker.QuestieHelperColor[2], DMW.Settings.profile.Tracker.QuestieHelperColor[3], DMW.Settings.profile.Tracker.QuestieHelperColor[4]
                     end,
                     set = function(info, r, g, b, a)
-                        DMW.Settings.profile.Helpers.QuestieHelperColor = {r, g, b, a}
+                        DMW.Settings.profile.Tracker.QuestieHelperColor = {r, g, b, a}
                     end
                 },
                 Herbs = {
@@ -83,10 +170,10 @@ local TrackingOptionsTable = {
                     desc = "Mark herbs in the world",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Helpers.Herbs
+                        return DMW.Settings.profile.Tracker.Herbs
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.Herbs = value
+                        DMW.Settings.profile.Tracker.Herbs = value
                     end
                 },
                 HerbsLine = {
@@ -99,10 +186,10 @@ local TrackingOptionsTable = {
                     max = 5,
                     step = 1,
                     get = function()
-                        return DMW.Settings.profile.Helpers.HerbsLine
+                        return DMW.Settings.profile.Tracker.HerbsLine
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.HerbsLine = value
+                        DMW.Settings.profile.Tracker.HerbsLine = value
                     end
                 },
                 HerbsAlert = {
@@ -112,10 +199,10 @@ local TrackingOptionsTable = {
                     desc = "Sound for Alert, 416 = Murlocs",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Helpers.HerbsAlert
+                        return DMW.Settings.profile.Tracker.HerbsAlert
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.HerbsAlert = value
+                        DMW.Settings.profile.Tracker.HerbsAlert = value
                     end
                 },
                 HerbsColor = {
@@ -126,10 +213,10 @@ local TrackingOptionsTable = {
                     width = 0.4,
                     hasAlpha = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.HerbsColor[1], DMW.Settings.profile.Helpers.HerbsColor[2], DMW.Settings.profile.Helpers.HerbsColor[3], DMW.Settings.profile.Helpers.HerbsColor[4]
+                        return DMW.Settings.profile.Tracker.HerbsColor[1], DMW.Settings.profile.Tracker.HerbsColor[2], DMW.Settings.profile.Tracker.HerbsColor[3], DMW.Settings.profile.Tracker.HerbsColor[4]
                     end,
                     set = function(info, r, g, b, a)
-                        DMW.Settings.profile.Helpers.HerbsColor = {r, g, b, a}
+                        DMW.Settings.profile.Tracker.HerbsColor = {r, g, b, a}
                     end
                 },
                 Ore = {
@@ -139,10 +226,10 @@ local TrackingOptionsTable = {
                     desc = "Mark ores in the world",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Helpers.Ore
+                        return DMW.Settings.profile.Tracker.Ore
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.Ore = value
+                        DMW.Settings.profile.Tracker.Ore = value
                     end
                 },
                 OreLine = {
@@ -155,10 +242,10 @@ local TrackingOptionsTable = {
                     max = 5,
                     step = 1,
                     get = function()
-                        return DMW.Settings.profile.Helpers.OreLine
+                        return DMW.Settings.profile.Tracker.OreLine
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.OreLine = value
+                        DMW.Settings.profile.Tracker.OreLine = value
                     end
                 },
                 OreAlert = {
@@ -168,10 +255,10 @@ local TrackingOptionsTable = {
                     desc = "",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Helpers.OreAlert
+                        return DMW.Settings.profile.Tracker.OreAlert
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.OreAlert = value
+                        DMW.Settings.profile.Tracker.OreAlert = value
                     end
                 },
                 OreColor = {
@@ -182,10 +269,10 @@ local TrackingOptionsTable = {
                     width = 0.4,
                     hasAlpha = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.OreColor[1], DMW.Settings.profile.Helpers.OreColor[2], DMW.Settings.profile.Helpers.OreColor[3], DMW.Settings.profile.Helpers.OreColor[4]
+                        return DMW.Settings.profile.Tracker.OreColor[1], DMW.Settings.profile.Tracker.OreColor[2], DMW.Settings.profile.Tracker.OreColor[3], DMW.Settings.profile.Tracker.OreColor[4]
                     end,
                     set = function(info, r, g, b, a)
-                        DMW.Settings.profile.Helpers.OreColor = {r, g, b, a}
+                        DMW.Settings.profile.Tracker.OreColor = {r, g, b, a}
                     end
                 },
                 Trackable = {
@@ -195,10 +282,10 @@ local TrackingOptionsTable = {
                     desc = "Mark special objects in the world (chests, containers ect.)",
                     width = "full",
                     get = function()
-                        return DMW.Settings.profile.Helpers.Trackable
+                        return DMW.Settings.profile.Tracker.Trackable
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.Trackable = value
+                        DMW.Settings.profile.Tracker.Trackable = value
                     end
                 },
                 TrackNPC = {
@@ -208,10 +295,10 @@ local TrackingOptionsTable = {
                     desc = "Track important NPCs",
                     width = 0.7,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackNPC
+                        return DMW.Settings.profile.Tracker.TrackNPC
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackNPC = value
+                        DMW.Settings.profile.Tracker.TrackNPC = value
                     end
                 },
                 TrackNPCColor = {
@@ -222,10 +309,10 @@ local TrackingOptionsTable = {
                     width = 0.5,
                     hasAlpha = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackNPCColor[1], DMW.Settings.profile.Helpers.TrackNPCColor[2], DMW.Settings.profile.Helpers.TrackNPCColor[3], DMW.Settings.profile.Helpers.TrackNPCColor[4]
+                        return DMW.Settings.profile.Tracker.TrackNPCColor[1], DMW.Settings.profile.Tracker.TrackNPCColor[2], DMW.Settings.profile.Tracker.TrackNPCColor[3], DMW.Settings.profile.Tracker.TrackNPCColor[4]
                     end,
                     set = function(info, r, g, b, a)
-                        DMW.Settings.profile.Helpers.TrackNPCColor = {r, g, b, a}
+                        DMW.Settings.profile.Tracker.TrackNPCColor = {r, g, b, a}
                     end
                 }
             }
@@ -243,10 +330,10 @@ local TrackingOptionsTable = {
                     width = "full",
                     multiline = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackUnits
+                        return DMW.Settings.profile.Tracker.TrackUnits
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackUnits = value
+                        DMW.Settings.profile.Tracker.TrackUnits = value
                     end
                 },
                 TrackUnitsLine = {
@@ -259,10 +346,10 @@ local TrackingOptionsTable = {
                     max = 5,
                     step = 1,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackUnitsLine
+                        return DMW.Settings.profile.Tracker.TrackUnitsLine
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackUnitsLine = value
+                        DMW.Settings.profile.Tracker.TrackUnitsLine = value
                     end
                 },
                 TrackUnitsAlert = {
@@ -272,10 +359,10 @@ local TrackingOptionsTable = {
                     desc = "Sound for Alert, 416 = Murlocs",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackUnitsAlert
+                        return DMW.Settings.profile.Tracker.TrackUnitsAlert
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackUnitsAlert = value
+                        DMW.Settings.profile.Tracker.TrackUnitsAlert = value
                     end
                 },
                 TrackUnitsColor = {
@@ -286,10 +373,10 @@ local TrackingOptionsTable = {
                     width = 0.4,
                     hasAlpha = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackUnitsColor[1], DMW.Settings.profile.Helpers.TrackUnitsColor[2], DMW.Settings.profile.Helpers.TrackUnitsColor[3], DMW.Settings.profile.Helpers.TrackUnitsColor[4]
+                        return DMW.Settings.profile.Tracker.TrackUnitsColor[1], DMW.Settings.profile.Tracker.TrackUnitsColor[2], DMW.Settings.profile.Tracker.TrackUnitsColor[3], DMW.Settings.profile.Tracker.TrackUnitsColor[4]
                     end,
                     set = function(info, r, g, b, a)
-                        DMW.Settings.profile.Helpers.TrackUnitsColor = {r, g, b, a}
+                        DMW.Settings.profile.Tracker.TrackUnitsColor = {r, g, b, a}
                     end
                 }
             }
@@ -307,10 +394,10 @@ local TrackingOptionsTable = {
                     width = "full",
                     multiline = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackObjects
+                        return DMW.Settings.profile.Tracker.TrackObjects
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackObjects = value
+                        DMW.Settings.profile.Tracker.TrackObjects = value
                     end
                 },
                 TrackObjectsLine = {
@@ -323,10 +410,10 @@ local TrackingOptionsTable = {
                     max = 5,
                     step = 1,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackObjectsLine
+                        return DMW.Settings.profile.Tracker.TrackObjectsLine
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackObjectsLine = value
+                        DMW.Settings.profile.Tracker.TrackObjectsLine = value
                     end
                 },
                 TrackObjectsAlert = {
@@ -336,10 +423,10 @@ local TrackingOptionsTable = {
                     desc = "Sound for Alert, 416 = Murlocs",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackObjectsAlert
+                        return DMW.Settings.profile.Tracker.TrackObjectsAlert
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackObjectsAlert = value
+                        DMW.Settings.profile.Tracker.TrackObjectsAlert = value
                     end
                 },
                 TrackObjectsColor = {
@@ -350,10 +437,10 @@ local TrackingOptionsTable = {
                     width = 0.4,
                     hasAlpha = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackObjectsColor[1], DMW.Settings.profile.Helpers.TrackObjectsColor[2], DMW.Settings.profile.Helpers.TrackObjectsColor[3], DMW.Settings.profile.Helpers.TrackObjectsColor[4]
+                        return DMW.Settings.profile.Tracker.TrackObjectsColor[1], DMW.Settings.profile.Tracker.TrackObjectsColor[2], DMW.Settings.profile.Tracker.TrackObjectsColor[3], DMW.Settings.profile.Tracker.TrackObjectsColor[4]
                     end,
                     set = function(info, r, g, b, a)
-                        DMW.Settings.profile.Helpers.TrackObjectsColor = {r, g, b, a}
+                        DMW.Settings.profile.Tracker.TrackObjectsColor = {r, g, b, a}
                     end
                 },
                 TrackObjectsMailbox = {
@@ -363,10 +450,10 @@ local TrackingOptionsTable = {
                     -- desc = "Track important NPCs",
                     width = "full",
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackObjectsMailbox
+                        return DMW.Settings.profile.Tracker.TrackObjectsMailbox
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackObjectsMailbox = value
+                        DMW.Settings.profile.Tracker.TrackObjectsMailbox = value
                     end
                 },
             }
@@ -384,10 +471,10 @@ local TrackingOptionsTable = {
                     width = "full",
                     multiline = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackPlayers
+                        return DMW.Settings.profile.Tracker.TrackPlayers
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackPlayers = value
+                        DMW.Settings.profile.Tracker.TrackPlayers = value
                     end
                 },
                 TrackPlayersLine = {
@@ -400,10 +487,10 @@ local TrackingOptionsTable = {
                     max = 5,
                     step = 1,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackPlayersLine
+                        return DMW.Settings.profile.Tracker.TrackPlayersLine
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackPlayersLine = value
+                        DMW.Settings.profile.Tracker.TrackPlayersLine = value
                     end
                 },
                 TrackPlayersAlert = {
@@ -413,10 +500,10 @@ local TrackingOptionsTable = {
                     desc = "Sound for Alert, 416 = Murlocs",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackPlayersAlert
+                        return DMW.Settings.profile.Tracker.TrackPlayersAlert
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackPlayersAlert = value
+                        DMW.Settings.profile.Tracker.TrackPlayersAlert = value
                     end
                 },
                 TrackPlayersColor = {
@@ -427,10 +514,10 @@ local TrackingOptionsTable = {
                     width = 0.4,
                     hasAlpha = true,
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackPlayersColor[1], DMW.Settings.profile.Helpers.TrackPlayersColor[2], DMW.Settings.profile.Helpers.TrackPlayersColor[3], DMW.Settings.profile.Helpers.TrackPlayersColor[4]
+                        return DMW.Settings.profile.Tracker.TrackPlayersColor[1], DMW.Settings.profile.Tracker.TrackPlayersColor[2], DMW.Settings.profile.Tracker.TrackPlayersColor[3], DMW.Settings.profile.Tracker.TrackPlayersColor[4]
                     end,
                     set = function(info, r, g, b, a)
-                        DMW.Settings.profile.Helpers.TrackPlayersColor = {r, g, b, a}
+                        DMW.Settings.profile.Tracker.TrackPlayersColor = {r, g, b, a}
                     end
                 },
                 Trackshit = {
@@ -441,15 +528,15 @@ local TrackingOptionsTable = {
                     width = "full",
                     func = function()
                         if DMW.Player.Target and DMW.Player.Target.Player then
-                            for k in string.gmatch(DMW.Settings.profile.Helpers.TrackPlayers, "([^,]+)") do
+                            for k in string.gmatch(DMW.Settings.profile.Tracker.TrackPlayers, "([^,]+)") do
                                 if strmatch(string.lower(DMW.Player.Target.Name), string.lower(string.trim(k))) then
                                     return
                                 end
                             end
-                            if DMW.Settings.profile.Helpers.TrackPlayers == nil or DMW.Settings.profile.Helpers.TrackPlayers == "" then
-                                DMW.Settings.profile.Helpers.TrackPlayers = DMW.Player.Target.Name
+                            if DMW.Settings.profile.Tracker.TrackPlayers == nil or DMW.Settings.profile.Tracker.TrackPlayers == "" then
+                                DMW.Settings.profile.Tracker.TrackPlayers = DMW.Player.Target.Name
                             else
-                                DMW.Settings.profile.Helpers.TrackPlayers = DMW.Settings.profile.Helpers.TrackPlayers..","..DMW.Player.Target.Name
+                                DMW.Settings.profile.Tracker.TrackPlayers = DMW.Settings.profile.Tracker.TrackPlayers..","..DMW.Player.Target.Name
                             end
                         end
                     end
@@ -460,11 +547,11 @@ local TrackingOptionsTable = {
                     name = "Track All Players",
                     width = "full",
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackPlayersAny
+                        return DMW.Settings.profile.Tracker.TrackPlayersAny
                     end,
                     set = function(info, value)
-                        if value and DMW.Settings.profile.Helpers.TrackPlayersEnemy then DMW.Settings.profile.Helpers.TrackPlayersEnemy = false end
-                        DMW.Settings.profile.Helpers.TrackPlayersAny = value
+                        if value and DMW.Settings.profile.Tracker.TrackPlayersEnemy then DMW.Settings.profile.Tracker.TrackPlayersEnemy = false end
+                        DMW.Settings.profile.Tracker.TrackPlayersAny = value
                     end
                 },
                 TrackPlayersEnemy = {
@@ -473,11 +560,11 @@ local TrackingOptionsTable = {
                     name = "Track All Enemy Players",
                     width = "full",
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackPlayersEnemy
+                        return DMW.Settings.profile.Tracker.TrackPlayersEnemy
                     end,
                     set = function(info, value)
-                        if value and DMW.Settings.profile.Helpers.TrackPlayersAny then DMW.Settings.profile.Helpers.TrackPlayersAny = false end
-                        DMW.Settings.profile.Helpers.TrackPlayersEnemy = value
+                        if value and DMW.Settings.profile.Tracker.TrackPlayersAny then DMW.Settings.profile.Tracker.TrackPlayersAny = false end
+                        DMW.Settings.profile.Tracker.TrackPlayersEnemy = value
                     end
                 },
                 TrackPlayersNameplates = {
@@ -487,10 +574,10 @@ local TrackingOptionsTable = {
                     desc = "Track enemy players outside nameplate range",
                     width = "full",
                     get = function()
-                        return DMW.Settings.profile.Helpers.TrackPlayersNamePlates
+                        return DMW.Settings.profile.Tracker.TrackPlayersNamePlates
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Helpers.TrackPlayersNamePlates = value
+                        DMW.Settings.profile.Tracker.TrackPlayersNamePlates = value
                     end
                 }
             }
@@ -600,7 +687,7 @@ local Options = {
                 },
                 AutoGather = {
                     type = "toggle",
-                    order = 9,
+                    order = 8,
                     name = "Auto Gather",
                     width = "full",
                     get = function()
@@ -612,7 +699,7 @@ local Options = {
                 },
                 Trackshit = {
                     type = "execute",
-                    order = 19,
+                    order = 9,
                     name = "Advanced Tracking",
                     desc = "Track options",
                     width = "full",
@@ -622,6 +709,24 @@ local Options = {
                         else
                             TrackingFrame:Hide()
                         end
+                    end
+                },
+                exportProfile = {
+                    type = "execute",
+                    name = "Export Settings",
+                    width = 1,
+                    order = 10,
+                    func = function()
+                        export("export")
+                    end
+                },
+                importProfile = {
+                    type = "execute",
+                    name = "Import Settings",
+                    width = 1,
+                    order = 11,
+                    func = function()
+                        export("import")
                     end
                 }
             }
@@ -748,7 +853,6 @@ local Options = {
         }
     }
 }
-
 local MinimapIcon =
     LibStub("LibDataBroker-1.1"):NewDataObject(
     "DMWMinimapIcon",

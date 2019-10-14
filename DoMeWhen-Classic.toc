@@ -24,6 +24,8 @@ Libs\!LibDraw\LibDraw.lua
 Libs\LibBossIDs-1.0\LibBossIDs-1.0.lua
 Libs\LibThreatClassic\embeds.xml
 Libs\LibThreatClassic\lib.xml
+Libs\AceSerializer-3.0\AceSerializer-3.0.lua
+Libs\LibBase64-1.0\LibBase64-1.0.lua
 
 Core.lua
 Classes\Classes.lua

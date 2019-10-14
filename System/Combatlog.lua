@@ -95,7 +95,14 @@ function frame:Reader(event, ...)
                 Player.DOTed[spellName] = DMW.Tables.AuraCache[DMW.Player.Pointer][spellName].AuraReturn[6]
             end
         end
-
+        if Player.Class == "ROGUE" then
+            if param == "SPELL_CAST_SUCCESS" and spellName == "Pick Pocket" then
+                local destobj = GetObjectWithGUID(destination)
+                if DMW.Units[destobj] ~= nil then
+                    DMW.Units[destobj].PickPocketed = true
+                end
+            end
+        end
         -- if param == "SPELL_DISPELL" and destination == Player.GUID then
         --     if Player.DOTed then
         --         if Player.DOTed[spellName] ~= nil then

@@ -13,6 +13,52 @@ function Unit:GetDistance(OtherUnit)
     return Dist
 end
 
+function Unit:AggroDistance()
+    local maxRadius = 45 --.0 * sWorld->getRate(RATE_CREATURE_AGGRO));
+    local minRadius = 5 --.0 * sWorld->getRate(RATE_CREATURE_AGGRO));
+    -- aggroRate = sWorld->getRate(RATE_CREATURE_AGGRO);
+    local expansionMaxLevel = 60
+
+    local playerLevel = DMW.Player.Level
+    local creatureLevel = self.Level
+    local leveldif = creatureLevel - playerLevel
+
+    if UnitReaction(self.Pointer, "player") >= 4 then --neutral mob
+        return 0
+    end
+
+    -- // The aggro radius for creatures with equal level as the player is 20 yards.
+    -- // The combatreach should not get taken into account for the distance so we drop it from the range (see Supremus as expample)
+    local baseAggroDistance = 20 - UnitCombatReach(self.Pointer) --GetCombatReach();
+    local aggroRadius = baseAggroDistance;
+
+    -- // detect range auras
+    -- if creatureLevel <= 55
+    -- {
+    --     aggroRadius += GetTotalAuraModifier(SPELL_AURA_MOD_DETECT_RANGE);
+
+    --     aggroRadius += player->GetTotalAuraModifier(SPELL_AURA_MOD_DETECTED_RANGE);
+    -- }
+
+    -- // The aggro range of creatures with higher levels than the total player level for the expansion should get the maxlevel treatment
+    -- // This makes sure that creatures such as bosses wont have a bigger aggro range than the rest of the npcs
+    -- // The following code is used for blizzlike behavior such as skipable bosses (e.g. Commander Springvale at level 85)
+    if creatureLevel > 60 then
+        aggroRadius = aggroRadius + (expansionMaxLevel - playerLevel)
+    -- // + - 1 yard for each level difference between player and creature
+    else
+        aggroRadius = aggroRadius + (creatureLevel - playerLevel)
+    end
+    -- // Make sure that we wont go over the total range limits
+    if aggroRadius > maxRadius then
+        aggroRadius = maxRadius
+    elseif aggroRadius < minRadius then
+        aggroRadius = minRadius
+    end
+    
+    return aggroRadius-1 --* aggroRate);
+end
+
 function Unit:RawDistance(OtherUnit)
     OtherUnit = OtherUnit or DMW.Player
     return sqrt(((self.PosX - OtherUnit.PosX) ^ 2) + ((self.PosY - OtherUnit.PosY) ^ 2) + ((self.PosZ - OtherUnit.PosZ) ^ 2))

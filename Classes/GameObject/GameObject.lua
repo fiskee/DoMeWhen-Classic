@@ -26,7 +26,7 @@ function GameObject:GetDistance(OtherUnit)
 end
 
 function GameObject:IsQuest()
-    if self.ObjectID and DMW.Settings.profile.Helpers.QuestieHelper and QuestieTooltips and QuestieTooltips.tooltipLookup["o_" .. self.ObjectID] then
+    if self.ObjectID and DMW.Settings.profile.Tracker.QuestieHelper and QuestieTooltips and QuestieTooltips.tooltipLookup["o_" .. self.ObjectID] then
         for _, Tooltip in pairs(QuestieTooltips.tooltipLookup["o_" .. self.ObjectID]) do
             Tooltip.Objective:Update()
             if not Tooltip.Objective.Completed then
@@ -38,25 +38,25 @@ function GameObject:IsQuest()
 end
 
 function GameObject:IsHerb() --TODO: Add check if we have high enough skill
-    if DMW.Settings.profile.Helpers.Herbs and DMW.Enums.Herbs[self.ObjectID] then
+    if DMW.Settings.profile.Tracker.Herbs and DMW.Enums.Herbs[self.ObjectID] then
         return true
     end
     return false
 end
 
 function GameObject:IsOre() --TODO: Add check if we have high enough skill
-    if DMW.Settings.profile.Helpers.Ore and DMW.Enums.Ore[self.ObjectID] then
+    if DMW.Settings.profile.Tracker.Ore and DMW.Enums.Ore[self.ObjectID] then
         return true
     end
     return false
 end
 
 function GameObject:IsTrackable() --TODO: enums
-    if DMW.Settings.profile.Helpers.Trackable and DMW.Enums.Trackable[self.ObjectID] then
+    if DMW.Settings.profile.Tracker.Trackable and DMW.Enums.Trackable[self.ObjectID] then
         return true
     end
-    if DMW.Settings.profile.Helpers.TrackObjects and DMW.Settings.profile.Helpers.TrackObjects ~= "" then
-        for k in string.gmatch(DMW.Settings.profile.Helpers.TrackObjects, "([^,]+)") do
+    if DMW.Settings.profile.Tracker.TrackObjects and DMW.Settings.profile.Tracker.TrackObjects ~= "" then
+        for k in string.gmatch(DMW.Settings.profile.Tracker.TrackObjects, "([^,]+)") do
             if strmatch(string.lower(self.Name), string.lower(string.trim(k))) then
                 return true
             end
