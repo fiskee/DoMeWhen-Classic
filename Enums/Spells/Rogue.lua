@@ -41,6 +41,7 @@ Spells.ROGUE = {
         WoundPoison = {Ranks = {13220, 13228, 13229, 13230}}
     },
     Buffs = {
+        AdrenalineRush = {Ranks = {13750}},
         Remorseless = {Ranks = {14143, 14149}},
         SliceAndDice = {Ranks = {5171, 6774}},
         Stealth = {Ranks = {1784, 1785, 1786, 1787}},
