@@ -75,6 +75,17 @@ local function MigrateSettings()
         DMW.Settings.profile.Helpers.TrackPlayers = nil
         Reload = true
     end
+    for k,v in pairs(DMW.Settings.profile.Helpers) do
+        local moveNew = true
+        if k == "AutoGather" or k == "AutoLoot" or k == "AutoSkinning" then
+            moveNew = false
+        end
+        if moveNew then
+            DMW.Settings.profile.Tracker[k] = v
+            DMW.Settings.profile.Helpers[k] = nil 
+            Reload = true
+        end
+    end
     if Reload then
         ReloadUI()
     end
