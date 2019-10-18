@@ -28,13 +28,14 @@ local function nilWarriorUnit(destobj)
 end
 
 function frame:Reader(event, ...)
-    if GetObjectWithGUID then
+    if GetObjectWithGUID then   
         timeStamp, param, hideCaster, source, sourceName, sourceFlags, sourceRaidFlags, destination, destName, destFlags, destRaidFlags, spell, spellName, _, spellType = ...
         Locals()
         DMW.Functions.AuraCache.Event(...)
         if source == Player.GUID or destination == Player.GUID then
-            local sourceobj = GetObjectWithGUID(source)
-            local destobj = GetObjectWithGUID(destination)
+            local sourceobj = source == Player.GUID and DMW.Player.Pointer or GetObjectWithGUID(source)
+            local destobj = destination == Player.GUID and DMW.Player.Pointer or GetObjectWithGUID(destination)
+                        
             if Player.Class == "WARRIOR" and source == Player.GUID and destobj then
                 if string.match(param, "_MISSED") then
                     local missType = param == "SWING_MISSED" and spell or spellType
@@ -67,7 +68,7 @@ function frame:Reader(event, ...)
                     nilWarriorUnit(destobj)
                 end
             end
-            if source == Player.GUID or DMW.Tables.Swing.Units[sourceobj] ~= nil then
+            if sourceobj == DMW.Player.Pointer or DMW.Tables.Swing.Units[sourceobj] ~= nil then
                 if param == "SWING_DAMAGE" then
                     -- if destination == Player.GUID and not sitenrage then StrafeLeftStart();C_Timer.After(.0000001, function() StrafeLeftStop();sitenrage = true end) end
                     local _, _, _, _, _, _, _, _, _, offhand = select(12, ...)
