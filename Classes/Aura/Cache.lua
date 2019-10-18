@@ -79,7 +79,7 @@ function AuraCache.Event(...)
           sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = ...
     
     if destGUID and (event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" or event == "SPELL_AURA_REFRESH" or event == "SPELL_AURA_REMOVED" or event == "SPELL_PERIODIC_AURA_REMOVED") then
-        local dest = destGUID == Player.GUID and DMW.Player.Pointer or GetObjectWithGUID(destGUID)
+        local dest = GetObjectWithGUID(destGUID)
         if dest then
             DMW.Tables.AuraUpdate[dest] = true
         end
