@@ -33,25 +33,22 @@ function Debuff:Exist(Unit, OnlyPlayer)
 end
 
 function Buff:HighestKnown()
-    local HighestKnown = 0
-    for i = 1, #self.Ranks do
-        local thisRank = self.Ranks[i]
-        if IsSpellKnown(thisRank) then
-            HighestKnown = i
+    for i = #self.Ranks, 1, -1 do
+        if IsSpellKnown(self.Ranks[i]) then
+            return i            
         end
     end
-    return HighestKnown
+    return 0
 end
 
 function Debuff:HighestKnown()
-    local HighestKnown = 0
-    for i = 1, #self.Ranks do
+    for i = #self.Ranks, 1, -1 do
         local thisRank = self.Ranks[i]
-        if IsSpellKnown(thisRank) then
-            HighestKnown = i
+        if IsSpellKnown(self.Ranks[i]) then
+            return i            
         end
     end
-    return HighestKnown
+    return 0
 end
 
 function Buff:Remain(Unit, OnlyPlayer)
