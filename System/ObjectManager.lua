@@ -61,16 +61,18 @@ local function SortEnemies()
                 return x.EnemyScore > y.EnemyScore
             end
         )
-        table.sort(
-            Enemies,
-            function(x)
-                if UnitIsUnit(x.Pointer, "target") then
-                    return true
-                else
-                    return false
+        if UnitIsVisible("target") then
+            table.sort(
+                Enemies,
+                function(x)
+                    if UnitIsUnit(x.Pointer, "target") then
+                        return true
+                    else
+                        return false
+                    end
                 end
-            end
-        )
+            )
+        end
     end
 end
 
