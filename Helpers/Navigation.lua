@@ -14,7 +14,7 @@ local Modes = {
     Transport = 2
 }
 Navigation.Mode = Modes.Disabled
-Navigation.CombatRange = 1
+Navigation.CombatRange = 18
 
 local function DrawRoute()
     LibDraw.SetWidth(4)
@@ -30,7 +30,10 @@ local function DrawRoute()
 end
 
 function Navigation:Pulse()
-    if Navigation.Mode ~= Modes.Disabled then
+    if not DMW.Player.Moving and not Path and DMW.Player.Target and DMW.Player.Target.ValidEnemy and not DMW.Player.Target.Facing and Navigation.Mode == Modes.Grinding then
+        FaceDirection(DMW.Player.Target.Pointer)
+    end
+    if Navigation.Mode ~= Modes.Disabled and not DMW.Player.Casting then
         if Navigation.Mode == Modes.Grinding then
             self:Grinding()
         end
@@ -78,16 +81,20 @@ function Navigation:MoveToCorpse()
 end
 
 function Navigation:SearchAttackable()
-    if #DMW.Attackable > 1 then
+    local Table = {}
+    for _, Unit in pairs(DMW.Units) do
+        table.insert(Table, Unit)
+    end
+    if #Table > 1 then
         table.sort(
-            DMW.Attackable,
+            Table,
             function(x, y)
                 return x.Distance < y.Distance
             end
         )
     end
-    for _, Unit in ipairs(DMW.Attackable) do
-        if Unit.Distance <= 100 then
+    for _, Unit in ipairs(Table) do
+        if Unit.Distance <= 100 and not Unit.Dead and not Unit.Player and UnitCanAttack("player", Unit.Pointer) then
             if self:MoveTo(Unit.PosX, Unit.PosY, Unit.PosZ) then
                 TargetUnit(Unit.Pointer)
                 DMW.Player.Target = Unit
@@ -110,6 +117,15 @@ function Navigation:SearchEnemy()
 end
 
 function Navigation:Grinding()
+    if DMW.Player.Target and DMW.Player.Target.ValidEnemy and DMW.Player.Target.Distance <= Navigation.CombatRange then
+        Path = nil
+        PathIndex = 1
+        if DMW.Player.Moving then
+            MoveForwardStart()
+            MoveForwardStop()
+        end
+        return
+    end
     if DMW.Player.Combat and (not DMW.Player.Target or not DMW.Player.Target.ValidEnemy) then
         self:SearchEnemy()
     elseif (not DMW.Player.Target or DMW.Player.Target.Dead) and DMW.Player.HP > 70 then
@@ -117,8 +133,5 @@ function Navigation:Grinding()
     end
     if DMW.Player.Target and DMW.Player.Target.Distance > Navigation.CombatRange and (DMW.Player.Target.PosX ~= EndX or DMW.Player.Target.PosY ~= EndY or DMW.Player.Target.PosZ ~= EndZ) then
         self:MoveTo(DMW.Player.Target.PosX, DMW.Player.Target.PosY, DMW.Player.Target.PosZ)
-    end
-    if not DMW.Player.Moving and not Path and DMW.Player.Target and DMW.Player.Target.ValidEnemy and not DMW.Player.Target.Facing then
-        FaceDirection(DMW.Player.Target.Pointer)
     end
 end
