@@ -7,6 +7,7 @@ local PathIndex = 1
 local DestX, DestY, DestZ
 local EndX, EndY, EndZ
 local PathUpdated = false
+local Pause = GetTime()
 
 local Modes = {
     Disabled = 0,
@@ -33,7 +34,7 @@ function Navigation:Pulse()
     if not DMW.Player.Moving and not Path and DMW.Player.Target and DMW.Player.Target.ValidEnemy and not DMW.Player.Target.Facing and Navigation.Mode == Modes.Grinding then
         FaceDirection(DMW.Player.Target.Pointer)
     end
-    if Navigation.Mode ~= Modes.Disabled and not DMW.Player.Casting then
+    if Navigation.Mode ~= Modes.Disabled and not DMW.Player.Casting and DMW.Time > Pause then
         if Navigation.Mode == Modes.Grinding then
             self:Grinding()
         end
@@ -51,7 +52,7 @@ function Navigation:Pulse()
                 end
             elseif not DMW.Player.Moving or PathUpdated then
                 PathUpdated = false
-                MoveTo(DestX, DestY, DestZ)
+                MoveTo(DestX, DestY, DestZ, true)
             end
             DrawRoute()
         end
@@ -76,8 +77,16 @@ function Navigation:MoveToCursor()
 end
 
 function Navigation:MoveToCorpse()
+    if StaticPopup1 and StaticPopup1:IsVisible() and (StaticPopup1.which == "DEATH" or StaticPopup1.which == "RECOVER_CORPSE") and StaticPopup1Button1 and StaticPopup1Button1:IsEnabled() then
+        StaticPopup1Button1:Click()
+        Path = nil
+        Pause = DMW.Time + 1
+        return
+    end
     local PosX, PosY, PosZ = GetCorpsePosition()
-    self:MoveTo(PosX, PosY, PosZ)
+    if not Path or (PosX ~= EndX or PosY ~= EndY) then
+        self:MoveTo(PosX, PosY, PosZ)
+    end
 end
 
 function Navigation:SearchAttackable()
@@ -94,7 +103,7 @@ function Navigation:SearchAttackable()
         )
     end
     for _, Unit in ipairs(Table) do
-        if Unit.Distance <= 100 and not Unit.Dead and not Unit.Player and UnitCanAttack("player", Unit.Pointer) then
+        if Unit.Distance <= 100 and not Unit.Dead and not Unit.Player and UnitCanAttack("player", Unit.Pointer) and not UnitIsTapDenied(Unit.Pointer) then
             if self:MoveTo(Unit.PosX, Unit.PosY, Unit.PosZ) then
                 TargetUnit(Unit.Pointer)
                 DMW.Player.Target = Unit
@@ -117,6 +126,9 @@ function Navigation:SearchEnemy()
 end
 
 function Navigation:Grinding()
+    if UnitIsDeadOrGhost("player") then
+        return self:MoveToCorpse()
+    end
     if DMW.Player.Target and DMW.Player.Target.ValidEnemy and DMW.Player.Target.Distance <= Navigation.CombatRange then
         Path = nil
         PathIndex = 1
@@ -128,7 +140,7 @@ function Navigation:Grinding()
     end
     if DMW.Player.Combat and (not DMW.Player.Target or not DMW.Player.Target.ValidEnemy) then
         self:SearchEnemy()
-    elseif (not DMW.Player.Target or DMW.Player.Target.Dead) and DMW.Player.HP > 70 then
+    elseif (not DMW.Player.Target or DMW.Player.Target.Dead or UnitIsTapDenied(DMW.Player.Target.Pointer)) and DMW.Player.HP > 70 then
         self:SearchAttackable()
     end
     if DMW.Player.Target and DMW.Player.Target.Distance > Navigation.CombatRange and (DMW.Player.Target.PosX ~= EndX or DMW.Player.Target.PosY ~= EndY or DMW.Player.Target.PosZ ~= EndZ) then
