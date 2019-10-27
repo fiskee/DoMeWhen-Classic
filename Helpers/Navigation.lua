@@ -115,10 +115,10 @@ function Navigation:Grinding()
     elseif (not DMW.Player.Target or DMW.Player.Target.Dead) and DMW.Player.HP > 70 then
         self:SearchAttackable()
     end
-    if DMW.Player.Target and (DMW.Player.Target.PosX ~= EndX or DMW.Player.Target.PosY ~= EndY or DMW.Player.Target.PosZ ~= EndZ) then
+    if DMW.Player.Target and DMW.Player.Target.Distance > Navigation.CombatRange and (DMW.Player.Target.PosX ~= EndX or DMW.Player.Target.PosY ~= EndY or DMW.Player.Target.PosZ ~= EndZ) then
         self:MoveTo(DMW.Player.Target.PosX, DMW.Player.Target.PosY, DMW.Player.Target.PosZ)
     end
-    if not DMW.Player.Moving and not Path and DMW.Player.Target and not DMW.Player.Target.Facing then
+    if not DMW.Player.Moving and not Path and DMW.Player.Target and DMW.Player.Target.ValidEnemy and not DMW.Player.Target.Facing then
         FaceDirection(DMW.Player.Target.Pointer)
     end
 end
