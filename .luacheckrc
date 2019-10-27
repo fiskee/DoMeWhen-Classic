@@ -3919,6 +3919,10 @@ globals = {
 	"ScreenToWorld",
 	"GetMousePosition",
 	"Types",
+	"InitializeNavigation",
+	"CalculatePath",
+	"GetMapId",
+	"GetCorpsePosition",
 	--Extras
 	"DMW",
 	"QuestieTooltips",
