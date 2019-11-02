@@ -36,7 +36,7 @@ function frame:Reader(event, ...)
             local sourceobj = source == Player.GUID and Player.Pointer or GetObjectWithGUID(source)
             local destobj = destination == Player.GUID and Player.Pointer or GetObjectWithGUID(destination)
             if string.match(param, "SWING_EXTRA_ATTACKS") then
-                print(...)
+                -- print(...)
             end
             if Player.Class == "WARRIOR" and source == Player.GUID and destobj then
                 if string.match(param, "_MISSED") then
