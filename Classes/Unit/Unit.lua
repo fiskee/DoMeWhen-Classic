@@ -25,7 +25,11 @@ function Unit:New(Pointer)
 end
 
 function Unit:Update()
-    self.NextUpdate = DMW.Time + (math.random(100, 1500) / 10000)
+    if DMW.Player.Resting then
+        self.NextUpdate = DMW.Time + (math.random(100, 1500) / 1000)
+    else
+        self.NextUpdate = DMW.Time + (math.random(300, 1500) / 10000)
+    end
     self:UpdatePosition()
     if DMW.Tables.AuraUpdate[self.Pointer] then
         DMW.Functions.AuraCache.Refresh(self.Pointer)

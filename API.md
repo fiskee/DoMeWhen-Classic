@@ -88,6 +88,7 @@ Note not all functions work in classic yet
 - .CombatLeftTime
 - .SwingLast
 - .SwingNext
+- .Resting
 
 ## Functions
 - :GCDRemain()
