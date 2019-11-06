@@ -17,6 +17,9 @@ DMW.Timers = {
     Rotation = {}
 }
 DMW.Pulses = 0
+if QuestieLoader then
+    DMW.QuestieTooltips = QuestieLoader:ImportModule("QuestieTooltips")
+end
 local Initialized = false
 local DebugStart
 local RotationCount = 0

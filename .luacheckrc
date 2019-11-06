@@ -3925,7 +3925,7 @@ globals = {
 	"GetCorpsePosition",
 	--Extras
 	"DMW",
-	"QuestieTooltips",
 	"RealMobHealth_CreatureHealthCache",
+	"QuestieLoader",
 	"LibStub"
 }
