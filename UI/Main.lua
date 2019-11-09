@@ -145,10 +145,14 @@ local TrackingOptionsTable = {
                     desc = "Sound for Alert, 416 = Murlocs",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Tracker.QuestieHelperAlert
+                        return tostring(DMW.Settings.profile.Tracker.QuestieHelperAlert)
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Tracker.QuestieHelperAlert = value
+                        if tonumber(value) then
+                            DMW.Settings.profile.Tracker.QuestieHelperAlert = tonumber(value)
+                        else
+                            DMW.Settings.profile.Tracker.QuestieHelperAlert = 0
+                        end
                     end
                 },
                 QuestieHelperColor = {
@@ -201,10 +205,14 @@ local TrackingOptionsTable = {
                     desc = "Sound for Alert, 416 = Murlocs",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Tracker.HerbsAlert
+                        return tostring(DMW.Settings.profile.Tracker.HerbsAlert)
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Tracker.HerbsAlert = value
+                        if tonumber(value) then
+                            DMW.Settings.profile.Tracker.HerbsAlert = tonumber(value)
+                        else
+                            DMW.Settings.profile.Tracker.HerbsAlert = 0
+                        end
                     end
                 },
                 HerbsColor = {
@@ -257,10 +265,14 @@ local TrackingOptionsTable = {
                     desc = "",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Tracker.OreAlert
+                        return tostring(DMW.Settings.profile.Tracker.OreAlert)
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Tracker.OreAlert = value
+                        if tonumber(value) then
+                            DMW.Settings.profile.Tracker.OreAlert = tonumber(value)
+                        else
+                            DMW.Settings.profile.Tracker.OreAlert = 0
+                        end
                     end
                 },
                 OreColor = {
@@ -361,10 +373,14 @@ local TrackingOptionsTable = {
                     desc = "Sound for Alert, 416 = Murlocs",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Tracker.TrackUnitsAlert
+                        return tostring(DMW.Settings.profile.Tracker.TrackUnitsAlert)
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Tracker.TrackUnitsAlert = value
+                        if tonumber(value) then
+                            DMW.Settings.profile.Tracker.TrackUnitsAlert = tonumber(value)
+                        else
+                            DMW.Settings.profile.Tracker.TrackUnitsAlert = 0
+                        end
                     end
                 },
                 TrackUnitsColor = {
@@ -425,10 +441,14 @@ local TrackingOptionsTable = {
                     desc = "Sound for Alert, 416 = Murlocs",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Tracker.TrackObjectsAlert
+                        return tostring(DMW.Settings.profile.Tracker.TrackObjectsAlert)
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Tracker.TrackObjectsAlert = value
+                        if tonumber(value) then
+                            DMW.Settings.profile.Tracker.TrackObjectsAlert = tonumber(value)
+                        else
+                            DMW.Settings.profile.Tracker.TrackObjectsAlert = 0
+                        end
                     end
                 },
                 TrackObjectsColor = {
@@ -502,10 +522,14 @@ local TrackingOptionsTable = {
                     desc = "Sound for Alert, 416 = Murlocs",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Tracker.TrackPlayersAlert
+                        return tostring(DMW.Settings.profile.Tracker.TrackPlayersAlert)
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Tracker.TrackPlayersAlert = value
+                        if tonumber(value) then
+                            DMW.Settings.profile.Tracker.TrackPlayersAlert = tonumber(value)
+                        else
+                            DMW.Settings.profile.Tracker.TrackPlayersAlert = 0
+                        end
                     end
                 },
                 TrackPlayersColor = {
