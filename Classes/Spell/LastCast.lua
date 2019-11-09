@@ -12,15 +12,10 @@ function Spell:LastCast(Index)
 end
 
 function Spell:TimeSinceLastCast()
-    if DMW.Player.LastCast then 
-        for i = 1, #DMW.Player.LastCast do
-            local thisLast = DMW.Player.LastCast[i]
-            if thisLast.SpellName == self.SpellName then
-                return DMW.Player.LastCast[i].CastTime - GetTime()
-            end
-        end
+    if self.LastCastTime > 0 then
+        return DMW.Time - self.LastCastTime
     end
-    return GetTime()
+    return 999
 end
 
 local function AddSpell(SpellID)
