@@ -17,5 +17,6 @@ DMW.Enums.CCBuffs = {
     [6789] = true, -- Death Coil
     [19503] = true, -- Scatter Shot
     [605] = true, -- Mind Control
-    [710] = true -- Banish
+    [710] = true, -- Banish
+    [9485] = true -- Shackle Undead
 }
