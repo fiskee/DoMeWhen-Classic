@@ -3,13 +3,15 @@ local DMW = DMW
 local UI = DMW.UI
 local RotationOrder = 1
 local TrackingFrame, TrackerConfig
-local base64 = LibStub('LibBase64-1.0')
-local serializer = LibStub('AceSerializer-3.0')
+local base64 = LibStub("LibBase64-1.0")
+local serializer = LibStub("AceSerializer-3.0")
+local CurrentTab = "GeneralTab"
+local TabIndex = 2
 
 local exportTypes = {
-	["rotation"] = "Rotation", 
-	["tracker"] = "Tracker",
-	["queue"] = "Queue"
+    ["rotation"] = "Rotation",
+    ["tracker"] = "Tracker",
+    ["queue"] = "Queue"
 }
 
 local exportTypesOrder = {
@@ -21,31 +23,35 @@ local exportTypesOrder = {
 local exportString = ""
 local function export(value)
     local Frame = AceGUI:Create("Frame")
-	Frame:SetTitle("Import/Export")
-	Frame:SetWidth(400)
-	Frame:SetHeight(350)
-	Frame.frame:SetFrameStrata("FULLSCREEN_DIALOG")
+    Frame:SetTitle("Import/Export")
+    Frame:SetWidth(400)
+    Frame:SetHeight(350)
+    Frame.frame:SetFrameStrata("FULLSCREEN_DIALOG")
     Frame:SetLayout("Flow")
 
     local Box = AceGUI:Create("MultiLineEditBox")
-	Box:SetNumLines(15)
-	Box:DisableButton(true)
-	Box:SetWidth(600)
-	Box:SetLabel("")
+    Box:SetNumLines(15)
+    Box:DisableButton(true)
+    Box:SetWidth(600)
+    Box:SetLabel("")
     Frame:AddChild(Box)
 
     local ProfileTypeDropdown = AceGUI:Create("Dropdown")
     ProfileTypeDropdown:SetMultiselect(false)
     ProfileTypeDropdown:SetLabel("Settings To Export")
     ProfileTypeDropdown:SetList(exportTypes, exportTypesOrder)
-    ProfileTypeDropdown:SetValue("rotation") 
+    ProfileTypeDropdown:SetValue("rotation")
     Frame:AddChild(ProfileTypeDropdown)
     ProfileTypeDropdown:SetRelativeWidth(0.5)
 
     if value == "export" then
-		Frame:SetTitle("Export")
-		local exportButton = AceGUI:Create("Button")
-		exportButton:SetText("Export")
+        -- ProfileTypeDropdown:SetCallback("OnValueChanged", function(self)
+        --     exportButton:SetText("Export "..exportTypes[ProfileTypeDropdown:GetValue()])
+        --     end
+        -- )
+        Frame:SetTitle("Export")
+        local exportButton = AceGUI:Create("Button")
+        exportButton:SetText("Export")
         local function OnClick(self)
             if ProfileTypeDropdown:GetValue() == "rotation" then
                 Box:SetText(base64:encode(serializer:Serialize(DMW.Settings.profile.Rotation)))
@@ -56,18 +62,14 @@ local function export(value)
             end
             Box.editBox:HighlightText()
             Box:SetFocus()
-		end
-		exportButton:SetCallback("OnClick", OnClick)
+        end
+        exportButton:SetCallback("OnClick", OnClick)
         Frame:AddChild(exportButton)
         exportButton:SetRelativeWidth(0.5)
-        -- ProfileTypeDropdown:SetCallback("OnValueChanged", function(self)
-        --     exportButton:SetText("Export "..exportTypes[ProfileTypeDropdown:GetValue()])
-        --     end
-        -- )
-	elseif value == "import" then
-		Frame:SetTitle("Import")
-		local importButton = AceGUI:Create("Button") 
-		importButton:SetText("Import")
+    elseif value == "import" then
+        Frame:SetTitle("Import")
+        local importButton = AceGUI:Create("Button")
+        importButton:SetText("Import")
         importButton:SetRelativeWidth(0.5)
         local function OnClick(self)
             if type(Box:GetText()) == "string" then
@@ -85,10 +87,10 @@ local function export(value)
                     Box:SetText(value)
                 end
             end
-		end
-		importButton:SetCallback("OnClick", OnClick)
-		Frame:AddChild(importButton)
-	end
+        end
+        importButton:SetCallback("OnClick", OnClick)
+        Frame:AddChild(importButton)
+    end
 end
 
 local TrackingOptionsTable = {
@@ -455,7 +457,7 @@ local TrackingOptionsTable = {
                     set = function(info, value)
                         DMW.Settings.profile.Tracker.TrackObjectsMailbox = value
                     end
-                },
+                }
             }
         },
         FourthTab = {
@@ -536,7 +538,7 @@ local TrackingOptionsTable = {
                             if DMW.Settings.profile.Tracker.TrackPlayers == nil or DMW.Settings.profile.Tracker.TrackPlayers == "" then
                                 DMW.Settings.profile.Tracker.TrackPlayers = DMW.Player.Target.Name
                             else
-                                DMW.Settings.profile.Tracker.TrackPlayers = DMW.Settings.profile.Tracker.TrackPlayers..","..DMW.Player.Target.Name
+                                DMW.Settings.profile.Tracker.TrackPlayers = DMW.Settings.profile.Tracker.TrackPlayers .. "," .. DMW.Player.Target.Name
                             end
                         end
                     end
@@ -550,7 +552,9 @@ local TrackingOptionsTable = {
                         return DMW.Settings.profile.Tracker.TrackPlayersAny
                     end,
                     set = function(info, value)
-                        if value and DMW.Settings.profile.Tracker.TrackPlayersEnemy then DMW.Settings.profile.Tracker.TrackPlayersEnemy = false end
+                        if value and DMW.Settings.profile.Tracker.TrackPlayersEnemy then
+                            DMW.Settings.profile.Tracker.TrackPlayersEnemy = false
+                        end
                         DMW.Settings.profile.Tracker.TrackPlayersAny = value
                     end
                 },
@@ -563,7 +567,9 @@ local TrackingOptionsTable = {
                         return DMW.Settings.profile.Tracker.TrackPlayersEnemy
                     end,
                     set = function(info, value)
-                        if value and DMW.Settings.profile.Tracker.TrackPlayersAny then DMW.Settings.profile.Tracker.TrackPlayersAny = false end
+                        if value and DMW.Settings.profile.Tracker.TrackPlayersAny then
+                            DMW.Settings.profile.Tracker.TrackPlayersAny = false
+                        end
                         DMW.Settings.profile.Tracker.TrackPlayersEnemy = value
                     end
                 },
@@ -595,7 +601,14 @@ local Options = {
             name = "Rotation",
             type = "group",
             order = 1,
-            args = {}
+            args = {
+                GeneralTab = {
+                    name = "General",
+                    type = "group",
+                    order = 1,
+                    args = {}
+                }
+            }
         },
         GeneralTab = {
             name = "General",
@@ -897,7 +910,7 @@ end
 
 function UI.Init()
     LibStub("AceConfig-3.0"):RegisterOptionsTable("DMW", Options)
-    LibStub("AceConfigDialog-3.0"):SetDefaultSize("DMW", 400, 750)
+    LibStub("AceConfigDialog-3.0"):SetDefaultSize("DMW", 580, 750)
     LibStub("AceConfig-3.0"):RegisterOptionsTable("TrackerConfig", TrackingOptionsTable)
     LibStub("AceConfigDialog-3.0"):SetDefaultSize("TrackerConfig", 400, 350)
     if not TrackingFrame then
@@ -912,7 +925,7 @@ end
 
 function UI.AddHeader(Text)
     if RotationOrder > 1 then
-        Options.args.RotationTab.args["Blank" .. RotationOrder] = {
+        Options.args.RotationTab.args[CurrentTab].args["Blank" .. RotationOrder] = {
             type = "description",
             order = RotationOrder,
             name = " ",
@@ -921,7 +934,7 @@ function UI.AddHeader(Text)
         RotationOrder = RotationOrder + 1
     end
     local Setting = Text:gsub("%s+", "")
-    Options.args.RotationTab.args[Setting .. "Header"] = {
+    Options.args.RotationTab.args[CurrentTab].args[Setting .. "Header"] = {
         type = "header",
         order = RotationOrder,
         name = Text
@@ -931,7 +944,7 @@ end
 
 function UI.AddToggle(Name, Desc, Default, FullWidth)
     local Width = FullWidth and "full" or 0.9
-    Options.args.RotationTab.args[Name] = {
+    Options.args.RotationTab.args[CurrentTab].args[Name] = {
         type = "toggle",
         order = RotationOrder,
         name = Name,
@@ -952,7 +965,7 @@ end
 
 function UI.AddRange(Name, Desc, Min, Max, Step, Default, FullWidth)
     local Width = FullWidth and "full" or 0.9
-    Options.args.RotationTab.args[Name] = {
+    Options.args.RotationTab.args[CurrentTab].args[Name] = {
         type = "range",
         order = RotationOrder,
         name = Name,
@@ -976,7 +989,7 @@ end
 
 function UI.AddDropdown(Name, Desc, Values, Default, FullWidth)
     local Width = FullWidth and "full" or 0.9
-    Options.args.RotationTab.args[Name] = {
+    Options.args.RotationTab.args[CurrentTab].args[Name] = {
         type = "select",
         order = RotationOrder,
         name = Name,
@@ -999,13 +1012,25 @@ end
 
 function UI.AddBlank(FullWidth)
     local Width = FullWidth and "full" or 0.9
-    Options.args.RotationTab.args["Blank" .. RotationOrder] = {
+    Options.args.RotationTab.args[CurrentTab].args["Blank" .. RotationOrder] = {
         type = "description",
         order = RotationOrder,
         name = " ",
         width = Width
     }
     RotationOrder = RotationOrder + 1
+end
+
+function UI.AddTab(Name)
+    Options.args.RotationTab.args[Name .. "Tab"] = {
+        name = Name,
+        type = "group",
+        order = TabIndex,
+        args = {}
+    }
+    TabIndex = TabIndex + 1
+    CurrentTab = Name .. "Tab"
+    RotationOrder = 1
 end
 
 function UI.InitQueue()
