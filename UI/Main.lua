@@ -289,9 +289,22 @@ local TrackingOptionsTable = {
                         DMW.Settings.profile.Tracker.OreColor = {r, g, b, a}
                     end
                 },
-                Trackable = {
+                CheckLevel = {
                     type = "toggle",
                     order = 13,
+                    name = "Check Skill Rank",
+                    desc = "Check if you have high enough rank before tracking herbs/ore. Only english client support",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Tracker.CheckRank
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Tracker.CheckRank = value
+                    end
+                },
+                Trackable = {
+                    type = "toggle",
+                    order = 14,
                     name = "Track Special Objects",
                     desc = "Mark special objects in the world (chests, containers ect.)",
                     width = "full",
@@ -304,7 +317,7 @@ local TrackingOptionsTable = {
                 },
                 TrackNPC = {
                     type = "toggle",
-                    order = 14,
+                    order = 15,
                     name = "Track NPCs",
                     desc = "Track important NPCs",
                     width = 0.7,
@@ -317,7 +330,7 @@ local TrackingOptionsTable = {
                 },
                 TrackNPCColor = {
                     type = "color",
-                    order = 15,
+                    order = 16,
                     name = "Color",
                     desc = "Color",
                     width = 0.5,
@@ -936,7 +949,7 @@ function UI.Init()
     LibStub("AceConfig-3.0"):RegisterOptionsTable("DMW", Options)
     LibStub("AceConfigDialog-3.0"):SetDefaultSize("DMW", 580, 750)
     LibStub("AceConfig-3.0"):RegisterOptionsTable("TrackerConfig", TrackingOptionsTable)
-    LibStub("AceConfigDialog-3.0"):SetDefaultSize("TrackerConfig", 400, 350)
+    LibStub("AceConfigDialog-3.0"):SetDefaultSize("TrackerConfig", 400, 370)
     if not TrackingFrame then
         TrackingFrame = AceGUI:Create("Frame")
         TrackingFrame:Hide()
