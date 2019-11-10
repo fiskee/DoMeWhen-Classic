@@ -8,6 +8,18 @@ local DestX, DestY, DestZ
 local EndX, EndY, EndZ
 local PathUpdated = false
 local Pause = GetTime()
+Navigation.WMRoute = {}
+
+local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
+Navigation.Frame = AceGUI:Create("Window")
+local Frame = Navigation.Frame
+local function Round(num, numDecimalPlaces)
+    local mult = 10 ^ (numDecimalPlaces or 0)
+    return math.floor(num * mult + 0.5) / mult
+end
+Frame:SetTitle("Route")
+Frame:SetWidth(300)
+Frame:Hide()
 
 local Modes = {
     Disabled = 0,
@@ -69,9 +81,13 @@ function Navigation:Pulse()
     end
 end
 
+function Navigation:CalculatePath(mapID, fromX, fromY, fromZ, toX, toY, toZ)
+    return CalculatePath(mapID, fromX, fromY, fromZ, toX, toY, toZ, true, false, 1)
+end
+
 function Navigation:MoveTo(toX, toY, toZ)
     PathIndex = 1
-    Path = CalculatePath(GetMapId(), DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ, toX, toY, toZ)
+    Path = self:CalculatePath(GetMapId(), DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ, toX, toY, toZ)
     if Path then
         EndX, EndY, EndZ = toX, toY, toZ
         PathUpdated = true
@@ -166,7 +182,7 @@ function Navigation:MapCursorPosition()
         if WorldPreload(WX, WY, DMW.Player.PosZ) then
             local WZ = select(3, TraceLine(WX, WY, 10000, WX, WY, -10000, 0x110))
             if WZ then
-                return WX, WY, WZ
+                return WX, WY, WZ, WorldMapFrame:GetMapID(), x, y
             end
         end
     end
@@ -182,12 +198,43 @@ function Navigation:MoveToMapCursorPosition()
     return false
 end
 
+function Frame:AddRoutePoint(Index, X, Y, Z)
+    local Label = AceGUI:Create("Label")
+    Label:SetFullWidth(true)
+    Label.RouteIndex = Index
+    Label:SetText(string.format("%s - %s - %s", Round(X, 2), Round(Y, 2), Round(Z, 2)))
+    Frame:AddChild(Label)
+end
+
+function Navigation:AddMapCursorPosition()
+    local Pos = {self:MapCursorPosition()}
+    if Pos[3] then
+        if #Navigation.WMRoute == 0 then
+            if self:CalculatePath(GetMapId(), DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ, Pos[1], Pos[2], Pos[3]) then
+                table.insert(Navigation.WMRoute, Pos)
+                Frame:AddRoutePoint(#Navigation.WMRoute, Pos[1], Pos[2], Pos[3])
+            end
+        else
+            local LastWMIndex = Navigation.WMRoute[#Navigation.WMRoute]
+            if self:CalculatePath(GetMapId(), LastWMIndex[1], LastWMIndex[2], LastWMIndex[3], Pos[1], Pos[2], Pos[3]) then
+                table.insert(Navigation.WMRoute, Pos)
+                Frame:AddRoutePoint(#Navigation.WMRoute, Pos[1], Pos[2], Pos[3])
+            end
+        end
+    end
+end
+
 function Navigation:InitWorldMap()
     WorldMapFrame.ScrollContainer:HookScript(
         "OnMouseDown",
         function(self, button)
             if (button == "LeftButton") and IsLeftControlKeyDown() then
                 Navigation:MoveToMapCursorPosition()
+            elseif (button == "LeftButton") and IsLeftShiftKeyDown() then
+                Navigation:AddMapCursorPosition()
+                if not Frame:IsShown() then
+                    Frame:Show()
+                end
             end
         end
     )

@@ -49,6 +49,8 @@ globals = {
 	"ActionBarButtonEventsFrame",
 	"WorldFrame",
 	"WorldMapFrame",
+	"StaticPopup1",
+	"StaticPopup1Button1",
 	-- API functions
 	"AbandonQuest",
 	"AbandonSkill",
@@ -3926,6 +3928,7 @@ globals = {
 	"CalculatePath",
 	"GetMapId",
 	"GetCorpsePosition",
+	"WorldPreload",
 	--Extras
 	"DMW",
 	"RealMobHealth_CreatureHealthCache",
