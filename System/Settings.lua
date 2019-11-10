@@ -39,6 +39,7 @@ local defaults = {
             Herbs = false,
             Ore = false,
             CheckRank = false,
+            HideGey = false,
             TrackNPC = false,
             QuestieHelper = false,
             QuestieHelperColor = {0,0,0,1},

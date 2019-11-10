@@ -294,7 +294,7 @@ local TrackingOptionsTable = {
                     order = 13,
                     name = "Check Skill Rank",
                     desc = "Check if you have high enough rank before tracking herbs/ore. Only english client support",
-                    width = "full",
+                    width = 0.9,
                     get = function()
                         return DMW.Settings.profile.Tracker.CheckRank
                     end,
@@ -302,9 +302,22 @@ local TrackingOptionsTable = {
                         DMW.Settings.profile.Tracker.CheckRank = value
                     end
                 },
-                Trackable = {
+                HideGrey = {
                     type = "toggle",
                     order = 14,
+                    name = "Hide Grey",
+                    desc = "Hide grey herbs/ore. Only english client support",
+                    width = 0.9,
+                    get = function()
+                        return DMW.Settings.profile.Tracker.HideGrey
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Tracker.HideGrey = value
+                    end
+                },
+                Trackable = {
+                    type = "toggle",
+                    order = 15,
                     name = "Track Special Objects",
                     desc = "Mark special objects in the world (chests, containers ect.)",
                     width = "full",
@@ -317,7 +330,7 @@ local TrackingOptionsTable = {
                 },
                 TrackNPC = {
                     type = "toggle",
-                    order = 15,
+                    order = 16,
                     name = "Track NPCs",
                     desc = "Track important NPCs",
                     width = 0.7,
@@ -330,7 +343,7 @@ local TrackingOptionsTable = {
                 },
                 TrackNPCColor = {
                     type = "color",
-                    order = 16,
+                    order = 17,
                     name = "Color",
                     desc = "Color",
                     width = 0.5,
