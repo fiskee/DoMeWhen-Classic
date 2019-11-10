@@ -22,8 +22,9 @@ local function AddSpell(SpellID)
     if not DMW.Player.LastCast then
         DMW.Player.LastCast = {}
     end
+    local SpellName = GetSpellInfo(SpellID)
     for k, v in pairs(DMW.Player.Spells) do
-        if v.SpellName == GetSpellInfo(SpellID) then
+        if v.SpellName == SpellName then
             local Temp = {}
             Temp.SpellName = v.SpellName
             Temp.CastTime = DMW.Time
@@ -46,6 +47,7 @@ local function EventTracker(self, event, ...)
                 WaitForSuccess = SpellID
             end
         elseif event == "UNIT_SPELLCAST_SUCCEEDED" then
+            local SpellName = GetSpellInfo(SpellID)
             if WaitForSuccess == SpellID then
                 DMW.Player.LastCast[1].SuccessTime = DMW.Time
                 WaitForSuccess = 0
@@ -55,7 +57,7 @@ local function EventTracker(self, event, ...)
                 end     
             end
             for k, v in pairs(DMW.Player.Spells) do
-                if v.SpellName == GetSpellInfo(SpellID) then
+                if v.SpellName == SpellName then
                     v.LastCastTime = DMW.Time
                 end
             end
