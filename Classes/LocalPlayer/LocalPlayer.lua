@@ -16,10 +16,12 @@ function LocalPlayer:New(Pointer)
     self:GetSpells()
     self:GetTalents()
     self.Equipment = {}
+    self.Professions = {}
     self.Items = {}
     self.Looting = false
     self:UpdateEquipment()
     self:GetItems()
+    self:UpdateProfessions()
     if self.Class == "WARRIOR" then
         self.OverpowerUnit = {}
         self.RevengeUnit = {}

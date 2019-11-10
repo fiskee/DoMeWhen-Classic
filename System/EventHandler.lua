@@ -14,6 +14,7 @@ EHFrame:RegisterEvent("LOOT_OPENED")
 EHFrame:RegisterEvent("LOOT_CLOSED")
 EHFrame:RegisterEvent("GET_ITEM_INFO_RECEIVED")
 EHFrame:RegisterEvent("UNIT_INVENTORY_CHANGED")
+EHFrame:RegisterEvent("SKILL_LINES_CHANGED")
 if class == "ROGUE" or class == "DRUID" then
     EHFrame:RegisterEvent("UNIT_POWER_FREQUENT")
 -- EHFrame:RegisterEvent("UNIT_POWER_UPDATE")
@@ -72,6 +73,8 @@ local function EventHandler(self, event, ...)
                 -- EHFrame:UnregisterEvent("UNIT_POWER_FREQUENT")
                 end
             end
+        elseif event == "SKILL_LINES_CHANGED" and DMW.Player.UpdateProfessions then
+            DMW.Player:UpdateProfessions()
         end
     end
 end
