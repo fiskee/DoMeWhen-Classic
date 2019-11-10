@@ -41,6 +41,9 @@ local function Init()
     DMW.Player = DMW.Classes.LocalPlayer(ObjectPointer("player"))
     DMW.UI.InitQueue()
     InitializeNavigation()
+    if DMW.Settings.profile.Navigation.WorldMapHook then
+        DMW.Helpers.Navigation:InitWorldMap()
+    end
     Initialized = true
 end
 

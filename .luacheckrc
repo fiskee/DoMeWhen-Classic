@@ -48,6 +48,7 @@ globals = {
 	"CombatLogGetCurrentEventInfo",
 	"ActionBarButtonEventsFrame",
 	"WorldFrame",
+	"WorldMapFrame",
 	-- API functions
 	"AbandonQuest",
 	"AbandonSkill",

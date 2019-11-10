@@ -64,6 +64,9 @@ local defaults = {
             TrackPlayersEnemy = false,
             TrackPlayersAny = false,
             TrackObjectsMailbox = false
+        },
+        Navigation = {
+            WorldMapHook = false
         }
     },
     char = {

@@ -17,6 +17,13 @@ local Modes = {
 Navigation.Mode = Modes.Disabled
 Navigation.CombatRange = 18
 
+local function NextNodeRange()
+    if IsMounted() then
+        return 2
+    end
+    return 1
+end
+
 local function DrawRoute()
     LibDraw.SetWidth(4)
     LibDraw.SetColorRaw(0, 128, 128, 100)
@@ -43,9 +50,12 @@ function Navigation:Pulse()
             DestX = Path[PathIndex][1]
             DestY = Path[PathIndex][2]
             DestZ = Path[PathIndex][3]
-            if sqrt(((DestX - DMW.Player.PosX) ^ 2) + ((DestY - DMW.Player.PosY) ^ 2)) < 1 and math.abs(DestZ - DMW.Player.PosZ) < 4 then
+            if sqrt(((DestX - DMW.Player.PosX) ^ 2) + ((DestY - DMW.Player.PosY) ^ 2)) < NextNodeRange() and math.abs(DestZ - DMW.Player.PosZ) < 4 then
                 PathIndex = PathIndex + 1
                 if PathIndex > #Path then
+                    if Navigation.Mode == Modes.Transport then
+                        Navigation.Mode = Modes.Disabled
+                    end
                     PathIndex = 1
                     Path = nil
                     return
@@ -146,4 +156,37 @@ function Navigation:Grinding()
     if DMW.Player.Target and DMW.Player.Target.Distance > Navigation.CombatRange and (DMW.Player.Target.PosX ~= EndX or DMW.Player.Target.PosY ~= EndY or DMW.Player.Target.PosZ ~= EndZ) then
         self:MoveTo(DMW.Player.Target.PosX, DMW.Player.Target.PosY, DMW.Player.Target.PosZ)
     end
+end
+
+function Navigation:MapCursorPosition()
+    if WorldMapFrame:IsVisible() then
+        local x, y = WorldMapFrame.ScrollContainer:GetNormalizedCursorPosition()
+        local continentID, worldPosition = C_Map.GetWorldPosFromMapPos(WorldMapFrame:GetMapID(), CreateVector2D(x, y))
+        local WX, WY = worldPosition:GetXY()
+        local WZ = select(3, TraceLine(WX, WY, 10000, WX, WY, -10000, 0x110))
+        if WZ then
+            return WX, WY, WZ
+        end
+    end
+    return nil
+end
+
+function Navigation:MoveToMapCursorPosition()
+    local x, y, z = self:MapCursorPosition()
+    if z and self:MoveTo(x, y, z) then
+        Navigation.Mode = Modes.Transport
+        return true
+    end
+    return false
+end
+
+function Navigation:InitWorldMap()
+    WorldMapFrame.ScrollContainer:HookScript(
+        "OnMouseDown",
+        function(self, button)
+            if (button == "LeftButton") and IsLeftControlKeyDown() then
+                Navigation:MoveToMapCursorPosition()
+            end
+        end
+    )
 end
