@@ -179,11 +179,12 @@ function Navigation:MapCursorPosition()
         local x, y = WorldMapFrame.ScrollContainer:GetNormalizedCursorPosition()
         local continentID, worldPosition = C_Map.GetWorldPosFromMapPos(WorldMapFrame:GetMapID(), CreateVector2D(x, y))
         local WX, WY = worldPosition:GetXY()
-        if WorldPreload(WX, WY, DMW.Player.PosZ) then
-            local WZ = select(3, TraceLine(WX, WY, 10000, WX, WY, -10000, 0x110))
-            if WZ then
-                return WX, WY, WZ, WorldMapFrame:GetMapID(), x, y
-            end
+        local WZ = select(3, TraceLine(WX, WY, 10000, WX, WY, -10000, 0x110))
+        if not WZ and WorldPreload(WX, WY, DMW.Player.PosZ) then
+            WZ = select(3, TraceLine(WX, WY, 9999, WX, WY, -9999, 0x110))
+        end
+        if WZ then
+            return WX, WY, WZ, WorldMapFrame:GetMapID(), x, y
         end
     end
     return nil
