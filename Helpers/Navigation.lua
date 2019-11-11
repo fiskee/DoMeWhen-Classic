@@ -9,6 +9,7 @@ local EndX, EndY, EndZ
 local PathUpdated = false
 local Pause = GetTime()
 Navigation.WMRoute = {}
+local WMRouteIndex = 1
 
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 Navigation.Frame = AceGUI:Create("Window")
@@ -135,6 +136,19 @@ function Navigation:SearchAttackable()
                 DMW.Player.Target = Unit
                 return true
             end
+        end
+    end
+    if not Path and #Navigation.WMRoute > 0 then
+        local x, y, z = unpack(Navigation.WMRoute[WMRouteIndex])
+        if sqrt(((x - DMW.Player.PosX) ^ 2) + ((y - DMW.Player.PosY) ^ 2)) < 30 then
+            WMRouteIndex = WMRouteIndex + 1
+            if WMRouteIndex > #Navigation.WMRoute then
+                WMRouteIndex = 1
+            end
+            x, y, z = unpack(Navigation.WMRoute[WMRouteIndex])
+        end
+        if self:MoveTo(x, y, z) then
+            return true
         end
     end
 end
