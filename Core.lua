@@ -40,10 +40,14 @@ local function Init()
     DMW.UI.HUD.Init()
     DMW.Player = DMW.Classes.LocalPlayer(ObjectPointer("player"))
     DMW.UI.InitQueue()
-    InitializeNavigation()
-    if DMW.Settings.profile.Navigation.WorldMapHook then
-        DMW.Helpers.Navigation:InitWorldMap()
-    end
+    InitializeNavigation(function(Result) 
+        if Result then
+            if DMW.Settings.profile.Navigation.WorldMapHook then
+                DMW.Helpers.Navigation:InitWorldMap()
+            end
+            DMW.UI.InitNavigation()
+        end
+    end)
     Initialized = true
 end
 

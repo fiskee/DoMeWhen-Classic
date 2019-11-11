@@ -66,7 +66,9 @@ local defaults = {
             TrackObjectsMailbox = false
         },
         Navigation = {
-            WorldMapHook = false
+            WorldMapHook = false,
+            AttackDistance = 14,
+            MaxDistance = 30
         }
     },
     char = {

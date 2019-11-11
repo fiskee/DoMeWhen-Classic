@@ -1106,3 +1106,76 @@ function UI.InitQueue()
         end
     end
 end
+
+function UI.InitNavigation()
+    Options.args.NavigationTab = {
+        name = "Navigation",
+        type = "group",
+        order = 6,
+        args = {
+            Enable = {
+                type = "toggle",
+                order = 1,
+                name = "Enable Grinding",
+                desc = "Check to enable grinding",
+                width = "full",
+                get = function()
+                    return DMW.Helpers.Navigation.Mode == 1
+                end,
+                set = function(info, value)
+                    if value then
+                        DMW.Helpers.Navigation.Mode = 1
+                    else
+                        DMW.Helpers.Navigation.Mode = 0
+                    end
+                end
+            },
+            AttackDistance = {
+                type = "range",
+                order = 2,
+                name = "Attack Distance",
+                desc = "Set distance to stop moving towards target",
+                width = "full",
+                min = 0.0,
+                max = 40.0,
+                step = 0.2,
+                get = function()
+                    return DMW.Settings.profile.Navigation.AttackDistance
+                end,
+                set = function(info, value)
+                    DMW.Settings.profile.Navigation.AttackDistance = value
+                end
+            },
+            MaxDistance = {
+                type = "range",
+                order = 3,
+                name = "Max Attack Distance",
+                desc = "Set distance to start moving towards target again",
+                width = "full",
+                min = 0.0,
+                max = 40.0,
+                step = 0.2,
+                get = function()
+                    return DMW.Settings.profile.Navigation.MaxDistance
+                end,
+                set = function(info, value)
+                    DMW.Settings.profile.Navigation.MaxDistance = value
+                end
+            },
+            WorldMapHook = {
+                type = "toggle",
+                order = 4,
+                name = "World Map Hook",
+                desc = "Check to enable world map hook, hold shift and click on world map to generate path",
+                width = "full",
+                get = function()
+                    return DMW.Settings.profile.Navigation.WorldMapHook
+                end,
+                set = function(info, value)
+                    DMW.Settings.profile.Navigation.WorldMapHook = value
+                    ReloadUI()
+                end
+            },
+        }
+    }
+end

@@ -10,6 +10,7 @@ local PathUpdated = false
 local Pause = GetTime()
 Navigation.WMRoute = {}
 local WMRouteIndex = 1
+local Settings
 
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 Navigation.Frame = AceGUI:Create("Window")
@@ -51,6 +52,9 @@ local function DrawRoute()
 end
 
 function Navigation:Pulse()
+    if not Settings then
+        Settings = DMW.Settings.profile.Navigation
+    end
     if not DMW.Player.Moving and not Path and DMW.Player.Target and DMW.Player.Target.ValidEnemy and not DMW.Player.Target.Facing and Navigation.Mode == Modes.Grinding then
         FaceDirection(DMW.Player.Target.Pointer)
     end
@@ -169,7 +173,7 @@ function Navigation:Grinding()
     if UnitIsDeadOrGhost("player") then
         return self:MoveToCorpse()
     end
-    if DMW.Player.Target and DMW.Player.Target.ValidEnemy and DMW.Player.Target.Distance <= Navigation.CombatRange then
+    if DMW.Player.Target and DMW.Player.Target.ValidEnemy and DMW.Player.Target.Distance <= Settings.AttackDistance then
         Path = nil
         PathIndex = 1
         if DMW.Player.Moving then
@@ -183,7 +187,7 @@ function Navigation:Grinding()
     elseif (not DMW.Player.Target or DMW.Player.Target.Dead or UnitIsTapDenied(DMW.Player.Target.Pointer)) and DMW.Player.HP > 70 then
         self:SearchAttackable()
     end
-    if DMW.Player.Target and DMW.Player.Target.Distance > Navigation.CombatRange and (DMW.Player.Target.PosX ~= EndX or DMW.Player.Target.PosY ~= EndY or DMW.Player.Target.PosZ ~= EndZ) then
+    if DMW.Player.Target and DMW.Player.Target.Distance > Settings.MaxDistance and (DMW.Player.Target.PosX ~= EndX or DMW.Player.Target.PosY ~= EndY or DMW.Player.Target.PosZ ~= EndZ) then
         self:MoveTo(DMW.Player.Target.PosX, DMW.Player.Target.PosY, DMW.Player.Target.PosZ)
     end
 end
