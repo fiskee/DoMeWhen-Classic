@@ -68,7 +68,9 @@ local defaults = {
         Navigation = {
             WorldMapHook = false,
             AttackDistance = 14,
-            MaxDistance = 30
+            MaxDistance = 30,
+            FoodHP = 60,
+            FoodID = 0
         }
     },
     char = {

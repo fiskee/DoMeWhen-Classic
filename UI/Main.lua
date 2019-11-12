@@ -1176,6 +1176,39 @@ function UI.InitNavigation()
                     ReloadUI()
                 end
             },
+            FoodHP = {
+                type = "range",
+                order = 5,
+                name = "Food HP",
+                desc = "Set HP to eat at, remember to set item id for food",
+                width = 2,
+                min = 0,
+                max = 100,
+                step = 1,
+                get = function()
+                    return DMW.Settings.profile.Navigation.FoodHP
+                end,
+                set = function(info, value)
+                    DMW.Settings.profile.Navigation.FoodHP = value
+                end
+            },
+            FoodID = {
+                type = "input",
+                order = 6,
+                name = "Food ID",
+                desc = "Enter item id of food",
+                width = 0.6,
+                get = function()
+                    return tostring(DMW.Settings.profile.Navigation.FoodID)
+                end,
+                set = function(info, value)
+                    if tonumber(value) then
+                        DMW.Settings.profile.Navigation.FoodID = tonumber(value)
+                    else
+                        DMW.Settings.profile.Navigation.FoodID = 0
+                    end
+                end
+            },
         }
     }
 end

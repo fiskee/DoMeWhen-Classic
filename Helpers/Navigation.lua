@@ -11,6 +11,7 @@ local Pause = GetTime()
 Navigation.WMRoute = {}
 local WMRouteIndex = 1
 local Settings
+local Food
 
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 Navigation.Frame = AceGUI:Create("Window")
@@ -33,9 +34,9 @@ Navigation.CombatRange = 18
 
 local function NextNodeRange()
     if IsMounted() then
-        return 2
+        return 3
     end
-    return 1
+    return 2
 end
 
 local function DrawRoute()
@@ -54,6 +55,9 @@ end
 function Navigation:Pulse()
     if not Settings then
         Settings = DMW.Settings.profile.Navigation
+    end
+    if not Food and Settings.FoodID > 0 then
+        Food = DMW.Classes.Item(Settings.FoodID)
     end
     if not DMW.Player.Moving and not Path and DMW.Player.Target and DMW.Player.Target.ValidEnemy and not DMW.Player.Target.Facing and Navigation.Mode == Modes.Grinding then
         FaceDirection(DMW.Player.Target.Pointer)
@@ -87,7 +91,7 @@ function Navigation:Pulse()
 end
 
 function Navigation:CalculatePath(mapID, fromX, fromY, fromZ, toX, toY, toZ)
-    return CalculatePath(mapID, fromX, fromY, fromZ, toX, toY, toZ, true, false, 1)
+    return CalculatePath(mapID, fromX, fromY, fromZ, toX, toY, toZ, true, false, 2)
 end
 
 function Navigation:MoveTo(toX, toY, toZ)
@@ -120,7 +124,7 @@ function Navigation:MoveToCorpse()
     end
 end
 
-function Navigation:SearchAttackable()
+function Navigation:SearchNext()
     local Table = {}
     for _, Unit in pairs(DMW.Units) do
         table.insert(Table, Unit)
@@ -132,6 +136,17 @@ function Navigation:SearchAttackable()
                 return x.Distance < y.Distance
             end
         )
+    end
+    if DMW.Settings.profile.Helpers.AutoLoot then
+        for _, Unit in ipairs(Table) do
+            if Unit.Distance <= 100 and Unit.Dead and UnitCanBeLooted(Unit.Pointer) then
+                if self:MoveTo(Unit.PosX, Unit.PosY, Unit.PosZ) then
+                    TargetUnit(Unit.Pointer)
+                    DMW.Player.Target = Unit
+                    return true
+                end
+            end
+        end
     end
     for _, Unit in ipairs(Table) do
         if Unit.Distance <= 100 and not Unit.Dead and not Unit.Player and UnitCanAttack("player", Unit.Pointer) and not UnitIsTapDenied(Unit.Pointer) then
@@ -182,10 +197,13 @@ function Navigation:Grinding()
         end
         return
     end
-    if DMW.Player.Combat and (not DMW.Player.Target or not DMW.Player.Target.ValidEnemy) then
+    if DMW.Player.Combat and (not DMW.Player.Target or not UnitAffectingCombat(DMW.Player.Target.Pointer)) then
         self:SearchEnemy()
-    elseif (not DMW.Player.Target or DMW.Player.Target.Dead or UnitIsTapDenied(DMW.Player.Target.Pointer)) and DMW.Player.HP > 70 then
-        self:SearchAttackable()
+    elseif (not DMW.Player.Target or (DMW.Player.Target.Dead and (not DMW.Settings.profile.Helpers.AutoLoot or not UnitCanBeLooted(DMW.Player.Target.Pointer))) or UnitIsTapDenied(DMW.Player.Target.Pointer)) and DMW.Player.HP > Settings.FoodHP and (DMW.Player:Standing() or DMW.Player.HP == 100) then
+        self:SearchNext()
+    elseif not DMW.Player.Moving and Food and DMW.Player.HP <= Settings.FoodHP and DMW.Player:Standing() and Food:Use(DMW.Player) then
+        Pause = DMW.Time + 1
+        return
     end
     if DMW.Player.Target and DMW.Player.Target.Distance > Settings.MaxDistance and (DMW.Player.Target.PosX ~= EndX or DMW.Player.Target.PosY ~= EndY or DMW.Player.Target.PosZ ~= EndZ) then
         self:MoveTo(DMW.Player.Target.PosX, DMW.Player.Target.PosY, DMW.Player.Target.PosZ)
