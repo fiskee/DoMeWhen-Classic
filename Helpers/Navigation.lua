@@ -80,8 +80,7 @@ function Navigation:Pulse()
                     if Navigation.Mode == Modes.Transport then
                         Navigation.Mode = Modes.Disabled
                     end
-                    PathIndex = 1
-                    Path = nil
+                    self:ClearPath()
                     return
                 end
             elseif not DMW.Player.Moving or PathUpdated then
@@ -108,6 +107,11 @@ function Navigation:MoveTo(toX, toY, toZ)
     return false
 end
 
+function Navigation:ClearPath()
+    Path = nil
+    PathIndex = 1
+end
+
 function Navigation:MoveToCursor()
     local x, y = GetMousePosition()
     local PosX, PosY, PosZ = ScreenToWorld(x, y)
@@ -117,7 +121,7 @@ end
 function Navigation:MoveToCorpse()
     if StaticPopup1 and StaticPopup1:IsVisible() and (StaticPopup1.which == "DEATH" or StaticPopup1.which == "RECOVER_CORPSE") and StaticPopup1Button1 and StaticPopup1Button1:IsEnabled() then
         StaticPopup1Button1:Click()
-        Path = nil
+        self:ClearPath()
         Pause = DMW.Time + 1
         return
     end
@@ -192,8 +196,7 @@ function Navigation:Grinding()
         return self:MoveToCorpse()
     end
     if DMW.Player.Target and DMW.Player.Target.ValidEnemy and DMW.Player.Target.Distance <= Settings.AttackDistance then
-        Path = nil
-        PathIndex = 1
+        self:ClearPath()
         if DMW.Player.Moving then
             MoveForwardStart()
             MoveForwardStop()
