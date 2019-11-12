@@ -205,13 +205,13 @@ function Navigation:Grinding()
     end
     if DMW.Player.Combat and (not DMW.Player.Target or not UnitAffectingCombat(DMW.Player.Target.Pointer)) then
         self:SearchEnemy()
-    elseif not DMW.Player.Looting and (not DMW.Player.Target or (DMW.Player.Target.Dead and (not DMW.Settings.profile.Helpers.AutoLoot or DMW.Player:GetFreeBagSlots() == 0 or not UnitCanBeLooted(DMW.Player.Target.Pointer))) or UnitIsTapDenied(DMW.Player.Target.Pointer)) and DMW.Player.HP > Settings.FoodHP and (DMW.Player:Standing() or DMW.Player.HP == 100) then
+    elseif (not DMW.Player.Looting or DMW.Player:GetFreeBagSlots() == 0) and (not DMW.Player.Target or (DMW.Player.Target.Dead and (not DMW.Settings.profile.Helpers.AutoLoot or DMW.Player:GetFreeBagSlots() == 0 or not UnitCanBeLooted(DMW.Player.Target.Pointer))) or UnitIsTapDenied(DMW.Player.Target.Pointer)) and DMW.Player.HP > Settings.FoodHP and (DMW.Player:Standing() or DMW.Player.HP == 100) then
         self:SearchNext()
     elseif not DMW.Player.Looting and not DMW.Player.Moving and Food and DMW.Player.HP <= Settings.FoodHP and DMW.Player:Standing() and Food:Use(DMW.Player) then
         Pause = DMW.Time + 1
         return
     end
-    if not DMW.Player.Looting and DMW.Player.Target and (DMW.Player.Target.Distance > Settings.MaxDistance or (DMW.Settings.profile.Helpers.AutoLoot and DMW.Player.Target.Dead and UnitCanBeLooted(DMW.Player.Target.Pointer) and DMW.Player:GetFreeBagSlots() > 0)) and (DMW.Player.Target.PosX ~= EndX or DMW.Player.Target.PosY ~= EndY or DMW.Player.Target.PosZ ~= EndZ) then
+    if not DMW.Player.Looting and DMW.Player.Target and ((DMW.Player.Target.Distance > Settings.MaxDistance and DMW.Player.Target.ValidEnemy) or (DMW.Settings.profile.Helpers.AutoLoot and DMW.Player.Target.Dead and UnitCanBeLooted(DMW.Player.Target.Pointer) and DMW.Player:GetFreeBagSlots() > 0)) and (DMW.Player.Target.PosX ~= EndX or DMW.Player.Target.PosY ~= EndY or DMW.Player.Target.PosZ ~= EndZ) then
         self:MoveTo(DMW.Player.Target.PosX, DMW.Player.Target.PosY, DMW.Player.Target.PosZ)
     end
 end
