@@ -205,7 +205,7 @@ function Navigation:Grinding()
         Pause = DMW.Time + 1
         return
     end
-    if DMW.Player.Target and DMW.Player.Target.Distance > Settings.MaxDistance and (DMW.Player.Target.PosX ~= EndX or DMW.Player.Target.PosY ~= EndY or DMW.Player.Target.PosZ ~= EndZ) then
+    if DMW.Player.Target and (DMW.Player.Target.Distance > Settings.MaxDistance or (DMW.Settings.profile.Helpers.AutoLoot and DMW.Player.Target.Distance > 0.5 and DMW.Player.Target.Dead and UnitCanBeLooted(DMW.Player.Target.Pointer))) and (DMW.Player.Target.PosX ~= EndX or DMW.Player.Target.PosY ~= EndY or DMW.Player.Target.PosZ ~= EndZ) then
         self:MoveTo(DMW.Player.Target.PosX, DMW.Player.Target.PosY, DMW.Player.Target.PosZ)
     end
 end
