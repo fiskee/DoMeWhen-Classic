@@ -1162,9 +1162,25 @@ function UI.InitNavigation()
                     DMW.Settings.profile.Navigation.MaxDistance = value
                 end
             },
+            LevelRange = {
+                type = "range",
+                order = 4,
+                name = "Max level difference",
+                desc = "Set max level difference of mobs",
+                width = "full",
+                min = 0,
+                max = 60,
+                step = 1,
+                get = function()
+                    return DMW.Settings.profile.Navigation.LevelRange
+                end,
+                set = function(info, value)
+                    DMW.Settings.profile.Navigation.LevelRange = value
+                end
+            },
             WorldMapHook = {
                 type = "toggle",
-                order = 4,
+                order = 5,
                 name = "World Map Hook",
                 desc = "Check to enable world map hook, hold shift and click on world map to generate path",
                 width = "full",
@@ -1178,7 +1194,7 @@ function UI.InitNavigation()
             },
             FoodHP = {
                 type = "range",
-                order = 5,
+                order = 6,
                 name = "Food HP",
                 desc = "Set HP to eat at, remember to set item id for food",
                 width = 2,
@@ -1194,7 +1210,7 @@ function UI.InitNavigation()
             },
             FoodID = {
                 type = "input",
-                order = 6,
+                order = 7,
                 name = "Food ID",
                 desc = "Enter item id of food",
                 width = 0.6,

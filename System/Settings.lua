@@ -70,7 +70,8 @@ local defaults = {
             AttackDistance = 14,
             MaxDistance = 30,
             FoodHP = 60,
-            FoodID = 0
+            FoodID = 0,
+            LevelRange = 3
         }
     },
     char = {

@@ -156,7 +156,7 @@ function Navigation:SearchNext()
         end
     end
     for _, Unit in ipairs(Table) do
-        if Unit.Distance <= 100 and not Unit.Dead and not Unit.Player and UnitCanAttack("player", Unit.Pointer) and not UnitIsTapDenied(Unit.Pointer) then
+        if Unit.Distance <= 100 and not Unit.Dead and not Unit.Player and math.abs(DMW.Player.Level - Unit.Level) <= Settings.LevelRange and UnitCanAttack("player", Unit.Pointer) and not UnitIsTapDenied(Unit.Pointer) then
             if self:MoveTo(Unit.PosX, Unit.PosY, Unit.PosZ) then
                 TargetUnit(Unit.Pointer)
                 DMW.Player.Target = Unit
