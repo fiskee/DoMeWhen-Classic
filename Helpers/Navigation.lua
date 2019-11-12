@@ -144,7 +144,7 @@ function Navigation:SearchNext()
             end
         )
     end
-    if DMW.Settings.profile.Helpers.AutoLoot and DMW.Player:GetFreeBagSlots() > 0 and not DMW.Player.Looting then
+    if DMW.Settings.profile.Helpers.AutoLoot and DMW.Player:GetFreeBagSlots() > 0 then
         for _, Unit in ipairs(Table) do
             if Unit.Distance <= 100 and Unit.Dead and UnitCanBeLooted(Unit.Pointer) then
                 if self:MoveTo(Unit.PosX, Unit.PosY, Unit.PosZ) then
@@ -205,7 +205,7 @@ function Navigation:Grinding()
     end
     if DMW.Player.Combat and (not DMW.Player.Target or not UnitAffectingCombat(DMW.Player.Target.Pointer)) then
         self:SearchEnemy()
-    elseif (not DMW.Player.Target or (DMW.Player.Target.Dead and (not DMW.Settings.profile.Helpers.AutoLoot or DMW.Player:GetFreeBagSlots() == 0 or not UnitCanBeLooted(DMW.Player.Target.Pointer))) or UnitIsTapDenied(DMW.Player.Target.Pointer)) and DMW.Player.HP > Settings.FoodHP and (DMW.Player:Standing() or DMW.Player.HP == 100) then
+    elseif not DMW.Player.Looting and (not DMW.Player.Target or (DMW.Player.Target.Dead and (not DMW.Settings.profile.Helpers.AutoLoot or DMW.Player:GetFreeBagSlots() == 0 or not UnitCanBeLooted(DMW.Player.Target.Pointer))) or UnitIsTapDenied(DMW.Player.Target.Pointer)) and DMW.Player.HP > Settings.FoodHP and (DMW.Player:Standing() or DMW.Player.HP == 100) then
         self:SearchNext()
     elseif not DMW.Player.Looting and not DMW.Player.Moving and Food and DMW.Player.HP <= Settings.FoodHP and DMW.Player:Standing() and Food:Use(DMW.Player) then
         Pause = DMW.Time + 1
