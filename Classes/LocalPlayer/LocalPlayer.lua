@@ -236,3 +236,12 @@ function LocalPlayer:HasMovementFlag(Flag)
     end
     return false
 end
+
+function LocalPlayer:GetFreeBagSlots()
+    local Slots = 0
+    local Temp
+    for i = 0, 4, 1 do
+        Slots = Slots + GetContainerNumFreeSlots(i)
+    end
+    return Slots
+end
