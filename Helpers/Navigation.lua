@@ -36,6 +36,9 @@ local function NextNodeRange()
     if IsMounted() then
         return 3
     end
+    if DMW.Settings.profile.Helpers.AutoLoot and DMW.Player.Target and DMW.Player.Target.Dead and UnitCanBeLooted(DMW.Player.Target.Pointer) then
+        return 0
+    end
     return 2
 end
 
