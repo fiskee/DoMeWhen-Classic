@@ -199,7 +199,7 @@ function Navigation:Grinding()
     end
     if DMW.Player.Combat and (not DMW.Player.Target or not UnitAffectingCombat(DMW.Player.Target.Pointer)) then
         self:SearchEnemy()
-    elseif (not DMW.Player.Target or (DMW.Player.Target.Dead and (not DMW.Settings.profile.Helpers.AutoLoot or not UnitCanBeLooted(DMW.Player.Target.Pointer))) or UnitIsTapDenied(DMW.Player.Target.Pointer)) and DMW.Player.HP > Settings.FoodHP and (DMW.Player:Standing() or DMW.Player.HP == 100) then
+    elseif not DMW.Player.Looting and (not DMW.Player.Target or (DMW.Player.Target.Dead and (not DMW.Settings.profile.Helpers.AutoLoot or not UnitCanBeLooted(DMW.Player.Target.Pointer))) or UnitIsTapDenied(DMW.Player.Target.Pointer)) and DMW.Player.HP > Settings.FoodHP and (DMW.Player:Standing() or DMW.Player.HP == 100) then
         self:SearchNext()
     elseif not DMW.Player.Moving and Food and DMW.Player.HP <= Settings.FoodHP and DMW.Player:Standing() and Food:Use(DMW.Player) then
         Pause = DMW.Time + 1
