@@ -211,7 +211,7 @@ function Navigation:Grinding()
         Pause = DMW.Time + 1
         return
     end
-    if not DMW.Player.Looting and DMW.Player.Target and ((DMW.Player.Target.Distance > Settings.MaxDistance and DMW.Player.Target.ValidEnemy) or (DMW.Settings.profile.Helpers.AutoLoot and DMW.Player.Target.Dead and UnitCanBeLooted(DMW.Player.Target.Pointer) and DMW.Player:GetFreeBagSlots() > 0)) and (DMW.Player.Target.PosX ~= EndX or DMW.Player.Target.PosY ~= EndY or DMW.Player.Target.PosZ ~= EndZ) then
+    if not DMW.Player.Looting and DMW.Player.Target and ((DMW.Player.Target.Distance > Settings.MaxDistance and not DMW.Player.Target.Dead) or (DMW.Settings.profile.Helpers.AutoLoot and DMW.Player.Target.Dead and UnitCanBeLooted(DMW.Player.Target.Pointer) and DMW.Player:GetFreeBagSlots() > 0)) and (DMW.Player.Target.PosX ~= EndX or DMW.Player.Target.PosY ~= EndY or DMW.Player.Target.PosZ ~= EndZ) then
         self:MoveTo(DMW.Player.Target.PosX, DMW.Player.Target.PosY, DMW.Player.Target.PosZ)
     end
 end
