@@ -37,7 +37,7 @@ local function NextNodeRange()
         return 3
     end
     if PathIndex == #Path and DMW.Settings.profile.Helpers.AutoLoot and DMW.Player.Target and DMW.Player.Target.Dead and UnitCanBeLooted(DMW.Player.Target.Pointer) then
-        return 0
+        return 0.7
     end
     return 2
 end
