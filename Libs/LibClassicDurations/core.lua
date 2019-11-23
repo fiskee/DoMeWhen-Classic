@@ -7,65 +7,19 @@ And additionally enemy buffs info.
 Usage example 1:
 -----------------
 
-    -- Simply get the expiration time and duration
+    -- Using UnitAura wrapper
+    local UnitAura = _G.UnitAura
 
-    local LibClassicDurations = LibStub("LibClassicDurationsDMW")
-    LibClassicDurations:Register("YourAddon") -- tell library it's being used and should start working
-
-    hooksecurefunc("CompactUnitFrame_UtilSetBuff", function(buffFrame, unit, index, filter)
-        local name, _, _, _, duration, expirationTime, unitCaster, _, _, spellId = UnitBuff(unit, index, filter);
-
-        local durationNew, expirationTimeNew = LibClassicDurations:GetAuraDurationByUnit(unit, spellId, unitCaster)
-        if duration == 0 and durationNew then
-            duration = durationNew
-            expirationTime = expirationTimeNew
-        end
-
-        local enabled = expirationTime and expirationTime ~= 0;
-        if enabled then
-            local startTime = expirationTime - duration;
-            CooldownFrame_Set(buffFrame.cooldown, startTime, duration, true);
-        else
-            CooldownFrame_Clear(buffFrame.cooldown);
-        end
-    end)
-
-Usage example 2:
------------------
-
-    -- Use library's UnitAura replacement function, that shows enemy buffs and
-    -- automatically tries to add duration to everything else
-
-    local LCD = LibStub("LibClassicDurationsDMW")
-    LCD:Register("YourAddon") -- tell library it's being used and should start working
-
-    local f = CreateFrame("frame", nil, UIParent)
-    f:RegisterUnitEvent("UNIT_AURA", "target")
-
-    local EventHandler = function(self, event, unit)
-        for i=1,100 do
-            local name, _, _, _, duration, expirationTime, _, _, _, spellId = LCD:UnitAura(unit, i, "HELPFUL")
-            if not name then break end
-            print(name, duration, expirationTime)
-        end
+    local LibClassicDurations = LibStub("LibClassicDurationsDMW", true)
+    if LibClassicDurations then
+        LibClassicDurations:Register("YourAddon")
+        UnitAura = LibClassicDurations.UnitAuraWrapper
     end
-
-    f:SetScript("OnEvent", EventHandler)
-
-    -- NOTE: Enemy buff tracking won't start until you register UNIT_BUFF
-    LCD.RegisterCallback(addon, "UNIT_BUFF", function(event, unit)
-        EventHandler(f, "UNIT_AURA", unit)
-    end)
-
-    -- Optional:
-    LCD.RegisterCallback(addon, "UNIT_BUFF_GAINED", function(event, unit, spellID)
-        print("Gained", GetSpellInfo(spellID))
-    end)
 
 --]================]
 if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then return end
 
-local MAJOR, MINOR = "LibClassicDurationsDMW", 34
+local MAJOR, MINOR = "LibClassicDurationsDMW", 38
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -120,7 +74,10 @@ local GetTime = GetTime
 local tinsert = table.insert
 local unpack = unpack
 local GetAuraDurationByUnitDirect
-local enableEnemyBuffTracking = false
+
+if lib.enableEnemyBuffTracking == nil then lib.enableEnemyBuffTracking = false end
+local enableEnemyBuffTracking = lib.enableEnemyBuffTracking
+
 local COMBATLOG_OBJECT_CONTROL_PLAYER = COMBATLOG_OBJECT_CONTROL_PLAYER
 
 f:SetScript("OnEvent", function(self, event, ...)
@@ -491,12 +448,7 @@ function f:COMBAT_LOG_EVENT_UNFILTERED(event)
     return self:CombatLogHandler(CombatLogGetCurrentEventInfo())
 end
 
-function f:CombatLogHandler(...)
-    local timestamp, eventType, hideCaster,
-    srcGUID, srcName, srcFlags, srcFlags2,
-    dstGUID, dstName, dstFlags, dstFlags2,
-    spellID, spellName, spellSchool, auraType = ...
-
+local function ProcIndirectRefresh(eventType, spellName, srcGUID, srcFlags, dstGUID, dstFlags, dstName)
     if indirectRefreshSpells[spellName] then
         local refreshTable = indirectRefreshSpells[spellName]
         if refreshTable.events[eventType] then
@@ -527,6 +479,16 @@ function f:CombatLogHandler(...)
             end
         end
     end
+end
+
+function f:CombatLogHandler(...)
+    local timestamp, eventType, hideCaster,
+    srcGUID, srcName, srcFlags, srcFlags2,
+    dstGUID, dstName, dstFlags, dstFlags2,
+    spellID, spellName, spellSchool, auraType = ...
+
+
+    ProcIndirectRefresh(eventType, spellName, srcGUID, srcFlags, dstGUID, dstFlags, dstName)
 
     if  eventType == "SPELL_MISSED" and
         bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE
@@ -669,7 +631,7 @@ local makeBuffInfo = function(spellID, applicationTable, dstGUID, srcGUID)
     end
     local now = GetTime()
     if expirationTime > now then
-        return { name, icon, 1, nil, duration, expirationTime, nil, nil, nil, spellID }
+        return { name, icon, 0, nil, duration, expirationTime, nil, nil, nil, spellID }
     end
 end
 
@@ -764,8 +726,8 @@ function f:NAME_PLATE_UNIT_REMOVED(event, unit)
     end
 end
 
-
-enableEnemyBuffTracking = true
+lib.enableEnemyBuffTracking = true
+enableEnemyBuffTracking = lib.enableEnemyBuffTracking
 f:RegisterEvent("NAME_PLATE_UNIT_ADDED")
 f:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
 
