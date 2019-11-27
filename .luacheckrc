@@ -48,6 +48,9 @@ globals = {
 	"CombatLogGetCurrentEventInfo",
 	"ActionBarButtonEventsFrame",
 	"WorldFrame",
+	"WorldMapFrame",
+	"StaticPopup1",
+	"StaticPopup1Button1",
 	-- API functions
 	"AbandonQuest",
 	"AbandonSkill",
@@ -2177,6 +2180,7 @@ globals = {
 	"GetNumSavedWorldBosses",
 	"GetNumScenarios",
 	"GetNumShapeshiftForms",
+	"GetNumSkillLines",
 	"GetNumSoRRemaining",
 	"GetNumSockets",
 	"GetNumSpecGroups",
@@ -2422,6 +2426,7 @@ globals = {
 	"GetShapeshiftFormInfo",
 	"GetSheathState",
 	"GetShieldBlock",
+	"GetSkillLineInfo",
 	"GetSocketItemBoundTradeable",
 	"GetSocketItemInfo",
 	"GetSocketItemRefundable",
@@ -3919,9 +3924,14 @@ globals = {
 	"ScreenToWorld",
 	"GetMousePosition",
 	"Types",
+	"InitializeNavigation",
+	"CalculatePath",
+	"GetMapId",
+	"GetCorpsePosition",
+	"WorldPreload",
 	--Extras
 	"DMW",
-	"QuestieTooltips",
 	"RealMobHealth_CreatureHealthCache",
+	"QuestieLoader",
 	"LibStub"
 }

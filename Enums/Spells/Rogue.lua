@@ -8,6 +8,7 @@ Spells.ROGUE = {
         BladeFlurry = {Ranks = {13877}},
         Blind = {Ranks = {2094}},
         CheapShot = {Ranks = {1833}},
+        ColdBlood = {Ranks = {14177}},
         DetectTraps = {Ranks = {2836}},
         DisarmTraps = {Ranks = {1842}},
         Distract = {Ranks = {1725}},
@@ -42,6 +43,7 @@ Spells.ROGUE = {
     },
     Buffs = {
         AdrenalineRush = {Ranks = {13750}},
+        ColdBlood = {Ranks = {14177}},
         Remorseless = {Ranks = {14143, 14149}},
         SliceAndDice = {Ranks = {5171, 6774}},
         Stealth = {Ranks = {1784, 1785, 1786, 1787}},

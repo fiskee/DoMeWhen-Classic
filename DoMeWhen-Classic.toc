@@ -4,6 +4,7 @@
 ## Title: DoMeWhen Classic
 ## Notes: Core Rotation Addon
 ## SavedVariables: DMWSettings
+##OptionalDeps: Questie
 
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
@@ -59,6 +60,7 @@ Helpers\Queue.lua
 Helpers\Rotation.lua
 Helpers\Dump.lua
 Helpers\Swing.lua
+Helpers\Navigation.lua
 
 Enums\Spells\Global.lua
 Enums\Spells\Druid.lua

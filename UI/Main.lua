@@ -3,13 +3,15 @@ local DMW = DMW
 local UI = DMW.UI
 local RotationOrder = 1
 local TrackingFrame, TrackerConfig
-local base64 = LibStub('LibBase64-1.0')
-local serializer = LibStub('AceSerializer-3.0')
+local base64 = LibStub("LibBase64-1.0")
+local serializer = LibStub("AceSerializer-3.0")
+local CurrentTab = "GeneralTab"
+local TabIndex = 2
 
 local exportTypes = {
-	["rotation"] = "Rotation", 
-	["tracker"] = "Tracker",
-	["queue"] = "Queue"
+    ["rotation"] = "Rotation",
+    ["tracker"] = "Tracker",
+    ["queue"] = "Queue"
 }
 
 local exportTypesOrder = {
@@ -21,31 +23,35 @@ local exportTypesOrder = {
 local exportString = ""
 local function export(value)
     local Frame = AceGUI:Create("Frame")
-	Frame:SetTitle("Import/Export")
-	Frame:SetWidth(400)
-	Frame:SetHeight(350)
-	Frame.frame:SetFrameStrata("FULLSCREEN_DIALOG")
+    Frame:SetTitle("Import/Export")
+    Frame:SetWidth(400)
+    Frame:SetHeight(350)
+    Frame.frame:SetFrameStrata("FULLSCREEN_DIALOG")
     Frame:SetLayout("Flow")
 
     local Box = AceGUI:Create("MultiLineEditBox")
-	Box:SetNumLines(15)
-	Box:DisableButton(true)
-	Box:SetWidth(600)
-	Box:SetLabel("")
+    Box:SetNumLines(15)
+    Box:DisableButton(true)
+    Box:SetWidth(600)
+    Box:SetLabel("")
     Frame:AddChild(Box)
 
     local ProfileTypeDropdown = AceGUI:Create("Dropdown")
     ProfileTypeDropdown:SetMultiselect(false)
     ProfileTypeDropdown:SetLabel("Settings To Export")
     ProfileTypeDropdown:SetList(exportTypes, exportTypesOrder)
-    ProfileTypeDropdown:SetValue("rotation") 
+    ProfileTypeDropdown:SetValue("rotation")
     Frame:AddChild(ProfileTypeDropdown)
     ProfileTypeDropdown:SetRelativeWidth(0.5)
 
     if value == "export" then
-		Frame:SetTitle("Export")
-		local exportButton = AceGUI:Create("Button")
-		exportButton:SetText("Export")
+        -- ProfileTypeDropdown:SetCallback("OnValueChanged", function(self)
+        --     exportButton:SetText("Export "..exportTypes[ProfileTypeDropdown:GetValue()])
+        --     end
+        -- )
+        Frame:SetTitle("Export")
+        local exportButton = AceGUI:Create("Button")
+        exportButton:SetText("Export")
         local function OnClick(self)
             if ProfileTypeDropdown:GetValue() == "rotation" then
                 Box:SetText(base64:encode(serializer:Serialize(DMW.Settings.profile.Rotation)))
@@ -56,18 +62,14 @@ local function export(value)
             end
             Box.editBox:HighlightText()
             Box:SetFocus()
-		end
-		exportButton:SetCallback("OnClick", OnClick)
+        end
+        exportButton:SetCallback("OnClick", OnClick)
         Frame:AddChild(exportButton)
         exportButton:SetRelativeWidth(0.5)
-        -- ProfileTypeDropdown:SetCallback("OnValueChanged", function(self)
-        --     exportButton:SetText("Export "..exportTypes[ProfileTypeDropdown:GetValue()])
-        --     end
-        -- )
-	elseif value == "import" then
-		Frame:SetTitle("Import")
-		local importButton = AceGUI:Create("Button") 
-		importButton:SetText("Import")
+    elseif value == "import" then
+        Frame:SetTitle("Import")
+        local importButton = AceGUI:Create("Button")
+        importButton:SetText("Import")
         importButton:SetRelativeWidth(0.5)
         local function OnClick(self)
             if type(Box:GetText()) == "string" then
@@ -85,10 +87,10 @@ local function export(value)
                     Box:SetText(value)
                 end
             end
-		end
-		importButton:SetCallback("OnClick", OnClick)
-		Frame:AddChild(importButton)
-	end
+        end
+        importButton:SetCallback("OnClick", OnClick)
+        Frame:AddChild(importButton)
+    end
 end
 
 local TrackingOptionsTable = {
@@ -143,10 +145,14 @@ local TrackingOptionsTable = {
                     desc = "Sound for Alert, 416 = Murlocs",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Tracker.QuestieHelperAlert
+                        return tostring(DMW.Settings.profile.Tracker.QuestieHelperAlert)
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Tracker.QuestieHelperAlert = value
+                        if tonumber(value) then
+                            DMW.Settings.profile.Tracker.QuestieHelperAlert = tonumber(value)
+                        else
+                            DMW.Settings.profile.Tracker.QuestieHelperAlert = 0
+                        end
                     end
                 },
                 QuestieHelperColor = {
@@ -199,10 +205,14 @@ local TrackingOptionsTable = {
                     desc = "Sound for Alert, 416 = Murlocs",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Tracker.HerbsAlert
+                        return tostring(DMW.Settings.profile.Tracker.HerbsAlert)
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Tracker.HerbsAlert = value
+                        if tonumber(value) then
+                            DMW.Settings.profile.Tracker.HerbsAlert = tonumber(value)
+                        else
+                            DMW.Settings.profile.Tracker.HerbsAlert = 0
+                        end
                     end
                 },
                 HerbsColor = {
@@ -255,10 +265,14 @@ local TrackingOptionsTable = {
                     desc = "",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Tracker.OreAlert
+                        return tostring(DMW.Settings.profile.Tracker.OreAlert)
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Tracker.OreAlert = value
+                        if tonumber(value) then
+                            DMW.Settings.profile.Tracker.OreAlert = tonumber(value)
+                        else
+                            DMW.Settings.profile.Tracker.OreAlert = 0
+                        end
                     end
                 },
                 OreColor = {
@@ -275,9 +289,35 @@ local TrackingOptionsTable = {
                         DMW.Settings.profile.Tracker.OreColor = {r, g, b, a}
                     end
                 },
-                Trackable = {
+                CheckLevel = {
                     type = "toggle",
                     order = 13,
+                    name = "Check Skill Rank",
+                    desc = "Check if you have high enough rank before tracking herbs/ore. Only english client support",
+                    width = 0.9,
+                    get = function()
+                        return DMW.Settings.profile.Tracker.CheckRank
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Tracker.CheckRank = value
+                    end
+                },
+                HideGrey = {
+                    type = "toggle",
+                    order = 14,
+                    name = "Hide Grey",
+                    desc = "Hide grey herbs/ore. Only english client support",
+                    width = 0.9,
+                    get = function()
+                        return DMW.Settings.profile.Tracker.HideGrey
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Tracker.HideGrey = value
+                    end
+                },
+                Trackable = {
+                    type = "toggle",
+                    order = 15,
                     name = "Track Special Objects",
                     desc = "Mark special objects in the world (chests, containers ect.)",
                     width = "full",
@@ -290,7 +330,7 @@ local TrackingOptionsTable = {
                 },
                 TrackNPC = {
                     type = "toggle",
-                    order = 14,
+                    order = 16,
                     name = "Track NPCs",
                     desc = "Track important NPCs",
                     width = 0.7,
@@ -303,7 +343,7 @@ local TrackingOptionsTable = {
                 },
                 TrackNPCColor = {
                     type = "color",
-                    order = 15,
+                    order = 17,
                     name = "Color",
                     desc = "Color",
                     width = 0.5,
@@ -359,10 +399,14 @@ local TrackingOptionsTable = {
                     desc = "Sound for Alert, 416 = Murlocs",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Tracker.TrackUnitsAlert
+                        return tostring(DMW.Settings.profile.Tracker.TrackUnitsAlert)
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Tracker.TrackUnitsAlert = value
+                        if tonumber(value) then
+                            DMW.Settings.profile.Tracker.TrackUnitsAlert = tonumber(value)
+                        else
+                            DMW.Settings.profile.Tracker.TrackUnitsAlert = 0
+                        end
                     end
                 },
                 TrackUnitsColor = {
@@ -423,10 +467,14 @@ local TrackingOptionsTable = {
                     desc = "Sound for Alert, 416 = Murlocs",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Tracker.TrackObjectsAlert
+                        return tostring(DMW.Settings.profile.Tracker.TrackObjectsAlert)
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Tracker.TrackObjectsAlert = value
+                        if tonumber(value) then
+                            DMW.Settings.profile.Tracker.TrackObjectsAlert = tonumber(value)
+                        else
+                            DMW.Settings.profile.Tracker.TrackObjectsAlert = 0
+                        end
                     end
                 },
                 TrackObjectsColor = {
@@ -455,7 +503,7 @@ local TrackingOptionsTable = {
                     set = function(info, value)
                         DMW.Settings.profile.Tracker.TrackObjectsMailbox = value
                     end
-                },
+                }
             }
         },
         FourthTab = {
@@ -500,10 +548,14 @@ local TrackingOptionsTable = {
                     desc = "Sound for Alert, 416 = Murlocs",
                     width = 0.4,
                     get = function()
-                        return DMW.Settings.profile.Tracker.TrackPlayersAlert
+                        return tostring(DMW.Settings.profile.Tracker.TrackPlayersAlert)
                     end,
                     set = function(info, value)
-                        DMW.Settings.profile.Tracker.TrackPlayersAlert = value
+                        if tonumber(value) then
+                            DMW.Settings.profile.Tracker.TrackPlayersAlert = tonumber(value)
+                        else
+                            DMW.Settings.profile.Tracker.TrackPlayersAlert = 0
+                        end
                     end
                 },
                 TrackPlayersColor = {
@@ -536,7 +588,7 @@ local TrackingOptionsTable = {
                             if DMW.Settings.profile.Tracker.TrackPlayers == nil or DMW.Settings.profile.Tracker.TrackPlayers == "" then
                                 DMW.Settings.profile.Tracker.TrackPlayers = DMW.Player.Target.Name
                             else
-                                DMW.Settings.profile.Tracker.TrackPlayers = DMW.Settings.profile.Tracker.TrackPlayers..","..DMW.Player.Target.Name
+                                DMW.Settings.profile.Tracker.TrackPlayers = DMW.Settings.profile.Tracker.TrackPlayers .. "," .. DMW.Player.Target.Name
                             end
                         end
                     end
@@ -550,7 +602,9 @@ local TrackingOptionsTable = {
                         return DMW.Settings.profile.Tracker.TrackPlayersAny
                     end,
                     set = function(info, value)
-                        if value and DMW.Settings.profile.Tracker.TrackPlayersEnemy then DMW.Settings.profile.Tracker.TrackPlayersEnemy = false end
+                        if value and DMW.Settings.profile.Tracker.TrackPlayersEnemy then
+                            DMW.Settings.profile.Tracker.TrackPlayersEnemy = false
+                        end
                         DMW.Settings.profile.Tracker.TrackPlayersAny = value
                     end
                 },
@@ -563,7 +617,9 @@ local TrackingOptionsTable = {
                         return DMW.Settings.profile.Tracker.TrackPlayersEnemy
                     end,
                     set = function(info, value)
-                        if value and DMW.Settings.profile.Tracker.TrackPlayersAny then DMW.Settings.profile.Tracker.TrackPlayersAny = false end
+                        if value and DMW.Settings.profile.Tracker.TrackPlayersAny then
+                            DMW.Settings.profile.Tracker.TrackPlayersAny = false
+                        end
                         DMW.Settings.profile.Tracker.TrackPlayersEnemy = value
                     end
                 },
@@ -595,7 +651,14 @@ local Options = {
             name = "Rotation",
             type = "group",
             order = 1,
-            args = {}
+            args = {
+                GeneralTab = {
+                    name = "General",
+                    type = "group",
+                    order = 1,
+                    args = {}
+                }
+            }
         },
         GeneralTab = {
             name = "General",
@@ -897,9 +960,9 @@ end
 
 function UI.Init()
     LibStub("AceConfig-3.0"):RegisterOptionsTable("DMW", Options)
-    LibStub("AceConfigDialog-3.0"):SetDefaultSize("DMW", 400, 750)
+    LibStub("AceConfigDialog-3.0"):SetDefaultSize("DMW", 580, 750)
     LibStub("AceConfig-3.0"):RegisterOptionsTable("TrackerConfig", TrackingOptionsTable)
-    LibStub("AceConfigDialog-3.0"):SetDefaultSize("TrackerConfig", 400, 350)
+    LibStub("AceConfigDialog-3.0"):SetDefaultSize("TrackerConfig", 400, 370)
     if not TrackingFrame then
         TrackingFrame = AceGUI:Create("Frame")
         TrackingFrame:Hide()
@@ -912,7 +975,7 @@ end
 
 function UI.AddHeader(Text)
     if RotationOrder > 1 then
-        Options.args.RotationTab.args["Blank" .. RotationOrder] = {
+        Options.args.RotationTab.args[CurrentTab].args["Blank" .. RotationOrder] = {
             type = "description",
             order = RotationOrder,
             name = " ",
@@ -921,7 +984,7 @@ function UI.AddHeader(Text)
         RotationOrder = RotationOrder + 1
     end
     local Setting = Text:gsub("%s+", "")
-    Options.args.RotationTab.args[Setting .. "Header"] = {
+    Options.args.RotationTab.args[CurrentTab].args[Setting .. "Header"] = {
         type = "header",
         order = RotationOrder,
         name = Text
@@ -931,7 +994,7 @@ end
 
 function UI.AddToggle(Name, Desc, Default, FullWidth)
     local Width = FullWidth and "full" or 0.9
-    Options.args.RotationTab.args[Name] = {
+    Options.args.RotationTab.args[CurrentTab].args[Name] = {
         type = "toggle",
         order = RotationOrder,
         name = Name,
@@ -952,7 +1015,7 @@ end
 
 function UI.AddRange(Name, Desc, Min, Max, Step, Default, FullWidth)
     local Width = FullWidth and "full" or 0.9
-    Options.args.RotationTab.args[Name] = {
+    Options.args.RotationTab.args[CurrentTab].args[Name] = {
         type = "range",
         order = RotationOrder,
         name = Name,
@@ -976,7 +1039,7 @@ end
 
 function UI.AddDropdown(Name, Desc, Values, Default, FullWidth)
     local Width = FullWidth and "full" or 0.9
-    Options.args.RotationTab.args[Name] = {
+    Options.args.RotationTab.args[CurrentTab].args[Name] = {
         type = "select",
         order = RotationOrder,
         name = Name,
@@ -999,7 +1062,7 @@ end
 
 function UI.AddBlank(FullWidth)
     local Width = FullWidth and "full" or 0.9
-    Options.args.RotationTab.args["Blank" .. RotationOrder] = {
+    Options.args.RotationTab.args[CurrentTab].args["Blank" .. RotationOrder] = {
         type = "description",
         order = RotationOrder,
         name = " ",
@@ -1008,24 +1071,160 @@ function UI.AddBlank(FullWidth)
     RotationOrder = RotationOrder + 1
 end
 
+function UI.AddTab(Name)
+    Options.args.RotationTab.args[Name .. "Tab"] = {
+        name = Name,
+        type = "group",
+        order = TabIndex,
+        args = {}
+    }
+    TabIndex = TabIndex + 1
+    CurrentTab = Name .. "Tab"
+    RotationOrder = 1
+end
+
 function UI.InitQueue()
     for k, v in pairs(DMW.Player.Spells) do
-        Options.args.QueueTab.args[k] = {
-            type = "select",
-            name = v.SpellName,
-            --desc = Desc,
-            width = "full",
-            values = {"Disabled", "Normal", "Mouseover", "Cursor", "Cursor - No Cast"},
-            style = "dropdown",
-            get = function()
-                return DMW.Settings.profile.Queue[v.SpellName]
-            end,
-            set = function(info, value)
-                DMW.Settings.profile.Queue[v.SpellName] = value
+        if v.CastType ~= "Profession" and v.CastType ~= "Toggle" then
+            Options.args.QueueTab.args[k] = {
+                type = "select",
+                name = v.SpellName,
+                --desc = Desc,
+                width = "full",
+                values = {"Disabled", "Normal", "Mouseover", "Cursor", "Cursor - No Cast"},
+                style = "dropdown",
+                get = function()
+                    return DMW.Settings.profile.Queue[v.SpellName]
+                end,
+                set = function(info, value)
+                    DMW.Settings.profile.Queue[v.SpellName] = value
+                end
+            }
+            if DMW.Settings.profile.Queue[v.SpellName] == nil then
+                DMW.Settings.profile.Queue[v.SpellName] = 1
             end
-        }
-        if DMW.Settings.profile.Queue[v.SpellName] == nil then
-            DMW.Settings.profile.Queue[v.SpellName] = 1
         end
     end
+end
+
+function UI.InitNavigation()
+    Options.args.NavigationTab = {
+        name = "Navigation",
+        type = "group",
+        order = 6,
+        args = {
+            Enable = {
+                type = "toggle",
+                order = 1,
+                name = "Enable Grinding",
+                desc = "Check to enable grinding",
+                width = "full",
+                get = function()
+                    return DMW.Helpers.Navigation.Mode == 1
+                end,
+                set = function(info, value)
+                    if value then
+                        DMW.Helpers.Navigation.Mode = 1
+                    else
+                        DMW.Helpers.Navigation.Mode = 0
+                    end
+                end
+            },
+            AttackDistance = {
+                type = "range",
+                order = 2,
+                name = "Attack Distance",
+                desc = "Set distance to stop moving towards target",
+                width = "full",
+                min = 0.0,
+                max = 40.0,
+                step = 0.2,
+                get = function()
+                    return DMW.Settings.profile.Navigation.AttackDistance
+                end,
+                set = function(info, value)
+                    DMW.Settings.profile.Navigation.AttackDistance = value
+                end
+            },
+            MaxDistance = {
+                type = "range",
+                order = 3,
+                name = "Max Attack Distance",
+                desc = "Set distance to start moving towards target again",
+                width = "full",
+                min = 0.0,
+                max = 40.0,
+                step = 0.2,
+                get = function()
+                    return DMW.Settings.profile.Navigation.MaxDistance
+                end,
+                set = function(info, value)
+                    DMW.Settings.profile.Navigation.MaxDistance = value
+                end
+            },
+            LevelRange = {
+                type = "range",
+                order = 4,
+                name = "Max level difference",
+                desc = "Set max level difference of mobs",
+                width = "full",
+                min = 0,
+                max = 60,
+                step = 1,
+                get = function()
+                    return DMW.Settings.profile.Navigation.LevelRange
+                end,
+                set = function(info, value)
+                    DMW.Settings.profile.Navigation.LevelRange = value
+                end
+            },
+            WorldMapHook = {
+                type = "toggle",
+                order = 5,
+                name = "World Map Hook",
+                desc = "Check to enable world map hook, hold shift and click on world map to generate path",
+                width = "full",
+                get = function()
+                    return DMW.Settings.profile.Navigation.WorldMapHook
+                end,
+                set = function(info, value)
+                    DMW.Settings.profile.Navigation.WorldMapHook = value
+                    ReloadUI()
+                end
+            },
+            FoodHP = {
+                type = "range",
+                order = 6,
+                name = "Food HP",
+                desc = "Set HP to eat at, remember to set item id for food",
+                width = 2,
+                min = 0,
+                max = 100,
+                step = 1,
+                get = function()
+                    return DMW.Settings.profile.Navigation.FoodHP
+                end,
+                set = function(info, value)
+                    DMW.Settings.profile.Navigation.FoodHP = value
+                end
+            },
+            FoodID = {
+                type = "input",
+                order = 7,
+                name = "Food ID",
+                desc = "Enter item id of food",
+                width = 0.6,
+                get = function()
+                    return tostring(DMW.Settings.profile.Navigation.FoodID)
+                end,
+                set = function(info, value)
+                    if tonumber(value) then
+                        DMW.Settings.profile.Navigation.FoodID = tonumber(value)
+                    else
+                        DMW.Settings.profile.Navigation.FoodID = 0
+                    end
+                end
+            },
+        }
+    }
 end

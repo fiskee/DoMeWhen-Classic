@@ -38,6 +38,8 @@ local defaults = {
         Tracker = {
             Herbs = false,
             Ore = false,
+            CheckRank = false,
+            HideGrey = false,
             TrackNPC = false,
             QuestieHelper = false,
             QuestieHelperColor = {0,0,0,1},
@@ -62,6 +64,14 @@ local defaults = {
             TrackPlayersEnemy = false,
             TrackPlayersAny = false,
             TrackObjectsMailbox = false
+        },
+        Navigation = {
+            WorldMapHook = false,
+            AttackDistance = 14,
+            MaxDistance = 30,
+            FoodHP = 60,
+            FoodID = 0,
+            LevelRange = 3
         }
     },
     char = {
@@ -71,6 +81,17 @@ local defaults = {
 
 local function MigrateSettings()
     local Reload = false
+    for k,v in pairs(DMW.Settings.profile.Tracker) do
+        if string.match(k, "Alert") and type(v) == "string" then
+            if tonumber(v) then
+                DMW.Settings.profile.Tracker[k] = tonumber(v)
+            else
+                DMW.Settings.profile.Tracker[k] = 0
+            end
+            Reload = true
+        end
+    end
+
     if type(DMW.Settings.profile.Helpers.TrackPlayers) == "boolean" then
         DMW.Settings.profile.Helpers.TrackPlayers = nil
         Reload = true

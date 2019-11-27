@@ -9,7 +9,7 @@ function LocalPlayer:GetSpells()
     self.Buffs = {}
     self.Debuffs = {}
     local CastType, Duration
-    for k,v in pairs(DMW.Enums.Spells) do
+    for k, v in pairs(DMW.Enums.Spells) do
         if k == "GLOBAL" or k == self.Class then
             for SpellType, SpellTable in pairs(v) do
                 if SpellType == "Abilities" then
@@ -28,8 +28,8 @@ function LocalPlayer:GetSpells()
                         self.Debuffs[SpellName] = Debuff(SpellInfo.Ranks, Duration)
                     end
                 end
-            end            
-        end        
+            end
+        end
     end
 end
 
@@ -40,7 +40,7 @@ function LocalPlayer:GetTalents()
         self.Talents = {}
     end
     local name, iconPath, tier, column, currentRank, maxRank, isExceptional, meetsPrereq
-    for k,v in pairs(DMW.Enums.Spells[self.Class].Talents) do
+    for k, v in pairs(DMW.Enums.Spells[self.Class].Talents) do
         name, iconPath, tier, column, currentRank, maxRank, isExceptional, meetsPrereq = GetTalentInfo(v[1], v[2])
         if name then
             self.Talents[k] = {Rank = currentRank, MaxRank = maxRank, Active = false}
@@ -73,5 +73,21 @@ function LocalPlayer:GetItems()
     local Item = DMW.Classes.Item
     for Name, ItemID in pairs(DMW.Enums.Items) do
         self.Items[Name] = Item(ItemID)
+    end
+end
+
+function LocalPlayer:UpdateProfessions()
+    table.wipe(self.Professions)
+    for i = 1, GetNumSkillLines() do
+        local Name, _, _, Rank = GetSkillLineInfo(i)
+        if Name == "Fishing" then
+            self.Professions.Fishing = Rank
+        elseif Name == "Mining" then
+            self.Professions.Mining = Rank
+        elseif Name == "Herbalism" then
+            self.Professions.Herbalism = Rank
+        elseif Name == "Skinning" then
+            self.Professions.Skinning = Rank
+        end
     end
 end

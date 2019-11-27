@@ -17,6 +17,9 @@ DMW.Timers = {
     Rotation = {}
 }
 DMW.Pulses = 0
+if QuestieLoader then
+    DMW.QuestieTooltips = QuestieLoader:ImportModule("QuestieTooltips")
+end
 local Initialized = false
 local DebugStart
 local RotationCount = 0
@@ -37,6 +40,14 @@ local function Init()
     DMW.UI.HUD.Init()
     DMW.Player = DMW.Classes.LocalPlayer(ObjectPointer("player"))
     DMW.UI.InitQueue()
+    InitializeNavigation(function(Result) 
+        if Result then
+            if DMW.Settings.profile.Navigation.WorldMapHook then
+                DMW.Helpers.Navigation:InitWorldMap()
+            end
+            DMW.UI.InitNavigation()
+        end
+    end)
     Initialized = true
 end
 
@@ -94,6 +105,7 @@ f:SetScript(
                     end
                 end
             end
+            DMW.Helpers.Navigation:Pulse()
             DMW.Timers.OM.Total = DMW.Timers.OM.Total and (DMW.Timers.OM.Total + DMW.Timers.OM.Last) or DMW.Timers.OM.Last
             DMW.Timers.QuestieHelper.Total = DMW.Timers.QuestieHelper.Total and (DMW.Timers.QuestieHelper.Total + DMW.Timers.QuestieHelper.Last) or DMW.Timers.QuestieHelper.Last
             DMW.Timers.Trackers.Total = DMW.Timers.Trackers.Total and (DMW.Timers.Trackers.Total + DMW.Timers.Trackers.Last) or DMW.Timers.Trackers.Last

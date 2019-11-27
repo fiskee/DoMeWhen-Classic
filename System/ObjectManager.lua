@@ -61,16 +61,18 @@ local function SortEnemies()
                 return x.EnemyScore > y.EnemyScore
             end
         )
-        table.sort(
-            Enemies,
-            function(x)
-                if UnitIsUnit(x.Pointer, "target") then
-                    return true
-                else
-                    return false
+        if UnitIsVisible("target") then
+            table.sort(
+                Enemies,
+                function(x)
+                    if UnitIsUnit(x.Pointer, "target") then
+                        return true
+                    else
+                        return false
+                    end
                 end
-            end
-        )
+            )
+        end
     end
 end
 
@@ -151,7 +153,7 @@ function DMW.UpdateOM()
     end
     if updated and #added > 0 then
         for _, v in pairs(added) do
-            if ObjectIsUnit(v) and not Units[v] then
+            if ObjectIsUnit(v) and not Units[v] and UnitCreatureTypeID(v) ~= 8 then
                 Units[v] = Unit(v)
             elseif ObjectIsGameObject(v) and not GameObjects[v] then
                 GameObjects[v] = GameObject(v)

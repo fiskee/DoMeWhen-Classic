@@ -26,8 +26,8 @@ function GameObject:GetDistance(OtherUnit)
 end
 
 function GameObject:IsQuest()
-    if self.ObjectID and DMW.Settings.profile.Tracker.QuestieHelper and QuestieTooltips and QuestieTooltips.tooltipLookup["o_" .. self.ObjectID] then
-        for _, Tooltip in pairs(QuestieTooltips.tooltipLookup["o_" .. self.ObjectID]) do
+    if self.ObjectID and DMW.Settings.profile.Tracker.QuestieHelper and DMW.QuestieTooltips and DMW.QuestieTooltips.tooltipLookup["o_" .. self.ObjectID] then
+        for _, Tooltip in pairs(DMW.QuestieTooltips.tooltipLookup["o_" .. self.ObjectID]) do
             Tooltip.Objective:Update()
             if not Tooltip.Objective.Completed then
                 return true
@@ -37,15 +37,15 @@ function GameObject:IsQuest()
     return false
 end
 
-function GameObject:IsHerb() --TODO: Add check if we have high enough skill
-    if DMW.Settings.profile.Tracker.Herbs and DMW.Enums.Herbs[self.ObjectID] then
+function GameObject:IsHerb()
+    if DMW.Settings.profile.Tracker.Herbs and DMW.Enums.Herbs[self.ObjectID] and (not DMW.Settings.profile.Tracker.CheckRank or (DMW.Player.Professions.Herbalism and DMW.Enums.Herbs[self.ObjectID].SkillReq <= DMW.Player.Professions.Herbalism)) and (not DMW.Settings.profile.Tracker.HideGrey or (DMW.Player.Professions.Herbalism and DMW.Enums.Herbs[self.ObjectID].SkillReq > (DMW.Player.Professions.Herbalism - 100))) then
         return true
     end
     return false
 end
 
-function GameObject:IsOre() --TODO: Add check if we have high enough skill
-    if DMW.Settings.profile.Tracker.Ore and DMW.Enums.Ore[self.ObjectID] then
+function GameObject:IsOre()
+    if DMW.Settings.profile.Tracker.Ore and DMW.Enums.Ore[self.ObjectID] and (not DMW.Settings.profile.Tracker.CheckRank or (DMW.Player.Professions.Mining and DMW.Enums.Ore[self.ObjectID].SkillReq <= DMW.Player.Professions.Mining)) and (not DMW.Settings.profile.Tracker.HideGrey or (DMW.Player.Professions.Mining and DMW.Enums.Ore[self.ObjectID].SkillReq > (DMW.Player.Professions.Mining - 100))) then
         return true
     end
     return false

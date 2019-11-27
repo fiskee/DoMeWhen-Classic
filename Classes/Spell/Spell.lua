@@ -151,3 +151,11 @@ end
 function Spell:Usable(Rank)
     return (not Rank and IsUsableSpell(self.SpellName)) or (Rank and IsUsableSpell(self.Ranks[Rank]))
 end
+
+function Spell:HighestRank()
+    for i = #self.Ranks, 1, -1 do
+        if IsSpellKnown(self.Ranks[i]) then
+            return i
+        end
+    end
+end

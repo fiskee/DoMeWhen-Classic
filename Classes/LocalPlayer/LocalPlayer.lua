@@ -16,10 +16,12 @@ function LocalPlayer:New(Pointer)
     self:GetSpells()
     self:GetTalents()
     self.Equipment = {}
+    self.Professions = {}
     self.Items = {}
     self.Looting = false
     self:UpdateEquipment()
     self:GetItems()
+    self:UpdateProfessions()
     if self.Class == "WARRIOR" then
         self.OverpowerUnit = {}
         self.RevengeUnit = {}
@@ -71,6 +73,7 @@ function LocalPlayer:Update()
     self.InGroup = IsInGroup()
     self.CombatTime = self.Combat and (DMW.Time - self.Combat) or 0
     self.CombatLeftTime = self.CombatLeft and (DMW.Time - self.CombatLeft) or 0
+    self.Resting = IsResting()
     if self.DOTed then
         local count = 0
         for spell in pairs(self.DOTed) do
@@ -306,4 +309,13 @@ function LocalPlayer:HasMovementFlag(Flag)
         return bit.band(UnitMovementFlags(self.Pointer), Flag) > 0
     end
     return false
+end
+
+function LocalPlayer:GetFreeBagSlots()
+    local Slots = 0
+    local Temp
+    for i = 0, 4, 1 do
+        Slots = Slots + GetContainerNumFreeSlots(i)
+    end
+    return Slots
 end
