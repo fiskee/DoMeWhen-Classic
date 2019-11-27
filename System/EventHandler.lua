@@ -35,6 +35,9 @@ local function EventHandler(self, event, ...)
                 else
                     DMW.Player.Consecration = false
                 end
+            elseif DMW.Player.Class == "SHAMAN" then
+                local slot = ...;
+                C_Timer.After(0.01, function()DMW.Player:UpdateTotems(slot) end)
             end
         elseif event == "ACTIONBAR_SLOT_CHANGED" then
             DMW.Helpers.Queue.GetBindings()

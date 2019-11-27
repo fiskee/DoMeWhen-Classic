@@ -21,6 +21,7 @@ function Unit:New(Pointer)
     self.Level = UnitLevel(Pointer)
     self.DistanceAggro = self:AggroDistance()
     self.CreatureType = DMW.Enums.CreatureType[UnitCreatureTypeID(Pointer)]
+    self.Classification = UnitClassification(Pointer)
     DMW.Functions.AuraCache.Refresh(Pointer)
 end
 
@@ -33,7 +34,6 @@ function Unit:Update()
     end
     self.Distance = self:GetDistance()
     
-    self.Dead = UnitIsDeadOrGhost(self.Pointer)
     if RealMobHealth_CreatureHealthCache and self.ObjectID and RealMobHealth_CreatureHealthCache[self.ObjectID .. "-" .. self.Level] then
         self.HealthMax = RealMobHealth_CreatureHealthCache[self.ObjectID .. "-" .. self.Level]
         self.RealHealth = true
@@ -48,6 +48,10 @@ function Unit:Update()
         self.Health = UnitHealth(self.Pointer)
     end
     self.HP = self.Health / self.HealthMax * 100
+    self.Dead = self.HP == 0 or UnitIsDeadOrGhost(self.Pointer)
+    if self.Friend and not self.Dead and UnitInParty(self.Pointer) then
+        self.HealthDeficit = self.HealthMax - self.Health
+    end
     self.TTD = self:GetTTD()
     self.LoS = false
     if self.Distance < 50 and not self.Dead then
@@ -288,6 +292,22 @@ end
 function Unit:AuraByID(SpellID, OnlyPlayer)
     OnlyPlayer = OnlyPlayer or false
     local SpellName = GetSpellInfo(SpellID)
+    local Pointer = self.Pointer
+    if DMW.Tables.AuraCache[Pointer] ~= nil and DMW.Tables.AuraCache[Pointer][SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[Pointer][SpellName]["player"] ~= nil) then
+        local AuraReturn
+        if OnlyPlayer then
+            AuraReturn = DMW.Tables.AuraCache[Pointer][SpellName]["player"].AuraReturn
+        else
+            AuraReturn = DMW.Tables.AuraCache[Pointer][SpellName].AuraReturn
+        end
+        return unpack(AuraReturn)
+    end
+    return nil
+end
+
+function Unit:AuraByName(SpellName, OnlyPlayer)
+    OnlyPlayer = OnlyPlayer or false
+    local SpellName = SpellName
     local Pointer = self.Pointer
     if DMW.Tables.AuraCache[Pointer] ~= nil and DMW.Tables.AuraCache[Pointer][SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[Pointer][SpellName]["player"] ~= nil) then
         local AuraReturn

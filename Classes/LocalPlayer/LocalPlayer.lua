@@ -23,6 +23,15 @@ function LocalPlayer:New(Pointer)
     if self.Class == "WARRIOR" then
         self.OverpowerUnit = {}
         self.RevengeUnit = {}
+    elseif self.Class == "SHAMAN" then
+        self.Totems = {}
+        self.Totems.Fire = {}
+        self.Totems.Earth = {}
+        self.Totems.Water = {}
+        self.Totems.Air = {}
+        for i = 1, MAX_TOTEMS do
+            self:UpdateTotems(i)
+        end
     end
     self.SwingMH = 0
     self.SwingOH = false
@@ -73,6 +82,55 @@ function LocalPlayer:Update()
         if count == 0 then 
             self.DOTed = nil
         end
+    end
+end
+
+function LocalPlayer:UpdateTotems(slot)
+    local haveTotem, totemName, startTime, duration, icon = GetTotemInfo(slot)
+    if slot == 1 then
+        table.wipe(self.Totems.Fire)
+    elseif slot == 2 then
+        table.wipe(self.Totems.Earth)
+    elseif slot == 3 then
+        table.wipe(self.Totems.Water)
+    elseif slot == 4 then
+        table.wipe(self.Totems.Air)
+    end
+    if haveTotem then
+        -- print(totemName:match(".*Totem"))
+        -- print((totemName:match(".*Totem")):match("%S+"))
+        for k,v in pairs(DMW.Units) do
+            if v.Name == totemName and ObjectCreator(v.Pointer) == self.Pointer then
+                local shorty = string.gsub(totemName:match(".*Totem"), "%s", "")
+                print("checked")
+                if slot == 1 then
+                    self.Totems.Fire[shorty] = v
+                    self.Totems.Fire[shorty]["Expire"] = startTime + duration
+                    self.Totems.Fire["PosX"] = v.PosX
+                    self.Totems.Fire["PosY"] = v.PosY
+                    self.Totems.Fire["PosZ"] = v.PosZ
+                elseif slot == 2 then
+                    self.Totems.Earth[shorty] = v
+                    self.Totems.Earth[shorty]["Expire"] = startTime + duration
+                    self.Totems.Earth["PosX"] = v.PosX
+                    self.Totems.Earth["PosY"] = v.PosY
+                    self.Totems.Earth["PosZ"] = v.PosZ
+                elseif slot == 3 then
+                    self.Totems.Water[shorty] = v
+                    self.Totems.Water[shorty]["Expire"] = startTime + duration
+                    self.Totems.Water["PosX"] = v.PosX
+                    self.Totems.Water["PosY"] = v.PosY
+                    self.Totems.Water["PosZ"] = v.PosZ
+                elseif slot == 4 then
+                    self.Totems.Air[shorty] = v
+                    self.Totems.Air[shorty]["Expire"] = startTime + duration
+                    self.Totems.Air["PosX"] = v.PosX
+                    self.Totems.Air["PosY"] = v.PosY
+                    self.Totems.Air["PosZ"] = v.PosZ
+                end
+                break
+            end
+        end 
     end
 end
 
@@ -213,6 +271,22 @@ end
 function LocalPlayer:AuraByID(SpellID, OnlyPlayer)
     OnlyPlayer = OnlyPlayer or false
     local SpellName = GetSpellInfo(SpellID)
+    local Pointer = self.Pointer
+    if DMW.Tables.AuraCache[Pointer] ~= nil and DMW.Tables.AuraCache[Pointer][SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[Pointer][SpellName]["player"] ~= nil) then
+        local AuraReturn
+        if OnlyPlayer then
+            AuraReturn = DMW.Tables.AuraCache[Pointer][SpellName]["player"].AuraReturn
+        else
+            AuraReturn = DMW.Tables.AuraCache[Pointer][SpellName].AuraReturn
+        end
+        return unpack(AuraReturn)
+    end
+    return nil
+end
+
+function LocalPlayer:AuraByName(SpellName, OnlyPlayer)
+    OnlyPlayer = OnlyPlayer or false
+    local SpellName = SpellName
     local Pointer = self.Pointer
     if DMW.Tables.AuraCache[Pointer] ~= nil and DMW.Tables.AuraCache[Pointer][SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[Pointer][SpellName]["player"] ~= nil) then
         local AuraReturn
