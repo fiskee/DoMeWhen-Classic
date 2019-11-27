@@ -1,8 +1,8 @@
 local DMW = DMW
-DMW.Enemies, DMW.Attackable, DMW.Units, DMW.Friends, DMW.GameObjects, DMW.Party, DMW.Others = {}, {}, {}, {}, {}, {}, {}
+DMW.Enemies, DMW.Attackable, DMW.Units, DMW.Friends, DMW.GameObjects = {}, {}, {}, {}, {}
 DMW.Friends.Units = {}
 DMW.Friends.Tanks = {}
-local Enemies, Attackable, Units, Friends, GameObjects, Party, Others = DMW.Enemies, DMW.Attackable, DMW.Units, DMW.Friends.Units, DMW.GameObjects, DMW.Party, DMW.Others
+local Enemies, Attackable, Units, Friends, GameObjects = DMW.Enemies, DMW.Attackable, DMW.Units, DMW.Friends.Units, DMW.GameObjects
 local Unit, LocalPlayer, GameObject = DMW.Classes.Unit, DMW.Classes.LocalPlayer, DMW.Classes.GameObject
 
 local function Remove(Pointer)
@@ -20,9 +20,6 @@ local function Remove(Pointer)
     end
     if GameObjects[Pointer] ~= nil then
         GameObjects[Pointer] = nil
-    end
-    if Others[Pointer] ~= nil then
-        Others[Pointer] = nil
     end
     if DMW.Tables.AuraUpdate[Pointer] then
         DMW.Tables.AuraUpdate[Pointer] = nil
@@ -101,7 +98,6 @@ local function UpdateUnits()
     table.wipe(Attackable)
     table.wipe(Enemies)
     table.wipe(Friends)
-    table.wipe(Party)
     DMW.Player.Target = nil
     -- DMW.Player.Focus = nil
     DMW.Player.Mouseover = nil
@@ -134,11 +130,7 @@ local function UpdateUnits()
         elseif DMW.Player.InGroup and Unit.Player and not Unit.Attackable and Unit.LoS and (UnitInRaid(Pointer) or UnitInParty(Pointer)) then
             Unit:CalculateHP()
             table.insert(Friends, Unit)
-            if UnitInParty(Pointer) then
-                table.insert(Party, Unit)
-            end
         end
-        
     end
     SortEnemies()
     HandleFriends()
@@ -146,13 +138,6 @@ end
 
 local function UpdateGameObjects()
     for _, Object in pairs(GameObjects) do
-        if not Object.NextUpdate or Object.NextUpdate < DMW.Time then
-            Object:Update()
-        end
-    end
-end
-local function UpdateOthers()
-    for _, Object in pairs(Others) do
         if not Object.NextUpdate or Object.NextUpdate < DMW.Time then
             Object:Update()
         end
@@ -168,19 +153,14 @@ function DMW.UpdateOM()
     end
     if updated and #added > 0 then
         for _, v in pairs(added) do
-            if ObjectIsUnit(v) and not Units[v] then
+            if ObjectIsUnit(v) and not Units[v] and UnitCreatureTypeID(v) ~= 8 then
                 Units[v] = Unit(v)
             elseif ObjectIsGameObject(v) and not GameObjects[v] then
                 GameObjects[v] = GameObject(v)
-            else
-                if ObjectRawType(v) ~= 1 and not Others[v] then
-                    Others[v] = GameObject(v)
-                end
             end
         end
     end
     DMW.Player:Update()
     UpdateUnits()
     UpdateGameObjects()
-    UpdateOthers()
 end

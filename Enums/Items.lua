@@ -1,16 +1,4 @@
 DMW.Enums.Items = {
-    -- Bandages = {
-        LinenBandage = 1251,
-        HeavyLinenBandage = 2581,
-        WoolBandage = 3530,
-        HeavyWoolBandage = 3531,
-        SilkBandage = 6450,
-        HeavySilkBandage = 6451,
-        MageweaveBandage = 8544,
-        HeavyMageweaveBandage = 8545,
-        RuneclothBandage = 14529,
-        HeavyRuneclothBandage = 14530,
-    -- },
     --Manastones
     ManaAgate = 5514,
     ManaCitrine = 8007,
@@ -30,19 +18,4 @@ DMW.Enums.Items = {
     MajorSoulstone = 16896,
     --Trinkets
     Luffa = 19141
-}
-
-DMW.Enums.ItemGroups = {
-    Bandages = {
-        LinenBandage = 1251,
-        HeavyLinenBandage = 2581,
-        WoolBandage = 3530,
-        HeavyWoolBandage = 3531,
-        SilkBandage = 6450,
-        HeavySilkBandage = 6451,
-        MageweaveBandage = 8544,
-        HeavyMageweaveBandage = 8545,
-        RuneclothBandage = 14529,
-        HeavyRuneclothBandage = 14530,
-    }
 }

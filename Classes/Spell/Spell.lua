@@ -5,7 +5,6 @@ function Spell:New(SpellID, CastType)
     self.Ranks = SpellID
     self.SpellID = self.Ranks[1]
     self.SpellName = GetSpellInfo(self.SpellID)
-    self.Icon = select(3, GetSpellInfo(self.SpellID))
     self.BaseCD = GetSpellBaseCooldown(self.SpellID) / 1000
     self.BaseGCD = select(2, GetSpellBaseCooldown(self.SpellID)) / 1000
     self.MinRange = select(5,GetSpellInfo(self.SpellID)) or 0
@@ -17,10 +16,6 @@ function Spell:New(SpellID, CastType)
     self.LastBotTarget = "player"
     local costTable = GetSpellPowerCost(self.SpellID)
     for _, costInfo in pairs(costTable) do
-        if costInfo.cost then self.BaseCost = costInfo.cost
-        else print(self.SpellName)
-        end
-        
         if costInfo.costPerSec > 0 then
             self.CastType = "Channel"
         end
@@ -71,14 +66,7 @@ function Spell:CD(Rank)
         self.CDCache = 0
         return 0
     end
-    
-    if (self.SpellID == 2457 or self.SpellID == 71 or self.SpellID == 2458) then
-        if DMW.Player:StanceGCDRemain() > 0 then
-            FinalCD = FinalCD
-        else
-            FinalCD = FinalCD - 0.1
-        end
-    elseif DMW.Player:GCDRemain() > 0 then
+    if DMW.Player:GCDRemain() > 0 then
         FinalCD = FinalCD
     else
         FinalCD = FinalCD - 0.1
@@ -162,4 +150,12 @@ end
 
 function Spell:Usable(Rank)
     return (not Rank and IsUsableSpell(self.SpellName)) or (Rank and IsUsableSpell(self.Ranks[Rank]))
+end
+
+function Spell:HighestRank()
+    for i = #self.Ranks, 1, -1 do
+        if IsSpellKnown(self.Ranks[i]) then
+            return i
+        end
+    end
 end

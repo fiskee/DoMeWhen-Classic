@@ -14,6 +14,7 @@ function Unit:New(Pointer)
     if self.Player then
         self.Class = select(2, UnitClass(Pointer)):gsub("%s+", "")
     end
+    self.LoSCache = {}
     self.Friend = UnitIsFriend("player", self.Pointer)
     self.CombatReach = UnitCombatReach(Pointer)
     self.PosX, self.PosY, self.PosZ = ObjectPosition(Pointer)
@@ -21,12 +22,15 @@ function Unit:New(Pointer)
     self.Level = UnitLevel(Pointer)
     self.DistanceAggro = self:AggroDistance()
     self.CreatureType = DMW.Enums.CreatureType[UnitCreatureTypeID(Pointer)]
-    self.Classification = UnitClassification(Pointer)
     DMW.Functions.AuraCache.Refresh(Pointer)
 end
 
 function Unit:Update()
-    self.NextUpdate = DMW.Time + (math.random(100, 1500) / 10000)
+    if DMW.Player.Resting then
+        self.NextUpdate = DMW.Time + (math.random(100, 1500) / 1000)
+    else
+        self.NextUpdate = DMW.Time + (math.random(300, 1500) / 10000)
+    end
     self:UpdatePosition()
     if DMW.Tables.AuraUpdate[self.Pointer] then
         DMW.Functions.AuraCache.Refresh(self.Pointer)
@@ -34,7 +38,7 @@ function Unit:Update()
     end
     self.Distance = self:GetDistance()
     
-    
+    self.Dead = UnitIsDeadOrGhost(self.Pointer)
     if RealMobHealth_CreatureHealthCache and self.ObjectID and RealMobHealth_CreatureHealthCache[self.ObjectID .. "-" .. self.Level] then
         self.HealthMax = RealMobHealth_CreatureHealthCache[self.ObjectID .. "-" .. self.Level]
         self.RealHealth = true
@@ -49,10 +53,6 @@ function Unit:Update()
         self.Health = UnitHealth(self.Pointer)
     end
     self.HP = self.Health / self.HealthMax * 100
-    self.Dead = self.HP == 0 or UnitIsDeadOrGhost(self.Pointer)
-    if self.Friend and not self.Dead and UnitInParty(self.Pointer) then
-        self.HealthDeficit = self.HealthMax - self.Health
-    end
     self.TTD = self:GetTTD()
     self.LoS = false
     if self.Distance < 50 and not self.Dead then
@@ -62,7 +62,7 @@ function Unit:Update()
     self.ValidEnemy = self.Attackable and self:IsEnemy() or false
     self.Target = UnitTarget(self.Pointer)
     self.Moving = self:HasMovementFlag(DMW.Enums.MovementFlags.Moving)
-    self.Facing = UnitIsFacing("player", self.Pointer, 50)
+    self.Facing = ObjectIsFacing("Player", self.Pointer)
     self.Quest = self:IsQuest()
     self.Trackable = self:IsTrackable()
     if self.Name == "Unknown" then
@@ -77,14 +77,18 @@ function Unit:UpdatePosition()
     self.PosX, self.PosY, self.PosZ = ObjectPosition(self.Pointer)
 end
 
-local losFlags = bit.bor(0x10, 0x100, 0x1, 0x100000);
 function Unit:LineOfSight(OtherUnit)
     if DMW.Enums.LoS[self.ObjectID] then
         return true
     end
     OtherUnit = OtherUnit or DMW.Player
-    return TraceLine(self.PosX, self.PosY, self.PosZ + 2, OtherUnit.PosX, OtherUnit.PosY, OtherUnit.PosZ + 2, 0x100010) == nil
-    -- return TraceLine(self.PosX, self.PosY, self.PosZ + 2.25, OtherUnit.PosX, OtherUnit.PosY, OtherUnit.PosZ + 2.25, losFlags) == nil
+    if self.LoSCache.Result ~= nil and self.PosX == self.LoSCache.PosX and self.PosY == self.LoSCache.PosY and self.PosZ == self.LoSCache.PosZ and OtherUnit.PosX == self.LoSCache.OPosX and OtherUnit.PosY == self.LoSCache.OPosY and OtherUnit.PosZ == self.LoSCache.OPosZ then
+        return self.LoSCache.Result
+    end
+    self.LoSCache.Result = TraceLine(self.PosX, self.PosY, self.PosZ + 2, OtherUnit.PosX, OtherUnit.PosY, OtherUnit.PosZ + 2, 0x100010) == nil
+    self.LoSCache.PosX, self.LoSCache.PosY, self.LoSCache.PosZ = self.PosX, self.PosY, self.PosZ
+    self.LoSCache.OPosX, self.LoSCache.OPosY, self.LoSCache.OPosZ = OtherUnit.PosX, OtherUnit.PosY, OtherUnit.PosZ
+    return self.LoSCache.Result
 end
 
 function Unit:IsEnemy()
@@ -116,9 +120,8 @@ function Unit:HasThreat()
         return true
     elseif DMW.Player.Instance == "none" and (DMW.Enums.Dummy[self.ObjectID] or (UnitIsVisible("target") and UnitIsUnit(self.Pointer, "target"))) then
         return true
-    elseif not self.Player and self.Target and (UnitIsUnit(self.Target, "player") or (DMW.Player.Pet and ObjectExists("pettarget") and UnitIsUnit(self.Pointer, "pettarget")) or UnitIsUnit(self.Target, "pet") or UnitInParty(self.Target)) then
-        return true
-    elseif DMW.Player.Combat and self.CreatureType == "Totem" and self.Distance <= 5 then
+    end
+    if not self.Player and self.Target and (UnitIsUnit(self.Target, "player") or UnitIsUnit(self.Target, "pet") or UnitInParty(self.Target)) then
         return true
     end
     return false
@@ -309,22 +312,6 @@ function Unit:AuraByID(SpellID, OnlyPlayer)
     return nil
 end
 
-function Unit:AuraByName(SpellName, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or false
-    local SpellName = SpellName
-    local Pointer = self.Pointer
-    if DMW.Tables.AuraCache[Pointer] ~= nil and DMW.Tables.AuraCache[Pointer][SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[Pointer][SpellName]["player"] ~= nil) then
-        local AuraReturn
-        if OnlyPlayer then
-            AuraReturn = DMW.Tables.AuraCache[Pointer][SpellName]["player"].AuraReturn
-        else
-            AuraReturn = DMW.Tables.AuraCache[Pointer][SpellName].AuraReturn
-        end
-        return unpack(AuraReturn)
-    end
-    return nil
-end
-
 function Unit:CCed()
     for SpellID, _ in pairs(DMW.Enums.CCBuffs) do
         if self:AuraByID(SpellID) then
@@ -335,8 +322,8 @@ function Unit:CCed()
 end
 
 function Unit:IsQuest()
-    if self.ObjectID and DMW.Settings.profile.Tracker.QuestieHelper and QuestieTooltips and QuestieTooltips.tooltipLookup["u_" .. self.ObjectID] then
-        for _, Tooltip in pairs(QuestieTooltips.tooltipLookup["u_" .. self.ObjectID]) do
+    if self.ObjectID and DMW.Settings.profile.Tracker.QuestieHelper and DMW.QuestieTooltips and DMW.QuestieTooltips.tooltipLookup["m_" .. self.ObjectID] then
+        for _, Tooltip in pairs(DMW.QuestieTooltips.tooltipLookup["m_" .. self.ObjectID]) do
             Tooltip.Objective:Update()
             if not Tooltip.Objective.Completed then
                 return true
@@ -355,7 +342,6 @@ function Unit:ChannelInfo()
 end
 
 function Unit:IsTrackable()
-    if self.Name == "Immy" or self.Name == "Drainslut" then return false end
     if DMW.Settings.profile.Tracker.TrackUnits ~= nil and DMW.Settings.profile.Tracker.TrackUnits ~= "" and not self.Player then
         for k in string.gmatch(DMW.Settings.profile.Tracker.TrackUnits, "([^,]+)") do
             if strmatch(string.lower(self.Name), string.lower(string.trim(k))) then

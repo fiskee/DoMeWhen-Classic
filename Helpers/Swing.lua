@@ -53,9 +53,6 @@ DMW.Helpers.Swing.SwingMHReset = function(unit)
     if unit == "player" or unit == DMW.Player.Pointer then
         -- print("player")
         Player.SwingMH = Player.MHSpeed
-        if DMW.Player.SwingDump then
-            DMW.Player.SwingDump = nil
-        end
     else
         -- print(unit)
         if Swing.Units[unit] ~= nil then
@@ -67,7 +64,6 @@ end
 DMW.Helpers.Swing.SwingOHReset = function(unit)
     if unit == "player" or unit == DMW.Player.Pointer then
         if Player.HasOH then
-            SpellStopCasting()
             Player.SwingOH = Player.OHSpeed
         end
     else
@@ -87,7 +83,6 @@ DMW.Helpers.Swing.SwingMHUpdate = function(elapsed, unit)
                 Player.SwingMH = 0
             end
             DMW.Player.SwingMH = Player.SwingMH
-            DMW.Player.SwingUpdate = DMW.Time
         end
     else
         if Swing.Units[unit].SwingMH > 0 then
@@ -238,10 +233,11 @@ end
 
 DMW.Helpers.Swing.MissHandler = function(unit, missType, offhand, destination)
     if missType == "PARRY" then
+        local parryHaste
         if unit == DMW.Player.Pointer then
             ------------ check this ??????? -------------------------
             if DMW.Tables.Swing.Units[destination] ~= nil then
-                local parryHaste = 0.2 * DMW.Tables.Swing.Units[destination].MHSpeed
+                parryHaste = 0.2 * DMW.Tables.Swing.Units[destination].MHSpeed
                 if DMW.Tables.Swing.Units[destination].SwingMH > parryHaste then
                     DMW.Tables.Swing.Units[destination].SwingMH = parryHaste
                 end
@@ -253,29 +249,12 @@ DMW.Helpers.Swing.MissHandler = function(unit, missType, offhand, destination)
             end
         else
             if DMW.Tables.Swing.Units[unit] ~= nil then
-                -- if destination == DMW.Player.Pointer then
-                --     -- parryHaste = Player.MHSpeed * 0.2
-                --     if Player.SwingMH >= 0.6 * Player.MHSpeed then
-                --         Player.SwingMH = Player.SwingMH - 0.4 * Player.MHSpeed
-                --     elseif Player.SwingMH >= 0.2 * Player.MHSpeed then
-                --         -- Player.SwingMH = Player.SwingMH - 0.4 * Player.MHSpeed
-                --         Player.SwingMH = 0.8 * Player.SwingMH 
-                --     end
-                -- end
-
-                -- After a successful parry, the defender's "swing timer" is reduced by 40% of your weapon speed (or even reset), unless this would result in a reduction to less than 20% of your swing time remaining
                 if destination == DMW.Player.Pointer then
-                    local parryHaste = Player.MHSpeed * 0.2
+                    parryHaste = Player.MHSpeed * 0.2
                     if Player.SwingMH > parryHaste then
-                        Player.SwingMH = Player.SwingMH - 0.4 * Player.MHSpeed
+                        Player.SwingMH = parryHaste
                     end
                 end
-                -- if destination == DMW.Player.Pointer then
-                --     local parryHaste = Player.MHSpeed * 0.2
-                --     if Player.SwingMH > parryHaste then
-                --         Player.SwingMH = parryHaste
-                --     end
-                -- end
                 if not offhand then
                     DMW.Helpers.Swing.SwingMHReset(unit)
                 -- else

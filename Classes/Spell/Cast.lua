@@ -12,21 +12,8 @@ function Spell:HighestLevel(Unit)
                 HighestRank = i
             end
         end
-    -- else
-    --     for k,v in ipairs(DMW.Player.Spells[self.Key].Ranks) do
-    --         HighestRank = k
-    --     end
     end
-    -- print(HighestRank)
     return HighestRank
-end
-
-function Spell:HighestRank()
-    for i = #self.Ranks, 1, -1 do
-        if IsSpellKnown(self.Ranks[i]) then
-            return i
-        end
-    end
 end
 
 function Spell:FacingCast(Unit, Rank)
@@ -50,8 +37,7 @@ function Spell:FacingCast(Unit, Rank)
 		C_Timer.After(0.1, function()
 			FaceDirection(ObjectFacing("player"), true)
         end)
-    else
-        -- SpellStopCasting()
+	else
 		if not Rank then
             CastSpellByName(self.SpellName, Unit.Pointer)
         else

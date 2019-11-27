@@ -1,6 +1,5 @@
 local DMW = DMW
 local LocalPlayer = DMW.Classes.LocalPlayer
-local LibCC = LibStub("LibClassicCasterinoDMW", true)
 
 function LocalPlayer:New(Pointer)
     self.Pointer = Pointer
@@ -17,74 +16,20 @@ function LocalPlayer:New(Pointer)
     self:GetSpells()
     self:GetTalents()
     self.Equipment = {}
+    self.Professions = {}
     self.Items = {}
-   
     self.Looting = false
     self:UpdateEquipment()
     self:GetItems()
+    self:UpdateProfessions()
     if self.Class == "WARRIOR" then
         self.OverpowerUnit = {}
         self.RevengeUnit = {}
-    elseif self.Class == "SHAMAN" then
-        self.Totems = {}
-        self.Totems.Fire = {}
-        self.Totems.Earth = {}
-        self.Totems.Water = {}
-        self.Totems.Air = {}
-        for i = 1, MAX_TOTEMS do
-            self:UpdateTotems(i)
-        end
     end
     self.SwingMH = 0
     self.SwingOH = false
     DMW.Helpers.Queue.GetBindings()
 end
-
-
--- local scanTool = CreateFrame( "GameTooltip", "ScanTooltip", nil, "GameTooltipTemplate" )
--- scanTool:SetOwner( WorldFrame, "ANCHOR_NONE" )
--- local function findOwnTotem(unit)
---     scanTool:ClearLines()
---     scanTool:SetUnit(unit)
---     local scanText = _G["ScanTooltipTextLeft2"]
---     local ownerText = scanText:GetText()
---     if not ownerText then return nil end
---     local owner, _ = string.split("'",ownerText)
---     if owner == UnitName("player") then
---         return true         
---     end
--- end
-
--- local tooltipAbuse = CreateFrame( "GameTooltip", "tooltipAbuse", nil, "GameTooltipTemplate" )
--- tooltipAbuse:SetOwner( WorldFrame, "ANCHOR_NONE" );
-
--- local function getOwner(unit)
---     tooltipAbuse:SetUnit(unit)
---     for i = 1, tooltipAbuse:NumLines() do
---         local mytext=_G["tooltipAbuseTextLeft"..i]
---         local text=mytext:GetText()
-
---         print(text)
---         local mytext=_G["tooltipAbuseTextRight"..i]
---         local text=mytext:GetText()
---         if text then
---         print("RRR"..text)
---         end
---     end
---     local ownerText = _G["tooltipAbuseTextLeft2"]:GetText()
---     if ownerText ~= nil then
---         local owner, _ = string.split("'",ownerText)
---         print(owner)
---         return owner
---     end
--- end
-
--- local oldFunction = getOwner
--- getOwner = function(...)
---    return EWTUnlock('getOwner', oldFunction, ...)
--- end
-
-
 
 function LocalPlayer:Update()
     self.PosX, self.PosY, self.PosZ = ObjectPosition(self.Pointer)
@@ -119,6 +64,7 @@ function LocalPlayer:Update()
     self.InGroup = IsInGroup()
     self.CombatTime = self.Combat and (DMW.Time - self.Combat) or 0
     self.CombatLeftTime = self.CombatLeft and (DMW.Time - self.CombatLeft) or 0
+    self.Resting = IsResting()
     if self.DOTed then
         local count = 0
         for spell in pairs(self.DOTed) do
@@ -130,61 +76,6 @@ function LocalPlayer:Update()
         if count == 0 then 
             self.DOTed = nil
         end
-    end
-    if CastingInfo() then
-        local _,_,_,_,endTime = CastingInfo()
-        self.CastLeft = endTime/1000 - DMW.Time
-    elseif ChannelInfo() then
-        local _,_,_,_,endTime = ChannelInfo()
-        self.CastLeft = endTime/1000 - DMW.Time
-    else
-        self.CastLeft = nil
-    end
-end
-
-function LocalPlayer:UpdateTotems(slot)
-    local haveTotem, totemName, startTime, duration, icon = GetTotemInfo(slot)
-    if slot == 1 then
-        table.wipe(self.Totems.Fire)
-    elseif slot == 2 then
-        table.wipe(self.Totems.Earth)
-    elseif slot == 3 then
-        table.wipe(self.Totems.Water)
-    elseif slot == 4 then
-        table.wipe(self.Totems.Air)
-    end
-    if haveTotem then
-        for k,v in pairs(DMW.Units) do
-            if v.Name == totemName and ObjectCreator(v.Pointer) == self.Pointer then
-                local shorty = string.gsub(totemName:match(".*Totem"), "%s", "")
-                if slot == 1 then
-                    self.Totems.Fire[shorty] = v
-                    self.Totems.Fire[shorty]["Expire"] = startTime + duration
-                    self.Totems.Fire["PosX"] = v.PosX
-                    self.Totems.Fire["PosY"] = v.PosY
-                    self.Totems.Fire["PosZ"] = v.PosZ
-                elseif slot == 2 then
-                    self.Totems.Earth[shorty] = v
-                    self.Totems.Earth[shorty]["Expire"] = startTime + duration
-                    self.Totems.Earth["PosX"] = v.PosX
-                    self.Totems.Earth["PosY"] = v.PosY
-                    self.Totems.Earth["PosZ"] = v.PosZ
-                elseif slot == 3 then
-                    self.Totems.Water[shorty] = v
-                    self.Totems.Water[shorty]["Expire"] = startTime + duration
-                    self.Totems.Water["PosX"] = v.PosX
-                    self.Totems.Water["PosY"] = v.PosY
-                    self.Totems.Water["PosZ"] = v.PosZ
-                elseif slot == 4 then
-                    self.Totems.Air[shorty] = v
-                    self.Totems.Air[shorty]["Expire"] = startTime + duration
-                    self.Totems.Air["PosX"] = v.PosX
-                    self.Totems.Air["PosY"] = v.PosY
-                    self.Totems.Air["PosZ"] = v.PosZ
-                end
-                break
-            end
-        end 
     end
 end
 
@@ -227,20 +118,6 @@ function LocalPlayer:GCDRemain()
     else
         GCDSpell = GCDList[self.Class]
     end
-    local Start, CD = GetSpellCooldown(GCDSpell)
-    if Start == 0 then
-        return 0
-    end
-    return math.max(0, (Start + CD) - DMW.Time)
-end
-
-function LocalPlayer:StanceGCDRemain()
-    local GCDSpell = 2457
-    -- if self.Class == "DRUID" then
-    --     if self:AuraByID(768,true) then GCDSpell = GCDList[self.Class].CAT else GCDSpell = GCDList[self.Class].NONE end
-    -- else
-    --     GCDSpell = GCDList[self.Class]
-    -- end
     local Start, CD = GetSpellCooldown(GCDSpell)
     if Start == 0 then
         return 0
@@ -336,28 +213,9 @@ function LocalPlayer:HasFlag(Flag)
     return bit.band(ObjectDescriptor(self.Pointer, GetOffset("CGUnitData__Flags"), "int"), Flag) > 0
 end
 
-function LocalPlayer:IsFeared()
-    return self:HasFlag(DMW.Enums.UnitFlags.PreventKneelingWhenLooting)
-end
-
 function LocalPlayer:AuraByID(SpellID, OnlyPlayer)
     OnlyPlayer = OnlyPlayer or false
     local SpellName = GetSpellInfo(SpellID)
-    local Pointer = self.Pointer
-    if DMW.Tables.AuraCache[Pointer] ~= nil and DMW.Tables.AuraCache[Pointer][SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[Pointer][SpellName]["player"] ~= nil) then
-        local AuraReturn
-        if OnlyPlayer then
-            AuraReturn = DMW.Tables.AuraCache[Pointer][SpellName]["player"].AuraReturn
-        else
-            AuraReturn = DMW.Tables.AuraCache[Pointer][SpellName].AuraReturn
-        end
-        return unpack(AuraReturn)
-    end
-    return nil
-end
-function LocalPlayer:AuraByName(SpellName, OnlyPlayer)
-    OnlyPlayer = OnlyPlayer or false
-    local SpellName = SpellName
     local Pointer = self.Pointer
     if DMW.Tables.AuraCache[Pointer] ~= nil and DMW.Tables.AuraCache[Pointer][SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[Pointer][SpellName]["player"] ~= nil) then
         local AuraReturn
@@ -377,4 +235,13 @@ function LocalPlayer:HasMovementFlag(Flag)
         return bit.band(UnitMovementFlags(self.Pointer), Flag) > 0
     end
     return false
+end
+
+function LocalPlayer:GetFreeBagSlots()
+    local Slots = 0
+    local Temp
+    for i = 0, 4, 1 do
+        Slots = Slots + GetContainerNumFreeSlots(i)
+    end
+    return Slots
 end

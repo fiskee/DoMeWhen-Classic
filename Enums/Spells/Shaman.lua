@@ -2,6 +2,7 @@ local Spells = DMW.Enums.Spells
 
 Spells.SHAMAN = {
     Abilities = {
+        AncestralHealing = {Ranks = {16176, 16235, 16240}},
         AncestralKnowledge = {Ranks = {17485, 17486, 17487, 17488, 17489}},
         AncestralSpirit = {Ranks = {2008, 20609, 20610, 20776, 20777}},
         Anticipation = {Ranks = {16254, 16271, 16272, 16273, 16274}},
@@ -16,7 +17,7 @@ Spells.SHAMAN = {
         CurePoison = {Ranks = {526}},
         DiseaseCleansingTotem = {Ranks = {8170}},
         EarthShock = {Ranks = {8042, 8044, 8045, 8046, 10412, 10413, 10414}},
-        EarthbindTotem = {Ranks = {2484}},
+        EarthbindTote = {Ranks = {2484}},
         EarthsGrasp = {Ranks = {16043, 16130}},
         ElementalDevastation = {Ranks = {30160, 29179, 29180}},
         ElementalFocus = {Ranks = {16164}},
@@ -37,7 +38,7 @@ Spells.SHAMAN = {
         FrostShock = {Ranks = {8056, 8058, 10472, 10473}},
         FrostbrandWeapon = {Ranks = {8033, 8038, 10456, 16355, 16356}},
         GhostWolf = {Ranks = {2645}},
-        GraceofAirTotem = {Ranks = {8835, 10627, 25359}},
+        GraceOfAirTotem = {Ranks = {8835, 10627, 25359}},
         GroundingTotem = {Ranks = {8177}},
         GuardianTotems = {Ranks = {16258, 16293}},
         HealingFocus = {Ranks = {16181, 16230, 16232, 16233, 16234}},
@@ -76,7 +77,7 @@ Spells.SHAMAN = {
         StoneskinTotem = {Ranks = {8071, 8154, 8155, 10406, 10407, 10408}},
         StormReach = {Ranks = {28999, 29000}},
         Stormstrike = {Ranks = {17364}},
-        StrengthofEarthTotem = {Ranks = {8075, 8160, 8161, 10442, 25361}},
+        StrengthOfEarthTotem = {Ranks = {8075, 8160, 8161, 10442, 25361}},
         ThunderingStrikes = {Ranks = {16255, 16302, 16303, 16304, 16305}},
         TidalFocus = {Ranks = {16179, 16214, 16215, 16216, 16217}},
         TidalMastery = {Ranks = {16194, 16218, 16219, 16220, 16221}},
@@ -93,8 +94,6 @@ Spells.SHAMAN = {
         WindwallTotem = {Ranks = {15107, 15111, 15112}}
     },
     Buffs = {
-        AncestralHealing = {Ranks = {16176, 16235, 16240}},
-        HealingWay = {Ranks = {29206, 29205, 29202}},
         RockbiterWeapon = {Ranks = {8017, 8018, 8019, 10399, 16314, 16315, 16316}},
         LightningShield = {Ranks = {324, 325, 905, 945, 8134, 10431, 10432}},
         ImprovedLightningShield = {Ranks = {16261, 16290}}

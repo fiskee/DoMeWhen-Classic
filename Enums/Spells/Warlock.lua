@@ -52,8 +52,8 @@ Spells.WARLOCK = {
         SummonFelhunter = {Ranks = {691}},
         SummonSuccubus = {Ranks = {712}},
         SummonVoidwalker = {Ranks = {697}},
-        SummonFelsteed = {Ranks = {5784}},
-        UnendingBreath = {Ranks = {5697}}
+        UnendingBreath = {Ranks = {5697}},
+        Sacrifice = {Ranks = {20381, 19438, 19440, 19441, 19442, 19443}}
     },
     Buffs = {
         DemonArmor = {Ranks = {706, 1086, 11733, 11734, 11735}},

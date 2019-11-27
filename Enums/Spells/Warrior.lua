@@ -50,7 +50,6 @@ Spells.WARRIOR = {
 		BersRage = {Ranks = {18499}},
 		Bloodrage = {Ranks = {2687}},
 		Enrage = {Ranks = {12880}},
-		Flurry = {Ranks = {12970}},
 		BloodCraze = {Ranks = {16491}},
 		ShieldBlock = {Ranks = {2565}},
 		SweepStrikes = {Ranks = {12292}}
@@ -58,7 +57,6 @@ Spells.WARRIOR = {
 	Debuffs = {
 		DemoShout = {Ranks = {1160, 6190, 11554, 11555, 11556}},
 		Hamstring = {Ranks = {1715, 7372, 7373}},
-		PiercingHowl = {Ranks = {12323}},
 		SunderArmor = {Ranks = {7386, 7405, 8380, 11596, 11597}},
 		Rend = {Ranks = {772, 6546, 6547, 6548, 11572, 11573, 11574}},
 		ThunderClap = {Ranks = {6343, 8198, 8204, 8205, 11580, 11581}}
