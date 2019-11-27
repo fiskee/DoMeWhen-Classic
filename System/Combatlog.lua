@@ -35,8 +35,17 @@ function frame:Reader(event, ...)
         if source == Player.GUID or destination == Player.GUID then
             local sourceobj = source == Player.GUID and Player.Pointer or GetObjectWithGUID(source)
             local destobj = destination == Player.GUID and Player.Pointer or GetObjectWithGUID(destination)
-            if string.match(param, "SWING_EXTRA_ATTACKS") then
+            -- if string.find(param, "EXTRA") then
+            --     print(...)
+            -- end
+            if param == "SPELL_EXTRA_ATTACKS" then
                 -- print(...)
+                -- for k,v in ipairs(DMW.Player.Spells.HeroicStrike.Ranks) do
+                --     if IsCurrentSpell(v) then
+                --         print(checkOnHit())
+                --     end
+                -- end
+                SpellStopCasting()
             end
             if Player.Class == "WARRIOR" and source == Player.GUID and destobj then
                 if string.match(param, "_MISSED") then
@@ -82,6 +91,8 @@ function frame:Reader(event, ...)
                 elseif param == "SWING_MISSED" then
                     -- if destination == Player.GUID and not sitenrage then StrafeLeftStart();C_Timer.After(.0000001, function() StrafeLeftStop();sitenrage = true end) end
                     local missType, offhand = select(12, ...)
+                    -- local onhit = checkOnHit() and "hs queued" or "no hs"
+                    -- if offhand then print("OH MISS "..DMW.Time..", Power = "..DMW.Player.Power.." , MH ="..DMW.Player.SwingMH.." , HS DIF ="..(DMW.Time - DMW.Player.LastHS).." and "..onhit) end
                     DMW.Helpers.Swing.MissHandler(sourceobj, missType, offhand, destobj)
                 elseif source == Player.GUID and param == "SPELL_DAMAGE" or param == "SPELL_MISSED" then
                     if spellName and DMW.Tables.Swing.Reset[Player.Class] and DMW.Tables.Swing.Reset[Player.Class][spellName] then

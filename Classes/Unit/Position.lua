@@ -29,7 +29,7 @@ function Unit:AggroDistance()
 
     -- // The aggro radius for creatures with equal level as the player is 20 yards.
     -- // The combatreach should not get taken into account for the distance so we drop it from the range (see Supremus as expample)
-    local baseAggroDistance = 20 - UnitCombatReach(self.Pointer) --GetCombatReach();
+    local baseAggroDistance = 20 - self.CombatReach --GetCombatReach();
     local aggroRadius = baseAggroDistance;
 
     -- // detect range auras
@@ -56,7 +56,7 @@ function Unit:AggroDistance()
         aggroRadius = minRadius
     end
     
-    return aggroRadius-1 --* aggroRate);
+    return aggroRadius --* aggroRate);
 end
 
 function Unit:RawDistance(OtherUnit)

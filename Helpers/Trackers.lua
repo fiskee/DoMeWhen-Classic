@@ -22,7 +22,7 @@ function DMW.Helpers.Trackers.Run()
             if (DMW.Settings.profile.Tracker.TrackUnits ~= nil and DMW.Settings.profile.Tracker.TrackUnits ~= "") and not Unit.Player and Unit.Trackable and not Unit.Dead and not Unit.Target then
                 local r, b, g, a = DMW.Settings.profile.Tracker.TrackUnitsColor[1], DMW.Settings.profile.Tracker.TrackUnitsColor[2], DMW.Settings.profile.Tracker.TrackUnitsColor[3], DMW.Settings.profile.Tracker.TrackUnitsColor[4]
                 LibDraw.SetColorRaw(r, b, g, a)
-                if DMW.Settings.profile.Tracker.TrackUnitsAlert > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+                if tonumber(DMW.Settings.profile.Tracker.TrackUnitsAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
                     FlashClientIcon()
                     if GetCVarBool("Sound_EnableSFX") then
                         PlaySound(DMW.Settings.profile.Tracker.TrackUnitsAlert)
@@ -52,7 +52,7 @@ function DMW.Helpers.Trackers.Run()
         if Object.Herb then
             local r, b, g, a = DMW.Settings.profile.Tracker.HerbsColor[1], DMW.Settings.profile.Tracker.HerbsColor[2], DMW.Settings.profile.Tracker.HerbsColor[3], DMW.Settings.profile.Tracker.HerbsColor[4]
             LibDraw.SetColorRaw(r, b, g, a)
-            if DMW.Settings.profile.Tracker.HerbsAlert > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+            if tonumber(DMW.Settings.profile.Tracker.HerbsAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
                 FlashClientIcon()
                 if GetCVarBool("Sound_EnableSFX") then
                     PlaySound(DMW.Settings.profile.Tracker.HerbsAlert)
@@ -71,7 +71,7 @@ function DMW.Helpers.Trackers.Run()
             local r, b, g, a = DMW.Settings.profile.Tracker.OreColor[1], DMW.Settings.profile.Tracker.OreColor[2], DMW.Settings.profile.Tracker.OreColor[3], DMW.Settings.profile.Tracker.OreColor[4]
             LibDraw.SetColorRaw(r, b, g, a)
             ----------------------------------------------------------------------------
-            if DMW.Settings.profile.Tracker.OreAlert > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+            if tonumber(DMW.Settings.profile.Tracker.OreAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
                 FlashClientIcon()
                 if GetCVarBool("Sound_EnableSFX") then
                     PlaySound(DMW.Settings.profile.Tracker.OreAlert)
@@ -90,8 +90,8 @@ function DMW.Helpers.Trackers.Run()
             local r, b, g, a = DMW.Settings.profile.Tracker.TrackObjectsColor[1], DMW.Settings.profile.Tracker.TrackObjectsColor[2], DMW.Settings.profile.Tracker.TrackObjectsColor[3], DMW.Settings.profile.Tracker.TrackObjectsColor[4]
             LibDraw.SetColorRaw(r, b, g, a)
             ----------------------------------------------------------------------------
-            if DMW.Settings.profile.Tracker.TrackObjectsAlert > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
-                local sound = DMW.Settings.profile.Tracker.TrackObjectsAlert
+            if tonumber(DMW.Settings.profile.Tracker.TrackObjectsAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+                local sound = tonumber(DMW.Settings.profile.Tracker.TrackObjectsAlert)
                 FlashClientIcon()
                 if GetCVarBool("Sound_EnableSFX") then
                     PlaySound(sound)
@@ -124,8 +124,11 @@ function DMW.Helpers.Trackers.Run()
              and Unit.Player and not Unit.Dead and Unit.Trackable and not UnitIsUnit("target", Unit.Pointer) then
                 local r, b, g, a = DMW.Settings.profile.Tracker.TrackPlayersColor[1], DMW.Settings.profile.Tracker.TrackPlayersColor[2], DMW.Settings.profile.Tracker.TrackPlayersColor[3], DMW.Settings.profile.Tracker.TrackPlayersColor[4]
                 LibDraw.SetColorRaw(r, b, g, a)
-                if DMW.Settings.profile.Tracker.TrackPlayersAlert > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
-                    local sound = DMW.Settings.profile.Tracker.TrackPlayersAlert
+                if tonumber(DMW.Settings.profile.Tracker.TrackPlayersAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() and 
+                (Unit.Distance <= 30 or (UnitIsVisible(UnitTarget(Unit.Pointer)) and (UnitTarget(Unit.Pointer) == DMW.Player.Pointer or (DMW.Player.Target and UnitTarget(Unit.Pointer) == DMW.Player.Target.Pointer))))
+                
+                then
+                    local sound = tonumber(DMW.Settings.profile.Tracker.TrackPlayersAlert)
                     FlashClientIcon()
                     if GetCVarBool("Sound_EnableSFX") then
                         PlaySound(sound)

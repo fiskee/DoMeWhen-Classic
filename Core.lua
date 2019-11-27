@@ -17,9 +17,6 @@ DMW.Timers = {
     Rotation = {}
 }
 DMW.Pulses = 0
-if QuestieLoader then
-    DMW.QuestieTooltips = QuestieLoader:ImportModule("QuestieTooltips")
-end
 local Initialized = false
 local DebugStart
 local RotationCount = 0
@@ -40,14 +37,6 @@ local function Init()
     DMW.UI.HUD.Init()
     DMW.Player = DMW.Classes.LocalPlayer(ObjectPointer("player"))
     DMW.UI.InitQueue()
-    InitializeNavigation(function(Result) 
-        if Result then
-            if DMW.Settings.profile.Navigation.WorldMapHook then
-                DMW.Helpers.Navigation:InitWorldMap()
-            end
-            DMW.UI.InitNavigation()
-        end
-    end)
     Initialized = true
 end
 
@@ -56,6 +45,60 @@ local function ExecutePlugins()
         if type(Plugin) == "function" then
             Plugin()
         end
+    end
+end
+
+local mountedDcheck
+local function itemSets()
+    if mountedDcheck == nil then mountedDcheck = IsMounted()end 
+    if mountedDcheck and not IsMounted() then
+        -- RunMacro("geardps")
+        if not DMW.Player.Combat then
+            -- 0 = ammo 
+            -- 1 = head 
+            -- 2 = neck 
+            -- 3 = shoulder 
+            -- 4 = shirt 
+            -- 5 = chest 
+            -- 6 = waist 
+            -- 7 = legs 
+            -- 8 = feet 
+            -- 9 = wrist 
+            -- 10 = hands 
+            -- 11 = finger 1 
+            -- 12 = finger 2 
+            -- 13 = trinket 1 
+            -- 14 = trinket 2 
+            -- 15 = back 
+            -- 16 = main hand 
+            -- 17 = off hand 
+            -- 18 = ranged 
+            -- 19 = tabard 
+            -- EquipItemByName(15063)
+            -- EquipItemByName(12555)
+            -- EquipItemByName(19120)
+            -- RunMacroText("/equipslot InvSlot item 19120 ") --10 hands
+            -- if not IsEquippedItem()
+            EquipItemByName("Battlechaser's Greaves", 8)
+            EquipItemByName("Hand of Justice", 13)
+            -- EquipItemByName("Seal of the Dawn", 13)
+            -- RunMacroText("/equipslot 8  Battlechaser's Greaves")-- 8 feet
+            -- RunMacroText("/equipslot 13 Rune of the Guard Captain") --trink1 13
+        end
+        mountedDcheck = false
+    elseif IsMounted() and not mountedDcheck then
+        if not DMW.Player.Combat then
+            -- EquipItemByName(18722)
+            -- EquipItemByName(13068)
+            -- EquipItemByName(11122)
+            -- RunMacroText("/equipslot InvSlot item 19120 ")+
+            EquipItemByName("Obsidian Greaves", 8)
+            EquipItemByName("Carrot on a Stick", 13)
+            -- EquipItemByName("Battlechaser", 8)
+            -- RunMacroText("/equipslot 8 Obsidian Greaves")
+            -- RunMacroText("/equipslot 13 Carrot on a Stick")
+        end
+        mountedDcheck = true
     end
 end
 
@@ -84,7 +127,7 @@ f:SetScript(
             DMW.Helpers.Gatherers.Run()
             DMW.Timers.Gatherers.Last = debugprofilestop() - DebugStart
             DMW.Helpers.Swing.Run(elapsed)
-            ExecutePlugins()
+            -- if ExecutePlugins() then return end
             if not DMW.Player.Rotation then
                 FindRotation()
                 return
@@ -92,6 +135,9 @@ f:SetScript(
                 if DMW.Helpers.Queue.Run() then
                     return
                 end
+                -- if DMW.Player.Class == "WARRIOR" then
+                --     itemSets()
+                -- end
                 if DMW.Helpers.Rotation.Active() then
                     if DMW.Player.Combat then
                         RotationCount = RotationCount + 1
@@ -105,7 +151,6 @@ f:SetScript(
                     end
                 end
             end
-            DMW.Helpers.Navigation:Pulse()
             DMW.Timers.OM.Total = DMW.Timers.OM.Total and (DMW.Timers.OM.Total + DMW.Timers.OM.Last) or DMW.Timers.OM.Last
             DMW.Timers.QuestieHelper.Total = DMW.Timers.QuestieHelper.Total and (DMW.Timers.QuestieHelper.Total + DMW.Timers.QuestieHelper.Last) or DMW.Timers.QuestieHelper.Last
             DMW.Timers.Trackers.Total = DMW.Timers.Trackers.Total and (DMW.Timers.Trackers.Total + DMW.Timers.Trackers.Last) or DMW.Timers.Trackers.Last
@@ -116,6 +161,7 @@ f:SetScript(
             DMW.Timers.QuestieHelper.Average = DMW.Timers.QuestieHelper.Total / DMW.Pulses
             DMW.Timers.Trackers.Average = DMW.Timers.Trackers.Total / DMW.Pulses
             DMW.Timers.Gatherers.Average = DMW.Timers.Gatherers.Total / DMW.Pulses
+            if ExecutePlugins() then return end
         end
     end
 )
