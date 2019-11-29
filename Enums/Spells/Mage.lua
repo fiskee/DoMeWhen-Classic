@@ -17,6 +17,10 @@ Spells.MAGE = {
         ConjureManaCitrine = {Ranks = {10053}},
         ConjureManaJade = {Ranks = {3552}},
         ConjureManaRuby = {Ranks = {10054}},
+        
+        ConjuredWater = {Ranks = {5504,5505,5506,6127,10138,10139,10140}},
+		ConjuredFood = {Ranks = {587,597,990,6129,10144,10145,28612}},
+        
         Counterspell = {Ranks = {2139}},
         DampenMagic = {Ranks = {604, 8450, 8451, 10173, 10174}},
         FireBlast = {Ranks = {2136, 2137, 2138, 8412, 8413, 10197, 10199}},
