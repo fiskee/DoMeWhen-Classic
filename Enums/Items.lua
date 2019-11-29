@@ -6,20 +6,20 @@ DMW.Enums.Items = {
     ManaRuby = 8008,
     -- Mage Food & Drink
     ConjuredWater = 5350,
-	ConjuredFreshWater = 2288,
-	ConjuredPurifiedWater = 2136,
-	ConjuredSpringWater = 3772,
-	ConjuredMineralWater = 8077,
-	ConjuredSparklingWater = 8078,
-	ConjuredCrystalWater = 8079,
+    ConjuredFreshWater = 2288,
+    ConjuredPurifiedWater = 2136,
+    ConjuredSpringWater = 3772,
+    ConjuredMineralWater = 8077,
+    ConjuredSparklingWater = 8078,
+    ConjuredCrystalWater = 8079,
 	
     ConjuredMuffin = 5349,
-	ConjuredBread = 1113,
-	ConjuredRye = 1114,
-	ConjuredPumpernickel = 1487,
-	ConjuredSourdough = 8075,
-	ConjuredSweetRoll = 8076,
-	ConjuredCinnamonRoll = 22895,
+    ConjuredBread = 1113,
+    ConjuredRye = 1114,
+    ConjuredPumpernickel = 1487,
+    ConjuredSourdough = 8075,
+    ConjuredSweetRoll = 8076,
+    ConjuredCinnamonRoll = 22895,
     
     --Healthstones
     MinorHealthstone = 5512,
@@ -36,11 +36,11 @@ DMW.Enums.Items = {
     --Trinkets
     Luffa = 19141,
     --Potions
-	SuperiorHealingPotion = 3928,
-	GreaterHealingPotion = 1710,
-	HealingPotion = 929,
-	LesserHealingPotion = 858,
-	MinorHealingPotion = 118
+    SuperiorHealingPotion = 3928,
+    GreaterHealingPotion = 1710,
+    HealingPotion = 929,
+    LesserHealingPotion = 858,
+    MinorHealingPotion = 118
     
     
     
