@@ -40,6 +40,7 @@ local function Init()
     DMW.UI.HUD.Init()
     DMW.Player = DMW.Classes.LocalPlayer(ObjectPointer("player"))
     DMW.UI.InitQueue()
+    DMW.Helpers.HealComm:OnInitialize()
     InitializeNavigation(function(Result) 
         if Result then
             if DMW.Settings.profile.Navigation.WorldMapHook then
@@ -105,6 +106,7 @@ f:SetScript(
                     end
                 end
             end
+            
             DMW.Helpers.Navigation:Pulse()
             DMW.Timers.OM.Total = DMW.Timers.OM.Total and (DMW.Timers.OM.Total + DMW.Timers.OM.Last) or DMW.Timers.OM.Last
             DMW.Timers.QuestieHelper.Total = DMW.Timers.QuestieHelper.Total and (DMW.Timers.QuestieHelper.Total + DMW.Timers.QuestieHelper.Last) or DMW.Timers.QuestieHelper.Last

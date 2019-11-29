@@ -27,6 +27,7 @@ Libs\LibThreatClassic\embeds.xml
 Libs\LibThreatClassic\lib.xml
 Libs\AceSerializer-3.0\AceSerializer-3.0.lua
 Libs\LibBase64-1.0\LibBase64-1.0.lua
+Libs\LibHealComm-4.0\LibHealComm-4.0.xml
 
 Core.lua
 Classes\Classes.lua
@@ -61,6 +62,7 @@ Helpers\Rotation.lua
 Helpers\Dump.lua
 Helpers\Swing.lua
 Helpers\Navigation.lua
+Helpers\HealComm.lua
 
 Enums\Spells\Global.lua
 Enums\Spells\Druid.lua

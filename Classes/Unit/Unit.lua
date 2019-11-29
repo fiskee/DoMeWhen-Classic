@@ -54,9 +54,6 @@ function Unit:Update()
     end
     self.HP = self.Health / self.HealthMax * 100
     self.Dead = self.HP == 0 or UnitIsDeadOrGhost(self.Pointer)
-    if self.Friend and not self.Dead and UnitInParty(self.Pointer) then
-        self.HealthDeficit = self.HealthMax - self.Health
-    end
     self.TTD = self:GetTTD()
     self.LoS = false
     if self.Distance < 50 and not self.Dead then
@@ -100,8 +97,7 @@ function Unit:IsEnemy()
 end
 
 function Unit:IsBoss()
-    local Classification = UnitClassification(self.Pointer)
-    if Classification == "worldboss" or Classification == "rareelite" then
+    if self.Classification == "worldboss" or self.Classification == "rareelite" then
         return true
     elseif LibStub("LibBossIDs-1.0").BossIDs[self.ObjectID] then
         return true
