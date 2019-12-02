@@ -6,7 +6,9 @@ local Enemies, Attackable, Units, Friends, GameObjects = DMW.Enemies, DMW.Attack
 local Unit, LocalPlayer, GameObject = DMW.Classes.Unit, DMW.Classes.LocalPlayer, DMW.Classes.GameObject
 
 local function Remove(Pointer)
+    local GUID
     if Units[Pointer] ~= nil then
+        GUID = Units[Pointer].GUID
         Units[Pointer] = nil
     end
     if DMW.Tables.Swing.Units[Pointer] ~= nil then
@@ -15,8 +17,8 @@ local function Remove(Pointer)
     if DMW.Tables.TTD[Pointer] ~= nil then
         DMW.Tables.TTD[Pointer] = nil
     end
-    if DMW.Tables.AuraCache[Pointer] ~= nil then
-        DMW.Tables.AuraCache[Pointer] = nil
+    if GUID and DMW.Tables.AuraCache[GUID] ~= nil then
+        DMW.Tables.AuraCache[GUID] = nil
     end
     if GameObjects[Pointer] ~= nil then
         GameObjects[Pointer] = nil

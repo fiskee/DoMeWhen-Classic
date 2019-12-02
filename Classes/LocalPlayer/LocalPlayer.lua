@@ -42,7 +42,7 @@ end
 
 function LocalPlayer:Update()
     self.PosX, self.PosY, self.PosZ = ObjectPosition(self.Pointer)
-    DMW.Functions.AuraCache.Refresh(self.Pointer)
+    DMW.Functions.AuraCache.Refresh(self.Pointer, self.GUID)
     self.Health = UnitHealth(self.Pointer)
     self.HealthMax = UnitHealthMax(self.Pointer)
     self.HP = self.Health / self.HealthMax * 100
@@ -223,7 +223,7 @@ function LocalPlayer:Standing()
 end
 
 function LocalPlayer:Dispel(Spell)
-    local AuraCache = DMW.Tables.AuraCache[self.Pointer]
+    local AuraCache = DMW.Tables.AuraCache[self.GUID]
     if not AuraCache or not Spell then
         return false
     end
@@ -274,13 +274,12 @@ end
 function LocalPlayer:AuraByID(SpellID, OnlyPlayer)
     OnlyPlayer = OnlyPlayer or false
     local SpellName = GetSpellInfo(SpellID)
-    local Pointer = self.Pointer
-    if DMW.Tables.AuraCache[Pointer] ~= nil and DMW.Tables.AuraCache[Pointer][SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[Pointer][SpellName]["player"] ~= nil) then
+    if DMW.Tables.AuraCache[self.GUID] ~= nil and DMW.Tables.AuraCache[self.GUID][SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[self.GUID][SpellName]["player"] ~= nil) then
         local AuraReturn
         if OnlyPlayer then
-            AuraReturn = DMW.Tables.AuraCache[Pointer][SpellName]["player"].AuraReturn
+            AuraReturn = DMW.Tables.AuraCache[self.GUID][SpellName]["player"].AuraReturn
         else
-            AuraReturn = DMW.Tables.AuraCache[Pointer][SpellName].AuraReturn
+            AuraReturn = DMW.Tables.AuraCache[self.GUID][SpellName].AuraReturn
         end
         return unpack(AuraReturn)
     end
@@ -290,13 +289,12 @@ end
 function LocalPlayer:AuraByName(SpellName, OnlyPlayer)
     OnlyPlayer = OnlyPlayer or false
     local SpellName = SpellName
-    local Pointer = self.Pointer
-    if DMW.Tables.AuraCache[Pointer] ~= nil and DMW.Tables.AuraCache[Pointer][SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[Pointer][SpellName]["player"] ~= nil) then
+    if DMW.Tables.AuraCache[self.GUID] ~= nil and DMW.Tables.AuraCache[self.GUID][SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[self.GUID][SpellName]["player"] ~= nil) then
         local AuraReturn
         if OnlyPlayer then
-            AuraReturn = DMW.Tables.AuraCache[Pointer][SpellName]["player"].AuraReturn
+            AuraReturn = DMW.Tables.AuraCache[self.GUID][SpellName]["player"].AuraReturn
         else
-            AuraReturn = DMW.Tables.AuraCache[Pointer][SpellName].AuraReturn
+            AuraReturn = DMW.Tables.AuraCache[self.GUID][SpellName].AuraReturn
         end
         return unpack(AuraReturn)
     end

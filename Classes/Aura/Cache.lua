@@ -9,12 +9,12 @@ local DurationLib = LibStub("LibClassicDurationsDMW")
 DurationLib:Register("DMW")
 local UnitAura
 
-function AuraCache.Refresh(Unit)
+function AuraCache.Refresh(Unit, GUID)
     if not UnitAura then
         UnitAura = _G.UnitAura
     end
-    if DMW.Tables.AuraCache[Unit] then
-        table.wipe(DMW.Tables.AuraCache[Unit])
+    if DMW.Tables.AuraCache[GUID] then
+        table.wipe(DMW.Tables.AuraCache[GUID])
     end
     local AuraReturn, Name, Source, DurationNew, ExpirationTimeNew
     for i = 1, 40 do
@@ -22,8 +22,8 @@ function AuraCache.Refresh(Unit)
         if AuraReturn[10] == nil then
             break
         end
-        if DMW.Tables.AuraCache[Unit] == nil then
-            DMW.Tables.AuraCache[Unit] = {}
+        if DMW.Tables.AuraCache[GUID] == nil then
+            DMW.Tables.AuraCache[GUID] = {}
         end
         Name, Source = GetSpellInfo(AuraReturn[10]), AuraReturn[7]
         DurationNew, ExpirationTimeNew = DurationLib:GetAuraDurationByUnit(Unit, AuraReturn[10], Source, Name)
@@ -31,14 +31,14 @@ function AuraCache.Refresh(Unit)
             AuraReturn[5] = DurationNew
             AuraReturn[6] = ExpirationTimeNew
         end
-        if DMW.Tables.AuraCache[Unit][Name] == nil then
-            DMW.Tables.AuraCache[Unit][Name] = {
+        if DMW.Tables.AuraCache[GUID][Name] == nil then
+            DMW.Tables.AuraCache[GUID][Name] = {
                 ["AuraReturn"] = AuraReturn,
                 Type = "HELPFUL"
             }
         end
         if Source ~= nil and Source == "player" then
-            DMW.Tables.AuraCache[Unit][Name]["player"] = {
+            DMW.Tables.AuraCache[GUID][Name]["player"] = {
                 ["AuraReturn"] = AuraReturn,
                 Type = "HELPFUL"
             }
@@ -50,8 +50,8 @@ function AuraCache.Refresh(Unit)
         if AuraReturn[10] == nil then
             break
         end
-        if DMW.Tables.AuraCache[Unit] == nil then
-            DMW.Tables.AuraCache[Unit] = {}
+        if DMW.Tables.AuraCache[GUID] == nil then
+            DMW.Tables.AuraCache[GUID] = {}
         end
         Name, Source = GetSpellInfo(AuraReturn[10]), AuraReturn[7]
         DurationNew, ExpirationTimeNew = DurationLib:GetAuraDurationByUnit(Unit, AuraReturn[10], Source, Name)
@@ -59,14 +59,14 @@ function AuraCache.Refresh(Unit)
             AuraReturn[5] = DurationNew
             AuraReturn[6] = ExpirationTimeNew
         end
-        if DMW.Tables.AuraCache[Unit][Name] == nil then
-            DMW.Tables.AuraCache[Unit][Name] = {
+        if DMW.Tables.AuraCache[GUID][Name] == nil then
+            DMW.Tables.AuraCache[GUID][Name] = {
                 ["AuraReturn"] = AuraReturn,
                 Type = "HARMFUL"
             }
         end
         if Source ~= nil and Source == "player" then
-            DMW.Tables.AuraCache[Unit][Name]["player"] = {
+            DMW.Tables.AuraCache[GUID][Name]["player"] = {
                 ["AuraReturn"] = AuraReturn,
                 Type = "HARMFUL"
             }
@@ -79,10 +79,7 @@ function AuraCache.Event(...)
           sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = ...
     
     if destGUID and (event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" or event == "SPELL_AURA_REFRESH" or event == "SPELL_AURA_REMOVED" or event == "SPELL_PERIODIC_AURA_REMOVED") then
-        local dest = GetObjectWithGUID(destGUID)
-        if dest then
-            DMW.Tables.AuraUpdate[dest] = true
-        end
+        DMW.Tables.AuraUpdate[destGUID] = true
         --AuraCache.Refresh(dest)
     end
 end
@@ -92,7 +89,7 @@ function Buff:Query(Unit, OnlyPlayer)
     if not Unit then
         return nil
     end
-    Unit = Unit.Pointer
+    Unit = Unit.GUID
     if DMW.Tables.AuraCache[Unit] ~= nil and DMW.Tables.AuraCache[Unit][self.SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[Unit][self.SpellName]["player"] ~= nil) then
         local AuraReturn
         if OnlyPlayer then
@@ -110,7 +107,7 @@ function Debuff:Query(Unit, OnlyPlayer)
     if not Unit then
         return nil
     end
-    Unit = Unit.Pointer
+    Unit = Unit.GUID
     if DMW.Tables.AuraCache[Unit] ~= nil and DMW.Tables.AuraCache[Unit][self.SpellName] ~= nil and (not OnlyPlayer or DMW.Tables.AuraCache[Unit][self.SpellName]["player"] ~= nil) then
         local AuraReturn
         if OnlyPlayer then
