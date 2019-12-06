@@ -14,7 +14,7 @@ function HUD.Init()
     HUDFrame:EnableMouse(true)
 end
 
-local CoreOptions = {
+HUD.CoreOptions = {
     [4] = {
         Rotation = {
             [1] = {Text = "Rotation |cFF00FF00Enabled", Tooltip = ""},
@@ -37,7 +37,8 @@ local CoreOptions = {
     [1] = {
         Interrupts = {
             [1] = {Text = "Interrupts |cFF00FF00Enabled", Tooltip = ""},
-            [2] = {Text = "Interrupts |cffff0000Disabled", Tooltip = ""}
+            [2] = {Text = "Interrupts |cFFFFFF00Only List", Tooltip = ""},
+            [3] = {Text = "Interrupts |cffff0000Disabled", Tooltip = ""},
         }
     }
 }
@@ -49,7 +50,7 @@ function HUD.Load()
     Settings = DMW.Settings.profile
     local ofsy = 0
     local Frame
-    for _, Option in ipairs(CoreOptions) do
+    for _, Option in ipairs(HUD.CoreOptions) do
         table.insert(HUD.Options, 1, Option)
     end
     for i = 1, #HUD.Options do

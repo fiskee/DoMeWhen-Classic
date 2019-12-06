@@ -65,6 +65,7 @@ function Spell:Cast(Unit, Rank)
             MoveForwardStop()
             return true
         elseif self:CD(Rank) == 0 and (DMW.Time - CastTimer) > 0.1 then
+            
             CastTimer = DMW.Time
             if self.CastType == "Ground" then
                 if self:CastGround(Unit.PosX, Unit.PosY, Unit.PosZ) then
@@ -73,6 +74,7 @@ function Spell:Cast(Unit, Rank)
                     return false
                 end
             else
+                self:HealCommFix(Rank)
                 self:FacingCast(Unit, Rank)
                 self.LastBotTarget = Unit.Pointer
             end
@@ -80,6 +82,27 @@ function Spell:Cast(Unit, Rank)
         end
     end
     return false
+end
+
+function Spell:HealCommFix(rank)
+    DMW.Helpers.HealComm.Settings.timeframe = 0
+    if DMW.Player.Class == "SHAMAN" then
+        if self.SpellName == "Chain Heal" or self.SpellName == "Lesser Healing Wave" or self.SpellName == "Healing Wave" then
+            DMW.Helpers.HealComm.Settings.timeframe = self:CastTime(rank) + 0.2
+        end
+    elseif DMW.Player.Class == "PRIEST" then
+        if self.SpellName == "Greater Heal" or self.SpellName == "Flash Heal" then
+            DMW.Helpers.HealComm.Settings.timeframe = self:CastTime(rank) + 0.2
+        end
+    elseif DMW.Player.Class == "DRUID" then
+        if self.SpellName == "Healing Touch" or self.SpellName == "Regrowth" then
+            DMW.Helpers.HealComm.Settings.timeframe = self:CastTime(rank) + 0.2
+        end
+    elseif DMW.Player.Class == "PALADIN" then
+        if self.SpellName == "Holy Light" or self.SpellName == "Flash of Light" then
+            DMW.Helpers.HealComm.Settings.timeframe = self:CastTime(rank) + 0.2
+        end
+    end
 end
 
 function Spell:CastPool(Unit, Extra, Rank)

@@ -1,7 +1,7 @@
 if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then return end
 
 local major = "LibHealComm-4.0"
-local minor = 82
+local minor = 83
 assert(LibStub, format("%s requires LibStub.", major))
 
 local HealComm = LibStub:NewLibrary(major, minor)
@@ -1532,7 +1532,10 @@ end
 HealComm.parseHealEnd = parseHealEnd
 
 -- Heal delayed
-local function parseHealDelayed(casterGUID, startTime, endTime, spellName)
+local function parseHealDelayed(casterGUID, startTimeRelative, endTimeRelative, spellID)
+	local spellName = GetSpellInfo(spellID)
+	local startTime = startTimeRelative + GetTime()
+	local endTime = endTimeRelative + GetTime()
 	if not casterGUID then return end
 	local pending = (pendingHeals[casterGUID][spellName] or pendingHots[casterGUID][spellName])
 	-- It's possible to get duplicate interrupted due to raid1 = party1, player = raid# etc etc, just block it here
@@ -1594,6 +1597,8 @@ function HealComm:CHAT_MSG_ADDON(prefix, message, channel, sender)
 		else
 			parseHealEnd(casterGUID, pending, checkType, spellID, interrupted)
 		end
+	elseif commType == "F" then
+		parseHealDelayed(casterGUID, tonumber(arg1), tonumber(arg2), spellID)
 	end
 end
 
@@ -1871,23 +1876,28 @@ function HealComm:UNIT_SPELLCAST_INTERRUPTED(unit, castGUID, spellID)
 	end
 end
 
--- It's faster to do heal delays locally rather than through syncing, as it only has to go from WoW -> Player instead of Caster -> WoW -> Player
 function HealComm:UNIT_SPELLCAST_DELAYED(unit, castGUID, spellID)
 	local spellName = GetSpellInfo(spellID)
 	local casterGUID = UnitGUID(unit)
-	if( unit == "focus" or unit == "target" or not pendingHeals[casterGUID] or not pendingHeals[casterGUID][spellName] ) then return end
+	if( unit ~= "player" or not pendingHeals[casterGUID] or not pendingHeals[casterGUID][spellName] ) then return end
 
 	-- Direct heal delayed
 	if( pendingHeals[casterGUID][spellName].bitType == DIRECT_HEALS ) then
-		local startTime, endTime = select(4, ChannelInfo())
+		local startTime, endTime = select(4, CastingInfo())
 		if( startTime and endTime ) then
-			parseHealDelayed(casterGUID, startTime / 1000, endTime / 1000, spellName)
+			local startTimeRelative = startTime / 1000 - GetTime()
+			local endTimeRelative = endTime / 1000 - GetTime()
+			parseHealDelayed(casterGUID, startTimeRelative, endTimeRelative, spellID)
+			sendMessage(format("F::%d:%.3f:%.3f", spellID, startTimeRelative, endTimeRelative))
 		end
 	-- Channel heal delayed
 	elseif( pendingHeals[casterGUID][spellName].bitType == CHANNEL_HEALS ) then
-		local startTime, endTime = select(4, ChannelInfo(unit))
+		local startTime, endTime = select(4, ChannelInfo())
 		if( startTime and endTime ) then
-			parseHealDelayed(casterGUID, startTime / 1000, endTime / 1000, spellName)
+			local startTimeRelative = startTime / 1000 - GetTime()
+			local endTimeRelative = endTime / 1000 - GetTime()
+			parseHealDelayed(casterGUID, startTimeRelative, endTimeRelative, spellID)
+			sendMessage(format("F::%d:%.3f:%.3f", spellID, startTimeRelative, endTimeRelative))
 		end
 	end
 end

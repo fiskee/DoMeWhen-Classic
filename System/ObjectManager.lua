@@ -5,7 +5,7 @@ DMW.Friends.Tanks = {}
 local Enemies, Attackable, Units, Friends, GameObjects = DMW.Enemies, DMW.Attackable, DMW.Units, DMW.Friends.Units, DMW.GameObjects
 local Unit, LocalPlayer, GameObject = DMW.Classes.Unit, DMW.Classes.LocalPlayer, DMW.Classes.GameObject
 
-local function Remove(Pointer)
+function DMW.Remove(Pointer)
     local GUID
     if Units[Pointer] ~= nil then
         GUID = Units[Pointer].GUID
@@ -150,7 +150,7 @@ function DMW.UpdateOM()
     local _, updated, added, removed = GetObjectCount(true)
     if updated and #removed > 0 then
         for _, v in pairs(removed) do
-            Remove(v)
+            DMW.Remove(v)
         end
     end
     if updated and #added > 0 then

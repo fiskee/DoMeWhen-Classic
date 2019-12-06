@@ -15,6 +15,9 @@ EHFrame:RegisterEvent("LOOT_CLOSED")
 EHFrame:RegisterEvent("GET_ITEM_INFO_RECEIVED")
 EHFrame:RegisterEvent("UNIT_INVENTORY_CHANGED")
 EHFrame:RegisterEvent("SKILL_LINES_CHANGED")
+EHFrame:RegisterEvent("UNIT_HEALTH")
+EHFrame:RegisterEvent("UNIT_MAXHEALTH")
+EHFrame:RegisterEvent("UNIT_HEALTH_FREQUENT")
 if class == "ROGUE" or class == "DRUID" then
     EHFrame:RegisterEvent("UNIT_POWER_FREQUENT")
 -- EHFrame:RegisterEvent("UNIT_POWER_UPDATE")
@@ -78,6 +81,9 @@ local function EventHandler(self, event, ...)
             end
         elseif event == "SKILL_LINES_CHANGED" and DMW.Player.UpdateProfessions then
             DMW.Player:UpdateProfessions()
+        elseif (DMW.Player.Class == "SHAMAN" or DMW.Player.Class == "PRIEST" or DMW.Player.Class == "DRUID" or DMW.Player.Class == "PALADIN") and (event == "UNIT_HEALTH" or event == "UNIT_MAXHEALTH" or event == "UNIT_HEALTH_FREQUENT") then
+            local unit = ...
+            DMW.Helpers.HealComm:Update(unit)
         end
     end
 end
