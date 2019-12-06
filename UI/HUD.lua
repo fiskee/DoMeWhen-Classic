@@ -37,8 +37,7 @@ HUD.CoreOptions = {
     [1] = {
         Interrupts = {
             [1] = {Text = "Interrupts |cFF00FF00Enabled", Tooltip = ""},
-            [2] = {Text = "Interrupts |cFFFFFF00Only List", Tooltip = ""},
-            [3] = {Text = "Interrupts |cffff0000Disabled", Tooltip = ""},
+            [2] = {Text = "Interrupts |cffff0000Disabled", Tooltip = ""}
         }
     }
 }
