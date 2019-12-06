@@ -1476,7 +1476,7 @@ function f:UNIT_AURA(event, unit)
         if AuraReturn[10] == nil or not magicDispel[AuraReturn[10]] then
             break
         end
-        print(AuraReturn[10].."  ".. unit)
+        -- print(AuraReturn[10].."  ".. unit)
         AuraReturn[4] = "Magic"
         if not unitGUID then
             unitGUID = UnitGUID(unit)
