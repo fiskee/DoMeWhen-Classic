@@ -5,6 +5,11 @@ local Buff = DMW.Classes.Buff
 local Debuff = DMW.Classes.Debuff
 
 function LocalPlayer:GetSpells()
+    if self.Class == "SHAMAN"  then
+        self.Totems = {}
+        DMW.Tables.Totems = {}
+        DMW.Tables.Totems.Elements = {"Fire", "Earth", "Water", "Air"}
+    end
     self.Spells = {}
     self.Buffs = {}
     self.Debuffs = {}
@@ -17,6 +22,17 @@ function LocalPlayer:GetSpells()
                         CastType = SpellInfo.CastType or "Normal"
                         self.Spells[SpellName] = Spell(SpellInfo.Ranks, CastType)
                         self.Spells[SpellName].Key = SpellName
+                        if SpellInfo.Totem ~= nil then
+                            for i = 1, #SpellInfo.Ranks do
+                                DMW.Tables.Totems[SpellInfo.Ranks[i]] = {}
+                                local totem = DMW.Tables.Totems[SpellInfo.Ranks[i]]
+                                totem["SpellName"] = self.Spells[SpellName]["SpellName"]
+                                totem["TotemSlot"] = SpellInfo.Totem[1]
+                                totem["Element"] = DMW.Tables.Totems.Elements[totem["TotemSlot"]]
+                                totem["Duration"] = SpellInfo.Totem[2]
+                                totem["Key"] = SpellName
+                            end
+                        end
                     end
                 elseif SpellType == "Buffs" then
                     for SpellName, SpellInfo in pairs(SpellTable) do
