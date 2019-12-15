@@ -32,6 +32,7 @@ function LocalPlayer:GetSpells()
                                 totem["Duration"] = SpellInfo.Totem[2]
                                 totem["Key"] = SpellName
                             end
+                            self.Spells[SpellName].TotemElement = DMW.Tables.Totems[SpellInfo.Ranks[1]]["Element"]
                         end
                     end
                 elseif SpellType == "Buffs" then

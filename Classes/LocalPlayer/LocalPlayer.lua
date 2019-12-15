@@ -86,13 +86,15 @@ end
 
 function LocalPlayer:UpdateTotems(spellID, slotID)
     if spellID ~= nil and DMW.Tables.Totems[spellID] ~= nil then
-        local totem, element, duration, key
+        local totem, element, duration, key, realName
         totem = DMW.Tables.Totems[spellID]
         element = totem["Element"]
         duration = totem["Duration"]
+        realName = totem["SpellName"]
         key = totem["Key"]
         table.wipe(self.Totems[element])
         self.Totems[element]["Name"] = key
+        self.Totems[element]["RealName"] = realName
         self.Totems[element]["Expire"] = DMW.Time + duration
     elseif slotID ~= nil then
         local element = DMW.Tables.Totems.Elements[slotID]

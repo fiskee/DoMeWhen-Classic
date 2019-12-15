@@ -159,3 +159,53 @@ function Spell:HighestRank()
         end
     end
 end
+
+function Spell:getTotemUnit()
+    local totemLinked = DMW.Player.Totems[self.TotemElement]
+    if totemLinked.Unit == nil then
+        for k,v in pairs(DMW.Units) do
+            if v.Name:find(totemLinked.RealName) and ObjectCreator(v.Pointer) == DMW.Player.Pointer then
+                totemLinked.Unit = v
+                -- print("found totem")
+                break
+            end
+        end
+    end
+end
+
+-- ...totem keys not to overwrite
+function Spell:CheckTotem(Unit,...)
+    local playerToUnitRange = (Unit == DMW.Player or Unit == nil) and 0 or Unit:RawDistance()
+    local range = self.Key == "TremorTotem" and 40 or 30
+    if playerToUnitRange > range then
+        -- print("Unit out of range, range = "..range)
+        return false
+    end
+    if DMW.Player.Totems[self.TotemElement].Name == nil then
+        -- print("no totem")
+        return true
+    end
+    self:getTotemUnit()
+    local totemUnit = DMW.Player.Totems[self.TotemElement].Unit
+    if totemUnit ~= nil then
+        local totemToUnitRange = (Unit == DMW.Player or Unit == nil) and 0 or totemUnit:RawDistance(Unit)
+        if totemToUnitRange > range then
+            -- print("existing totem is out of range")
+            return true
+        else
+            if DMW.Player.Totems[self.TotemElement].Name == self.Key then
+                -- print("same totem, no need to use new")
+                return false
+            end
+            for i=1, select("#", ...) do
+                local noOverwrite = select(i, ...)
+                if DMW.Player.Totems[self.TotemElement].Name == noOverwrite then
+                    -- print("no overwrite for this")
+                    return false
+                end
+            end
+            -- print("need to cast totem, all ok")
+            return true
+        end
+    end
+end

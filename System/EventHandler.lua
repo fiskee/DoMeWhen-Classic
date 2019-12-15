@@ -1,6 +1,7 @@
 local DMW = DMW
 local EHFrame = CreateFrame("Frame")
 local class = select(2, UnitClass("player"))
+local PlayerIsHealer = (class == "SHAMAN" or class == "PRIEST" or class == "DRUID" or class == "PALADIN") and true or false
 
 EHFrame:RegisterEvent("ENCOUNTER_START")
 EHFrame:RegisterEvent("ENCOUNTER_END")
@@ -15,12 +16,17 @@ EHFrame:RegisterEvent("LOOT_CLOSED")
 EHFrame:RegisterEvent("GET_ITEM_INFO_RECEIVED")
 EHFrame:RegisterEvent("UNIT_INVENTORY_CHANGED")
 EHFrame:RegisterEvent("SKILL_LINES_CHANGED")
-EHFrame:RegisterEvent("UNIT_HEALTH")
-EHFrame:RegisterEvent("UNIT_MAXHEALTH")
-EHFrame:RegisterEvent("UNIT_HEALTH_FREQUENT")
+if PlayerIsHealer then
+    print(PlayerIsHealer)
+    EHFrame:RegisterEvent("UNIT_HEALTH")
+    EHFrame:RegisterEvent("UNIT_MAXHEALTH")
+    EHFrame:RegisterEvent("UNIT_HEALTH_FREQUENT")
+end
 if class == "ROGUE" or class == "DRUID" then
     EHFrame:RegisterEvent("UNIT_POWER_FREQUENT")
--- EHFrame:RegisterEvent("UNIT_POWER_UPDATE")
+    -- EHFrame:RegisterEvent("UNIT_POWER_UPDATE")
+elseif class == "SHAMAN" then
+    EHFrame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 end
 local function EventHandler(self, event, ...)
     if GetObjectWithGUID then
@@ -28,21 +34,6 @@ local function EventHandler(self, event, ...)
             DMW.Player.EID = select(1, ...)
         elseif event == "ENCOUNTER_END" then
             DMW.Player.EID = false
-        elseif event == "PLAYER_TOTEM_UPDATE" then
-            if DMW.Player.Class == "PALADIN" then
-                if GetTotemInfo(1) then
-                    DMW.Player.Consecration = {
-                        PosX = DMW.Player.PosX,
-                        PosY = DMW.Player.PosY,
-                        PosZ = DMW.Player.PosZ
-                    }
-                else
-                    DMW.Player.Consecration = false
-                end
-            elseif DMW.Player.Class == "SHAMAN" then
-                local slot = ...;
-                C_Timer.After(0.01, function()DMW.Player:UpdateTotems(slot) end)
-            end
         elseif event == "ACTIONBAR_SLOT_CHANGED" then
             DMW.Helpers.Queue.GetBindings()
         elseif event == "PLAYER_REGEN_ENABLED" then
@@ -81,9 +72,32 @@ local function EventHandler(self, event, ...)
             end
         elseif event == "SKILL_LINES_CHANGED" and DMW.Player.UpdateProfessions then
             DMW.Player:UpdateProfessions()
-        elseif (DMW.Player.Class == "SHAMAN" or DMW.Player.Class == "PRIEST" or DMW.Player.Class == "DRUID" or DMW.Player.Class == "PALADIN") and (event == "UNIT_HEALTH" or event == "UNIT_MAXHEALTH" or event == "UNIT_HEALTH_FREQUENT") then
+        elseif PlayerIsHealer and (event == "UNIT_HEALTH" or event == "UNIT_MAXHEALTH" or event == "UNIT_HEALTH_FREQUENT") then
             local unit = ...
             DMW.Helpers.HealComm:Update(unit)
+        elseif event == "UNIT_SPELLCAST_SUCCEEDED" then
+            local unit, _, spellID = ...
+            if unit == "player" then
+                if DMW.Player then
+                    DMW.Player:UpdateTotems(spellID)
+                end
+            end
+        elseif event == "PLAYER_TOTEM_UPDATE" then
+            -- need fixes
+            if DMW.Player.Class == "PALADIN" then
+                if GetTotemInfo(1) then
+                    DMW.Player.Consecration = {
+                        PosX = DMW.Player.PosX,
+                        PosY = DMW.Player.PosY,
+                        PosZ = DMW.Player.PosZ
+                    }
+                else
+                    DMW.Player.Consecration = false
+                end
+            elseif DMW.Player.Class == "SHAMAN" then
+                local slotID = ...
+                DMW.Player:UpdateTotems(nil, slotID)
+            end
         end
     end
 end
