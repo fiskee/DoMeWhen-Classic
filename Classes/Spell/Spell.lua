@@ -166,7 +166,6 @@ function Spell:getTotemUnit()
         for k,v in pairs(DMW.Units) do
             if v.Name:find(totemLinked.RealName) and ObjectCreator(v.Pointer) == DMW.Player.Pointer then
                 totemLinked.Unit = v
-                -- print("found totem")
                 break
             end
         end

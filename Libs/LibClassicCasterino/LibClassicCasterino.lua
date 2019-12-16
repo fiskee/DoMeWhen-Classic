@@ -4,7 +4,7 @@ Author: d87
 --]================]
 if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then return end
 
-local MAJOR, MINOR = "LibClassicCasterinoDMW", 26
+local MAJOR, MINOR = "LibClassicCasterinoDMW", 28
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -23,12 +23,15 @@ lib.movecheckGUIDs = lib.movecheckGUIDs or {}
 local movecheckGUIDs = lib.movecheckGUIDs
 local MOVECHECK_TIMEOUT = 4
 
+local UnitGUID = UnitGUID
 local bit_band = bit.band
 
 local GetSpellInfo = GetSpellInfo
 local GetTime = GetTime
 local CastingInfo = CastingInfo
 local ChannelInfo = ChannelInfo
+local GetUnitSpeed = GetUnitSpeed
+local UnitIsUnit = UnitIsUnit
 
 local COMBATLOG_OBJECT_REACTION_FRIENDLY = COMBATLOG_OBJECT_REACTION_FRIENDLY
 local COMBATLOG_OBJECT_TYPE_PLAYER_OR_PET = COMBATLOG_OBJECT_TYPE_PLAYER + COMBATLOG_OBJECT_TYPE_PET
@@ -91,10 +94,10 @@ local function CastStart(srcGUID, castType, spellName, spellID, overrideCastTime
     if castType == "CHANNEL" then
         local channelDuration = classChannelsByAura[spellID] or classChannelsByCast[spellID]
         castTime = channelDuration*1000
-        local decreased = talentDecreased[spellID]
-        if decreased then
-            castTime = castTime - decreased
-        end
+    end
+    local decreased = talentDecreased[spellID]
+    if decreased then
+        castTime = castTime - decreased
     end
     if overrideCastTime then
         castTime = overrideCastTime
@@ -111,7 +114,7 @@ local function CastStart(srcGUID, castType, spellName, spellID, overrideCastTime
     end
 
     if isSrcEnemyPlayer then
-        if spellID ~= 4068 then --Iron Grenade
+        if not (spellID == 4068 or spellID == 19769) then -- Iron Grenade, Thorium Grenade
             movecheckGUIDs[srcGUID] = MOVECHECK_TIMEOUT
         end
     end
@@ -349,22 +352,24 @@ f.UNIT_SPELLCAST_CHANNEL_UPDATE = Passthrough
 f.UNIT_SPELLCAST_CHANNEL_STOP = Passthrough
 f.UNIT_SPELLCAST_SUCCEEDED = Passthrough
 
-f:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+function callbacks.OnUsed()
+    f:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 
-f:RegisterEvent("UNIT_SPELLCAST_START")
-f:RegisterEvent("UNIT_SPELLCAST_DELAYED")
-f:RegisterEvent("UNIT_SPELLCAST_STOP")
-f:RegisterEvent("UNIT_SPELLCAST_FAILED")
-f:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED")
-f:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START")
-f:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE")
-f:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
-f:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
+    f:RegisterEvent("UNIT_SPELLCAST_START")
+    f:RegisterEvent("UNIT_SPELLCAST_DELAYED")
+    f:RegisterEvent("UNIT_SPELLCAST_STOP")
+    f:RegisterEvent("UNIT_SPELLCAST_FAILED")
+    f:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED")
+    f:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START")
+    f:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE")
+    f:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
+    f:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 
--- for unit lookup
-f:RegisterEvent("GROUP_ROSTER_UPDATE")
-f:RegisterEvent("NAME_PLATE_UNIT_ADDED")
-f:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
+    -- for unit lookup
+    f:RegisterEvent("GROUP_ROSTER_UPDATE")
+    f:RegisterEvent("NAME_PLATE_UNIT_ADDED")
+    f:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
+end
 
 function callbacks.OnUnused()
     f:UnregisterAllEvents()
@@ -518,6 +523,7 @@ classCasts = {
 
     [8690] = 10, -- Hearthstone
     [4068] = 1, -- Iron Grenade
+    [19769] = 1, -- Thorium Grenade
     [20589] = 0.5, -- Escape Artist
 
     -- Munts do not generate SPELL_CAST_START

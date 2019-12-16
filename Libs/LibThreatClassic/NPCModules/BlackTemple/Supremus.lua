@@ -1,5 +1,5 @@
 local ThreatLib = LibStub and LibStub("ThreatClassic-1.0", true)
-if not ThreatLib then return en
+if not ThreatLib then return end
 
 local SUPREMUS_ID = 22898
 ThreatLib:GetModule("NPCCore"):RegisterModule(SUPREMUS_ID, function(Supremus)
