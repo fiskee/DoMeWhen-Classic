@@ -41,7 +41,7 @@ local function Init()
     DMW.Player = DMW.Classes.LocalPlayer(ObjectPointer("player"))
     DMW.UI.InitQueue()
     DMW.Helpers.HealComm:OnInitialize()
-    InitializeNavigation(function(Result) 
+    InitializeNavigation(function(Result)
         if Result then
             if DMW.Settings.profile.Navigation.WorldMapHook then
                 DMW.Helpers.Navigation:InitWorldMap()
@@ -106,14 +106,12 @@ f:SetScript(
                     end
                 end
             end
-            
             DMW.Helpers.Navigation:Pulse()
             DMW.Timers.OM.Total = DMW.Timers.OM.Total and (DMW.Timers.OM.Total + DMW.Timers.OM.Last) or DMW.Timers.OM.Last
             DMW.Timers.QuestieHelper.Total = DMW.Timers.QuestieHelper.Total and (DMW.Timers.QuestieHelper.Total + DMW.Timers.QuestieHelper.Last) or DMW.Timers.QuestieHelper.Last
             DMW.Timers.Trackers.Total = DMW.Timers.Trackers.Total and (DMW.Timers.Trackers.Total + DMW.Timers.Trackers.Last) or DMW.Timers.Trackers.Last
             DMW.Timers.Gatherers.Total = DMW.Timers.Gatherers.Total and (DMW.Timers.Gatherers.Total + DMW.Timers.Gatherers.Last) or DMW.Timers.Gatherers.Last
             DMW.Timers.Rotation.Total = DMW.Timers.Rotation.Total and (DMW.Timers.Rotation.Total + DMW.Timers.Rotation.Last) or DMW.Timers.Rotation.Last or nil
-
             DMW.Timers.OM.Average = DMW.Timers.OM.Total / DMW.Pulses
             DMW.Timers.QuestieHelper.Average = DMW.Timers.QuestieHelper.Total / DMW.Pulses
             DMW.Timers.Trackers.Average = DMW.Timers.Trackers.Total / DMW.Pulses

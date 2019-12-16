@@ -28,16 +28,13 @@ local function nilWarriorUnit(destobj)
 end
 
 function frame:Reader(event, ...)
-    if GetObjectWithGUID then   
+    if GetObjectWithGUID then
         timeStamp, param, hideCaster, source, sourceName, sourceFlags, sourceRaidFlags, destination, destName, destFlags, destRaidFlags, spell, spellName, _, spellType = ...
         Locals()
         DMW.Functions.AuraCache.Event(...)
         if source == Player.GUID or destination == Player.GUID then
             local sourceobj = source == Player.GUID and Player.Pointer or GetObjectWithGUID(source)
             local destobj = destination == Player.GUID and Player.Pointer or GetObjectWithGUID(destination)
-            if string.match(param, "SWING_EXTRA_ATTACKS") then
-                -- print(...)
-            end
             if Player.Class == "WARRIOR" and source == Player.GUID and destobj then
                 if string.match(param, "_MISSED") then
                     local missType = param == "SWING_MISSED" and spell or spellType
@@ -46,7 +43,7 @@ function frame:Reader(event, ...)
                         Player.OverpowerUnit[destobj].time = DMW.Time + 5
                         Player.RevengeUnit[destobj] = {}
                         Player.RevengeUnit[destobj].time = DMW.Time + 5
-                        C_Timer.After(5,  function () 
+                        C_Timer.After(5,  function ()
                             if Player.OverpowerUnit[destobj] ~= nil then
                                 Player.OverpowerUnit[destobj] = nil
                             end
@@ -57,7 +54,7 @@ function frame:Reader(event, ...)
                     elseif missType == "PARRY" or spellType == "BLOCK" then
                         Player.RevengeUnit[destobj] = {}
                         Player.RevengeUnit[destobj].time = DMW.Time + 5
-                        C_Timer.After(5,  function () 
+                        C_Timer.After(5,  function ()
                             if Player.OverpowerUnit[destobj] ~= nil then
                                 Player.OverpowerUnit[destobj] = nil
                             end
