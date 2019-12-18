@@ -23,7 +23,7 @@ lib.movecheckGUIDs = lib.movecheckGUIDs or {}
 local movecheckGUIDs = lib.movecheckGUIDs
 local MOVECHECK_TIMEOUT = 4
 
-local UnitGUID = UnitGUID
+-- local UnitGUID = UnitGUID
 local bit_band = bit.band
 
 local GetSpellInfo = GetSpellInfo
@@ -31,7 +31,7 @@ local GetTime = GetTime
 local CastingInfo = CastingInfo
 local ChannelInfo = ChannelInfo
 local GetUnitSpeed = GetUnitSpeed
-local UnitIsUnit = UnitIsUnit
+-- local UnitIsUnit = UnitIsUnit
 
 local COMBATLOG_OBJECT_REACTION_FRIENDLY = COMBATLOG_OBJECT_REACTION_FRIENDLY
 local COMBATLOG_OBJECT_TYPE_PLAYER_OR_PET = COMBATLOG_OBJECT_TYPE_PLAYER + COMBATLOG_OBJECT_TYPE_PET
@@ -58,6 +58,12 @@ local AIMED_SHOT = GetSpellInfo(19434)
 local MULTI_SHOT = GetSpellInfo(25294)
 local castingAimedShot = false
 local playerGUID = UnitGUID("player")
+
+local kickNames = {
+    ["Pummel"] = true,
+    ["Kick"] = true,
+    ["Counterspell"] = true
+}
 
 --[[
 function DUMPCASTS()
@@ -190,8 +196,11 @@ function f:COMBAT_LOG_EVENT_UNFILTERED(event)
     elseif eventType == "SPELL_CAST_FAILED" then
 
             CastStop(srcGUID, "CAST", "INTERRUPTED")
-
     elseif eventType == "SPELL_CAST_SUCCESS" then
+            if kickNames[spellName] then
+                -- print("kicked")
+                CastStop(dstGUID, nil, "INTERRUPTED")
+            end
             if isSrcPlayer then
                 if classChannelsByAura[spellID] then
                     -- SPELL_CAST_SUCCESS can come right after AURA_APPLIED, so ignoring it
@@ -295,7 +304,9 @@ local function GetCastSlowdown(unit)
 end
 
 function lib:UnitCastingInfo(unit)
+
     if UnitIsUnit(unit,"player") then
+        -- print("player")
         if not castingAimedShot then
             return CastingInfo()
         end
@@ -303,6 +314,7 @@ function lib:UnitCastingInfo(unit)
     local guid = UnitGUID(unit)
     local cast = casters[guid]
     if cast then
+        -- print(guid)
         local castType, name, icon, startTimeMS, endTimeMS, spellID = unpack(cast)
         if castingAimedShot and spellID ~= 25294 then -- Multi-Shot spellID
             local haste = GetRangedHaste(unit)
@@ -338,9 +350,7 @@ end
 
 
 local Passthrough = function(self, event, unit, ...)
-    if unit == "player" or UnitIsUnit(unit, "player") then
         callbacks:Fire(event, unit, ...)
-    end
 end
 f.UNIT_SPELLCAST_START = Passthrough
 f.UNIT_SPELLCAST_DELAYED = Passthrough
@@ -352,7 +362,7 @@ f.UNIT_SPELLCAST_CHANNEL_UPDATE = Passthrough
 f.UNIT_SPELLCAST_CHANNEL_STOP = Passthrough
 f.UNIT_SPELLCAST_SUCCEEDED = Passthrough
 
-function callbacks.OnUsed()
+-- function callbacks.OnUsed()
     f:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 
     f:RegisterEvent("UNIT_SPELLCAST_START")
@@ -366,14 +376,14 @@ function callbacks.OnUsed()
     f:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 
     -- for unit lookup
-    f:RegisterEvent("GROUP_ROSTER_UPDATE")
-    f:RegisterEvent("NAME_PLATE_UNIT_ADDED")
-    f:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
-end
+    -- f:RegisterEvent("GROUP_ROSTER_UPDATE")
+    -- f:RegisterEvent("NAME_PLATE_UNIT_ADDED")
+    -- f:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
+-- -- end
 
-function callbacks.OnUnused()
-    f:UnregisterAllEvents()
-end
+-- function callbacks.OnUnused()
+    -- f:UnregisterAllEvents()
+-- end
 
 talentDecreased = {
     [25311] = 0.8,    -- Corruption (while leveling)
