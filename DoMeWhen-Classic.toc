@@ -63,6 +63,7 @@ Helpers\Dump.lua
 Helpers\Swing.lua
 Helpers\Navigation.lua
 Helpers\HealComm.lua
+Helpers\Healers.lua
 
 Enums\Spells\Global.lua
 Enums\Spells\Druid.lua
