@@ -7,13 +7,14 @@ local Buff = DMW.Classes.Buff
 local Debuff = DMW.Classes.Debuff
 local DurationLib = LibStub("LibClassicDurationsDMW")
 DurationLib:Register("DMW")
-local UnitAura = DurationLib.UnitAuraWithBuffs
+
 local f = CreateFrame("Frame", nil, UIParent)
 f:SetScript("OnEvent", function(self, event, ...) return self[event](self, event, ...) end)
 DurationLib.RegisterCallback("DMW", "UNIT_BUFF", function(event, unit) f:UNIT_AURA(event, unit) end)
 
 function f:UNIT_AURA(event, unit)
-    local AuraReturn, unitGUID
+    local UnitAura = DurationLib.UnitAuraWithBuffs
+    local unitGUID
     for i = 1, 100 do
         AuraReturn = {UnitAura(unit, i, "HELPFUL")}
         if AuraReturn[10] == nil then break end
@@ -30,7 +31,7 @@ function f:UNIT_AURA(event, unit)
         end
     end
 end
-UnitAura = _G.UnitAura
+
 function AuraCache.Refresh(Unit, GUID)
     if DMW.Tables.AuraCache[GUID] and not UnitCanAttack("player", Unit) then table.wipe(DMW.Tables.AuraCache[GUID]) end
     local AuraReturn, Name, Source, DurationNew, ExpirationTimeNew
@@ -87,8 +88,10 @@ function AuraCache.Event(...)
         -- print(...)
         if DMW.Tables.AuraCache[guid] then DMW.Tables.AuraCache[guid] = nil end
         -- elseif event:find("_DISPEL") then
-    elseif event == "SPELL_DISPELL" then
-        local dispelledName = select(14, ...)
+    elseif event == "SPELL_DISPEL" then
+        -- print(...)
+        local dispelledName = select(16, ...)
+        -- 1576667439.76 SPELL_DISPEL false Player-4467-0120155A Saaulgoodman 1297 0 Player-4467-0125A6DC Baddger 66888 0 0 Purge 8 0 Strength 8 BUFF
         -- 1575338566.183 SPELL_DISPEL false Player-4467-0125A6DC Baddger 1298 0 Creature-0-4469-429-19972-11458-000465C1E4 Petrified Treant 2632 0 0 Shield Slam 1 0 Harden Skin 8 BUFF
         if DMW.Tables.AuraCache[destGUID][dispelledName] then DMW.Tables.AuraCache[destGUID][dispelledName] = nil end
     end
