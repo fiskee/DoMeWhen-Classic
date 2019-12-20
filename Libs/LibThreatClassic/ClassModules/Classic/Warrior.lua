@@ -138,7 +138,7 @@ function Warrior:ClassInit()
 	-- Taunt
 	self.CastLandedHandlers[355] = self.Taunt
 
-	-- Non-transactional abilities		
+	-- Non-transactional abilities
 	init(self, threatValues.heroicStrike, self.HeroicStrike)
 	init(self, threatValues.shieldBash, self.ShieldBash)
 	init(self, threatValues.shieldSlam, self.ShieldSlam)
@@ -160,7 +160,7 @@ function Warrior:ClassInit()
 
 	-- Ability damage modifiers
 	for k, v in pairs(threatValues.execute) do
-		self.AbilityHandlers[v] = self.Execute
+		self.AbilityHandlers[k] = self.Execute
 	end
 
 	-- Shouts

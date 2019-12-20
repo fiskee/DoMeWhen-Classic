@@ -156,8 +156,8 @@ local strsplit = _G.string.split
 
 local GetSpellInfo = _G.GetSpellInfo
 local GetInventoryItemLink = _G.GetInventoryItemLink
-local UnitHealth = _G.UnitHealth
-local UnitHealthMax = _G.UnitHealthMax
+-- local UnitHealth = _G.UnitHealth
+-- local UnitHealthMax = _G.UnitHealthMax
 local UnitIsDead = _G.UnitIsDead
 local UnitAffectingCombat = _G.UnitAffectingCombat
 local UnitExists = _G.UnitExists
@@ -474,7 +474,7 @@ function prototype:OnDisable()
 	self.MobDebuffHandlers		= del(self.MobDebuffHandlers)
 	self.SpellReflectSources 	= del(self.SpellReflectSources)
 	self.ClassDebuffs 			= del(self.ClassDebuffs)
-	self.ThreatQueries 			= del(self.ThreatQueries)	
+	self.ThreatQueries 			= del(self.ThreatQueries)
 	]]--
 	-- self.booted = false
 end
@@ -520,13 +520,9 @@ function cleuHandlers:SPELL_CAST_SUCCESS(timestamp, subEvent, hideCaster, source
 end
 
 function cleuHandlers:SPELL_HEAL(timestamp, subEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags,
-				 spellId, spellName, spellSchool, amount, critical)
+				 spellId, spellName, spellSchool, amount, overhealing, absorbed, critical)
 	if bit_band(sourceFlags, self.unitTypeFilter) == self.unitTypeFilter then
-		local max_potential_heal = UnitHealthMax(destName) - UnitHealth(destName)
-		local effective_heal = math_min(max_potential_heal, amount)
-		if UnitHealthMax(destName) == 0 then -- They aren't in our party so we can't really get overheal for them
-			effective_heal = amount
-		end
+		local effective_heal = amount - overhealing
 		self:parseHeal(destGUID, destName, effective_heal, spellId, spellName, spellSchool, critical)
 	end
 end
@@ -1039,7 +1035,7 @@ function prototype:PLAYER_REGEN_ENABLED()
 	self:calcBuffMods()
 	self:calcDebuffMods()
 	if not self.TransactionsCommitting then return end
-	-- PET_ATTACK_STOP doesn't always fire like you might expect it to	
+	-- PET_ATTACK_STOP doesn't always fire like you might expect it to
 	if self.unitType == "pet" then
 		if self.timers.PetInCombat then
 			self:CancelTimer(self.timers.PetInCombat)
@@ -1211,7 +1207,7 @@ end
 prototype.ReduceAllThreat = prototype.MultiplyThreat
 
 ------------------------------------------------
--- Spell transactions 
+-- Spell transactions
 ------------------------------------------------
 function prototype:UNIT_SPELLCAST_SUCCEEDED(event, castingUnit, castGUID, spellId)
 	if castingUnit ~= self.unitType then return end
@@ -1227,7 +1223,7 @@ function prototype:startTransaction(recipient, spellId)
 	--[[
 	if type("recipient") ~= "asdf" then
 		error(("Expecting string for recipient, got %s (%s), trace: %s"):format(type(recipient), recipient, debugstack()))
-	end	
+	end
 	]]--
 	local key = spellId .. "-" .. recipient
 	local t = self.transactions[key]

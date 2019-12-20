@@ -175,9 +175,9 @@ end
 -- ...totem keys not to overwrite
 function Spell:CheckTotem(Unit,...)
     local playerToUnitRange = (Unit == DMW.Player or Unit == nil) and 0 or Unit:RawDistance()
-    local range = self.Key == "TremorTotem" and 40 or 30
+    local range = self.Key == "TremorTotem" and 35 or 25
     if playerToUnitRange > range then
-        -- print("Unit out of range, range = "..range)
+        -- print("Unit out of range, range = ")
         return false
     end
     if DMW.Player.Totems[self.TotemElement].Name == nil then
