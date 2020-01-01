@@ -1,5 +1,6 @@
 local DMW = DMW
 local GameObject = DMW.Classes.GameObject
+local Corpse = DMW.Classes.Corpse
 
 function GameObject:New(Pointer)
     self.Pointer = Pointer
@@ -63,4 +64,23 @@ function GameObject:IsTrackable() --TODO: enums
         end
     end
     return false
+end
+
+function Corpse:New(Pointer)
+    self.Pointer = Pointer
+    self.Name = ObjectName(Pointer)
+    self.ObjectID = ObjectID(Pointer)
+end
+
+function Corpse:Update()
+    self.NextUpdate = DMW.Time + (math.random(100, 400) / 1000)
+    self.PosX, self.PosY, self.PosZ = ObjectPosition(self.Pointer)
+    self.Distance = self:GetDistance()
+    if not self.Name or self.Name == "" then
+        self.Name = ObjectName(self.Pointer)
+    end
+    self.Quest = self:IsQuest()
+    self.Herb = self:IsHerb()
+    self.Ore = self:IsOre()
+    self.Trackable = self:IsTrackable()
 end

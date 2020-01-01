@@ -1,12 +1,9 @@
 local DMW = DMW
 local Unit = DMW.Classes.Unit
 local LibCC = LibStub("LibClassicCasterinoDMW", true)
-local UnitIsUnit
+local DurationLib = LibStub("LibClassicDurationsDMW")
 
 function Unit:New(Pointer)
-    if not UnitIsUnit then
-        UnitIsUnit = _G.UnitIsUnit
-    end
     self.Pointer = Pointer
     self.Name = not UnitIsUnit(Pointer, "player") and UnitName(Pointer) or "LocalPlayer"
     self.GUID = UnitGUID(Pointer)
@@ -24,6 +21,11 @@ function Unit:New(Pointer)
     self.CreatureType = DMW.Enums.CreatureType[UnitCreatureTypeID(Pointer)]
     self.Classification = UnitClassification(Pointer)
     DMW.Functions.AuraCache.Refresh(Pointer, self.GUID)
+    --DurationLib
+    DurationLib.nameplateUnitMap[self.GUID] = Pointer
+    -- DurationLib.nameplateUnitMapBackwards[Pointer] = self.GUID
+    DMW.Tables.guid2pointer[self.GUID] = Pointer
+    DMW.Tables.pointer2guid[Pointer] = self.GUID
 end
 
 function Unit:Update()
@@ -38,7 +40,6 @@ function Unit:Update()
         DMW.Tables.AuraUpdate[self.GUID] = nil
     end
     self.Distance = self:GetDistance()
-    
     if RealMobHealth_CreatureHealthCache and self.ObjectID and RealMobHealth_CreatureHealthCache[self.ObjectID .. "-" .. self.Level] then
         self.HealthMax = RealMobHealth_CreatureHealthCache[self.ObjectID .. "-" .. self.Level]
         self.RealHealth = true
@@ -59,11 +60,12 @@ function Unit:Update()
     if self.Distance < 50 and not self.Dead then
         self.LoS = self:LineOfSight()
     end
-    self.Attackable = self.LoS and UnitCanAttack("player", self.Pointer) or false
-    self.ValidEnemy = self.Attackable and self:IsEnemy() or false
+    self.CanAttack = UnitCanAttack("player", self.Pointer)
+    self.Attackable = self.LoS and self.CanAttack or false
+    self.ValidEnemy = (self.Attackable and self:IsEnemy() and not self:AuraByID(1020)) or false
     self.Target = UnitTarget(self.Pointer)
     self.Moving = self:HasMovementFlag(DMW.Enums.MovementFlags.Moving)
-    self.Facing = ObjectIsFacing("Player", self.Pointer)
+    self.Facing = UnitIsFacing("Player", self.Pointer, 90)
     self.Quest = self:IsQuest()
     self.Trackable = self:IsTrackable()
     if self.Name == "Unknown" then
@@ -72,6 +74,9 @@ function Unit:Update()
     if self.Attackable and not self.Player then
         DMW.Helpers.Swing.AddUnit(self.Pointer)
     end
+    -- if self.ValidEnemy and not self:AuraByID(1020) then
+    --     self.ValidEnemy = false
+    -- end
 end
 
 function Unit:UpdatePosition()
@@ -121,18 +126,21 @@ function Unit:HasThreat()
     elseif DMW.Player.Instance == "none" and (DMW.Enums.Dummy[self.ObjectID] or (UnitIsVisible("target") and UnitIsUnit(self.Pointer, "target"))) then
         return true
     end
-    if not self.Player and self.Target and (UnitIsUnit(self.Target, "player") or UnitIsUnit(self.Target, "pet") or UnitInParty(self.Target)) then
+    if not self.Player and self.Target and (UnitIsUnit(self.Target, "player") or UnitIsUnit(self.Target, "pet") or UnitInParty(self.Target) or UnitInRaid(self.Target) ~= nil) then
         return true
     end
     return false
 end
 
-function Unit:GetEnemies(Yards, TTD)
+function Unit:GetEnemies(Yards, TTD, RawDistance)
     local Table = {}
     local Count = 0
     TTD = TTD or 0
     for _, Unit in pairs(DMW.Enemies) do
-        if self:GetDistance(Unit) <= Yards and Unit.TTD >= TTD then
+        if RawDistance and self:RawDistance(v) <= Yards and Unit.TTD >= TTD then
+            table.insert(Table, Unit)
+            Count = Count + 1
+        elseif self:GetDistance(Unit) <= Yards and Unit.TTD >= TTD then
             table.insert(Table, Unit)
             Count = Count + 1
         end
@@ -140,11 +148,15 @@ function Unit:GetEnemies(Yards, TTD)
     return Table, Count
 end
 
-function Unit:GetFriends(Yards, HP)
+function Unit:GetFriends(Yards, HP, RawDistance)
     local Table = {}
     local Count = 0
+    -- local RawDist = RawDistance or false
     for _, v in pairs(DMW.Friends.Units) do
-        if (not HP or v.HP < HP) and self:GetDistance(v) <= Yards then
+        if RawDistance and (not HP or v.HP < HP) and self:RawDistance(v) <= Yards then
+            table.insert(Table, v)
+            Count = Count + 1
+        elseif (not HP or v.HP < HP) and self:GetDistance(v) <= Yards then
             table.insert(Table, v)
             Count = Count + 1
         end
@@ -209,10 +221,7 @@ function Unit:Interrupt()
         end
     end
     if not DMW.Enums.InterruptBlacklist[SpellID] then
-        local Delay = Settings.Enemy.InterruptDelay - 0.2 + (math.random(1, 4) / 10)
-        if Delay < 0.1 then
-            Delay = 0.1
-        end
+        local Delay = 0
         if (DMW.Time - StartTime) > Delay then
             return true
         end
@@ -374,7 +383,6 @@ function Unit:IsTrackable()
     return false
 end
 
-
 function Unit:PowerPct()
     local Power = UnitPower(self.Pointer)
     local PowerMax = UnitPowerMax(self.Pointer)
@@ -403,3 +411,27 @@ function Unit:HasMovementFlag(Flag)
     end
     return false
 end
+
+local FearImmunityBuffs = {12328, 1719, 6346, 1020}
+
+function Unit:CanBeFeared()
+    for i = 1, #FearImmunityBuffs do
+        if self:AuraByID(FearImmunityBuffs[i]) then
+            return false
+        end
+    end
+    return self.Attackable and self:IsEnemy()
+end
+
+function Unit:ReloadSelf(Pointer)
+    if Pointer == nil then
+        self:ReloadSelf(self.Pointer)
+    end
+end
+
+hooksecurefunc(Unit, "ReloadSelf", function(self, Pointer)
+    print("123")
+    if Pointer ~= nil then
+        Unit:New(Pointer)
+    end
+end)

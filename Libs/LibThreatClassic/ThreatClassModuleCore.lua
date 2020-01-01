@@ -1248,6 +1248,7 @@ function prototype:rollbackTransaction(recipient, spellId)
 end
 
 function prototype:getTransaction(target, spellId, dontStartNew)
+	if target == nil then return end
 	local t = self.transactions[spellId .. "-" .. target]
 	if not t and not dontStartNew then
 		t = self:startTransaction(target, spellId)

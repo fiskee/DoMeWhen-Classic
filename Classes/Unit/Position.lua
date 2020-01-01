@@ -55,7 +55,7 @@ function Unit:AggroDistance()
     elseif aggroRadius < minRadius then
         aggroRadius = minRadius
     end
-    
+
     return aggroRadius-1 --* aggroRate);
 end
 
@@ -80,7 +80,6 @@ function Unit:GetFacingAngle(OtherUnit)
     local DY = math.sin(Angle)
     return(math.abs(math.atan2(X * DY - Y * DX,  X * DX + Y * DY ) * (180 / math.pi)))
 end
-
 
 function Unit:InArc(Arc, OtherUnit)
     if self:GetFacingAngle() < Arc then

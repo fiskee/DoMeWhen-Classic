@@ -4,7 +4,7 @@ Author: d87
 --]================]
 if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then return end
 
-local MAJOR, MINOR = "LibClassicCasterinoDMW", 28
+local MAJOR, MINOR = "LibClassicCasterinoDMW", 29
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -97,6 +97,12 @@ end
 
 local function CastStart(srcGUID, castType, spellName, spellID, overrideCastTime, isSrcEnemyPlayer )
     local _, _, icon, castTime = GetSpellInfo(spellID)
+    if castType == "CAST" then
+        local knownCastDuration = classCasts[spellID]
+        if knownCastDuration then
+            castTime = knownCastDuration*1000
+        end
+    end
     if castType == "CHANNEL" then
         local channelDuration = classChannelsByAura[spellID] or classChannelsByCast[spellID]
         castTime = channelDuration*1000
@@ -201,6 +207,7 @@ function f:COMBAT_LOG_EVENT_UNFILTERED(event)
                 -- print("kicked")
                 CastStop(dstGUID, nil, "INTERRUPTED")
             end
+
             if isSrcPlayer then
                 if classChannelsByAura[spellID] then
                     -- SPELL_CAST_SUCCESS can come right after AURA_APPLIED, so ignoring it
@@ -249,6 +256,11 @@ function f:COMBAT_LOG_EVENT_UNFILTERED(event)
 
             local isChanneling = classChannelsByAura[spellID]
             if isChanneling then
+                local isSrcFriendlyPlayer = bit_band(srcFlags, COMBATLOG_OBJECT_REACTION_FRIENDLY) > 0
+                CastStart(srcGUID, "CHANNEL", spellName, spellID, nil, not isSrcFriendlyPlayer)
+            end
+        else
+            if spellID == 16430 then
                 local isSrcFriendlyPlayer = bit_band(srcFlags, COMBATLOG_OBJECT_REACTION_FRIENDLY) > 0
                 CastStart(srcGUID, "CHANNEL", spellName, spellID, nil, not isSrcFriendlyPlayer)
             end
@@ -330,6 +342,7 @@ function lib:UnitCastingInfo(unit)
 
         if castType == "CAST" and endTimeMS > GetTime()*1000 then
             local castID = nil
+            -- print(name, spellID)
             return name, nil, icon, startTimeMS, endTimeMS, nil, castID, false, spellID
         end
     end

@@ -33,8 +33,8 @@ function frame:Reader(event, ...)
         Locals()
         DMW.Functions.AuraCache.Event(...)
         if source == Player.GUID or destination == Player.GUID then
-            local sourceobj = source == Player.GUID and Player.Pointer or GetObjectWithGUID(source)
-            local destobj = destination == Player.GUID and Player.Pointer or GetObjectWithGUID(destination)
+            local sourceobj = DMW.Tables.guid2pointer[source]
+            local destobj = DMW.Tables.guid2pointer[destination]
             if Player.Class == "WARRIOR" and source == Player.GUID and destobj then
                 if string.match(param, "_MISSED") then
                     local missType = param == "SWING_MISSED" and spell or spellType
@@ -97,7 +97,7 @@ function frame:Reader(event, ...)
         end
         if Player.Class == "ROGUE" then
             if param == "SPELL_CAST_SUCCESS" and spellName == "Pick Pocket" then
-                local destobj = GetObjectWithGUID(destination)
+                local destobj = DMW.Tables.guid2pointer[destination]
                 if DMW.Units[destobj] ~= nil then
                     DMW.Units[destobj].PickPocketed = true
                 end

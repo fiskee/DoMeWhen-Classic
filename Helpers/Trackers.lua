@@ -5,7 +5,7 @@ local LibDraw = LibStub("LibDraw-1.0")
 
 function DMW.Helpers.Trackers.Run()
     local tX, tY, tZ
-    if (DMW.Settings.profile.Tracker.TrackUnits and DMW.Settings.profile.Tracker.TrackUnits ~= "") or DMW.Settings.profile.Tracker.TrackNPC then
+    if (DMW.Settings.profile.Tracker.TrackUnits and DMW.Settings.profile.Tracker.TrackUnits ~= "") or DMW.Settings.profile.Tracker.TrackNPC or DMW.Settings.profile.Tracker.TrackRare then
         local s = 1
         for _, Unit in pairs(DMW.Units) do
             -- if Unit.Player then return end
@@ -39,6 +39,30 @@ function DMW.Helpers.Trackers.Run()
                 LibDraw.Line(tX, tY - s, tZ, tX, tY + s, tZ)
                 if DMW.Settings.profile.Tracker.TrackUnitsLine > 0 then
                     local w = DMW.Settings.profile.Tracker.TrackUnitsLine
+                    LibDraw.SetWidth(w)
+                    DMW.Helpers.DrawLineDMWC(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
+                end
+            end
+            if DMW.Settings.profile.Tracker.TrackRare ~= nil and (Unit.Classification == "rareelite" or Unit.Classification == "rare") and not Unit.Dead and not Unit.Target then
+                local r, b, g, a = DMW.Settings.profile.Tracker.TrackRareColor[1], DMW.Settings.profile.Tracker.TrackRareColor[2], DMW.Settings.profile.Tracker.TrackRareColor[3], DMW.Settings.profile.Tracker.TrackRareColor[4]
+                LibDraw.SetColorRaw(r, b, g, a)
+                if DMW.Settings.profile.Tracker.TrackRareAlert > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
+                    FlashClientIcon()
+                    if GetCVarBool("Sound_EnableSFX") then
+                        PlaySound(DMW.Settings.profile.Tracker.TrackRareAlert)
+                    else
+                        PlaySound(DMW.Settings.profile.Tracker.TrackRareAlert, "MASTER")
+                    end
+                    AlertTimer = DMW.Time
+                end
+                Unit:UpdatePosition()
+                tX, tY, tZ = Unit.PosX, Unit.PosY, Unit.PosZ
+                LibDraw.SetWidth(4)
+                LibDraw.Line(tX, tY, tZ + s * 1.3, tX, tY, tZ)
+                LibDraw.Line(tX - s, tY, tZ, tX + s, tY, tZ)
+                LibDraw.Line(tX, tY - s, tZ, tX, tY + s, tZ)
+                if DMW.Settings.profile.Tracker.TrackRareLine > 0 then
+                    local w = DMW.Settings.profile.Tracker.TrackRareLine
                     LibDraw.SetWidth(w)
                     DMW.Helpers.DrawLineDMWC(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
                 end

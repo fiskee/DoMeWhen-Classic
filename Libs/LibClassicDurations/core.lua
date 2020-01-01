@@ -19,7 +19,7 @@ Usage example 1:
 --]================]
 if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then return end
 
-local MAJOR, MINOR = "LibClassicDurationsDMW", 41
+local MAJOR, MINOR = "LibClassicDurationsDMW", 44
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -44,11 +44,13 @@ local DRInfo = lib.DRInfo
 lib.buffCache = lib.buffCache or {}
 local buffCache = lib.buffCache
 
-lib.buffCacheValid = lib.buffCacheValid or {}
-local buffCacheValid = lib.buffCacheValid
+local buffCacheValid = {}
 
 lib.nameplateUnitMap = lib.nameplateUnitMap or {}
 local nameplateUnitMap = lib.nameplateUnitMap
+
+lib.nameplateUnitMapBackwards = lib.nameplateUnitMapBackwards or {}
+local nameplateUnitMapBackwards = lib.nameplateUnitMapBackwards
 
 lib.castLog = lib.castLog or {}
 local castLog = lib.castLog
@@ -67,10 +69,11 @@ local INFINITY = math.huge
 local PURGE_INTERVAL = 900
 local PURGE_THRESHOLD = 1800
 local UNKNOWN_AURA_DURATION = 3600 -- 60m
+local BUFF_CACHE_EXPIRATION_TIME = 40
 
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local UnitGUID = UnitGUID
-local UnitAura = UnitAura
+-- local UnitAura = UnitAura
 local GetSpellInfo = GetSpellInfo
 local GetTime = GetTime
 local tinsert = table.insert
@@ -176,25 +179,25 @@ end
 -- OLD GUIDs PURGE
 --------------------------
 
-local function purgeOldGUIDs()
-    local now = GetTime()
-    local deleted = {}
-    for guid, lastAccessTime in pairs(guidAccessTimes) do
-        if lastAccessTime + PURGE_THRESHOLD < now then
-            guids[guid] = nil
-            nameplateUnitMap[guid] = nil
-            buffCacheValid[guid] = nil
-            buffCache[guid] = nil
-            DRInfo[guid] = nil
-            castLog[guid] = nil
-            tinsert(deleted, guid)
-        end
-    end
-    for _, guid in ipairs(deleted) do
-        guidAccessTimes[guid] = nil
-    end
-end
-lib.purgeTicker = lib.purgeTicker or C_Timer.NewTicker( PURGE_INTERVAL, purgeOldGUIDs)
+-- local function purgeOldGUIDs()
+--     local now = GetTime()
+--     local deleted = {}
+--     for guid, lastAccessTime in pairs(guidAccessTimes) do
+--         if lastAccessTime + PURGE_THRESHOLD < now then
+--             guids[guid] = nil
+--             nameplateUnitMap[guid] = nil
+--             buffCacheValid[guid] = nil
+--             buffCache[guid] = nil
+--             DRInfo[guid] = nil
+--             castLog[guid] = nil
+--             tinsert(deleted, guid)
+--         end
+--     end
+--     for _, guid in ipairs(deleted) do
+--         guidAccessTimes[guid] = nil
+--     end
+-- end
+-- lib.purgeTicker = lib.purgeTicker or C_Timer.NewTicker( PURGE_INTERVAL, purgeOldGUIDs)
 
 --------------------------
 -- DIMINISHING RETURNS
@@ -415,6 +418,7 @@ local function FireToUnits(event, dstGUID)
         callbacks:Fire(event, "target")
     end
     local nameplateUnit = nameplateUnitMap[dstGUID]
+    --print(nameplateUnit)
     if nameplateUnit then
         callbacks:Fire(event, nameplateUnit)
     end
@@ -632,8 +636,12 @@ local makeBuffInfo = function(spellID, applicationTable, dstGUID, srcGUID)
         expirationTime = 0
     end
     local now = GetTime()
+    local dispelType
+    if DMW.Enums.DispelTypes.Magic[spellID] then
+        dispelType = "Magic"
+    end
     if expirationTime > now then
-        return { name, icon, 0, nil, duration, expirationTime, nil, nil, nil, spellID }
+        return { name, icon, 0, dispelType, duration, expirationTime, nil, nil, nil, spellID, false, false, false, false, 1 }
     end
 end
 
@@ -674,7 +682,7 @@ local function RegenerateBuffList(dstGUID)
     end
 
     buffCache[dstGUID] = buffs
-    buffCacheValid[dstGUID] = true
+    buffCacheValid[dstGUID] = GetTime() + BUFF_CACHE_EXPIRATION_TIME -- Expiration timestamp
 end
 
 local FillInDuration = function(unit, buffName, icon, count, debuffType, duration, expirationTime, caster, canStealOrPurge, nps, spellId, ...)
@@ -688,11 +696,14 @@ local FillInDuration = function(unit, buffName, icon, count, debuffType, duratio
     end
 end
 
-function lib.UnitAuraDirect(unit, index, filter)
-    if enableEnemyBuffTracking and filter == "HELPFUL" and not UnitIsFriend("player", unit) and not UnitAura(unit, 1, filter) then
-        local unitGUID = UnitGUID(unit)
+function lib.UnitAuraDirect(unitPointer, index, filter)
+    if enableEnemyBuffTracking and filter == "HELPFUL" and not UnitIsFriend("player", unitPointer) and not UnitAura(unitPointer, 1, filter) then
+        -- print("enemy")
+        local unitGUID = DMW.Tables.pointer2guid[unitPointer]
+
         if not unitGUID then return end
-        if not buffCacheValid[unitGUID] then
+        local isValid = buffCacheValid[unitGUID]
+        if not isValid or isValid < GetTime() then
             RegenerateBuffList(unitGUID)
         end
 
@@ -704,7 +715,7 @@ function lib.UnitAuraDirect(unit, index, filter)
             end
         end
     else
-        return FillInDuration(unit, UnitAura(unit, index, filter))
+        return FillInDuration(unitPointer, UnitAura(unitPointer, index, filter))
     end
 end
 lib.UnitAuraWithBuffs = lib.UnitAuraDirect
@@ -717,28 +728,28 @@ function lib:UnitAura(...)
     return self.UnitAuraDirect(...)
 end
 
-function f:NAME_PLATE_UNIT_ADDED(event, unit)
-    local unitGUID = UnitGUID(unit)
-    nameplateUnitMap[unitGUID] = unit
-end
-function f:NAME_PLATE_UNIT_REMOVED(event, unit)
-    local unitGUID = UnitGUID(unit)
-    if unitGUID then -- it returns correctly on death, but just in case
-        nameplateUnitMap[unitGUID] = nil
-    end
-end
+-- function f:NAME_PLATE_UNIT_ADDED(event, unit)
+--     local unitGUID = UnitGUID(unit)
+--     nameplateUnitMap[unitGUID] = unit
+-- end
+-- function f:NAME_PLATE_UNIT_REMOVED(event, unit)
+--     local unitGUID = UnitGUID(unit)
+--     if unitGUID then -- it returns correctly on death, but just in case
+--         nameplateUnitMap[unitGUID] = nil
+--     end
+-- end
 
 function callbacks.OnUsed()
     lib.enableEnemyBuffTracking = true
     enableEnemyBuffTracking = lib.enableEnemyBuffTracking
-    f:RegisterEvent("NAME_PLATE_UNIT_ADDED")
-    f:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
+    -- f:RegisterEvent("NAME_PLATE_UNIT_ADDED")
+    -- f:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
 end
 function callbacks.OnUnused()
     lib.enableEnemyBuffTracking = false
     enableEnemyBuffTracking = lib.enableEnemyBuffTracking
-    f:UnregisterEvent("NAME_PLATE_UNIT_ADDED")
-    f:UnregisterEvent("NAME_PLATE_UNIT_REMOVED")
+    -- f:UnregisterEvent("NAME_PLATE_UNIT_ADDED")
+    -- f:UnregisterEvent("NAME_PLATE_UNIT_REMOVED")
 end
 
 if next(callbacks.events) then
@@ -803,7 +814,7 @@ if playerClass == "MAGE" then
     end
 end
 
-function lib.GetAuraDurationByUnitDirect(unit, spellID, casterUnit, spellName)
+function lib.GetAuraDurationByUnitDirect(unitPointer, spellID, casterUnitPointer, spellName)
     assert(spellID, "spellID is nil")
     local opts = spells[spellID]
     local isStacking
@@ -814,8 +825,8 @@ function lib.GetAuraDurationByUnitDirect(unit, spellID, casterUnit, spellName)
         npcDurationById = npc_spells[spellID]
         if not npcDurationById then return end
     end
-    local dstGUID = UnitGUID(unit)
-    local srcGUID = casterUnit and UnitGUID(casterUnit)
+    local dstGUID = DMW.Tables.pointer2guid[unitPointer]
+    local srcGUID = casterUnitPointer and DMW.Tables.pointer2guid[casterUnitPointer]
     if not spellName then spellName = GetSpellInfo(spellID) end
     return GetGUIDAuraTime(dstGUID, spellName, spellID, srcGUID, isStacking, npcDurationById)
 end

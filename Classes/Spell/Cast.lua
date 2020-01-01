@@ -65,7 +65,6 @@ function Spell:Cast(Unit, Rank)
             MoveForwardStop()
             return true
         elseif self:CD(Rank) == 0 and (DMW.Time - CastTimer) > 0.1 then
-            
             CastTimer = DMW.Time
             if self.CastType == "Ground" then
                 if self:CastGround(Unit.PosX, Unit.PosY, Unit.PosZ) then
@@ -118,7 +117,7 @@ function Spell:CastGround(X, Y, Z, Rank)
         local MouseLooking = false
         local PX, PY, PZ = DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ
         local Distance = sqrt(((X - PX) ^ 2) + ((Y - PY) ^ 2) + ((Z - PZ) ^ 2))
-        if Distance > self.MaxRange then 
+        if Distance > self.MaxRange then
             X,Y,Z = GetPositionBetweenPositions (X, Y, Z, PX, PY, PZ, Distance - self.MaxRange)
 		end
 		Z = select(3,TraceLine(X, Y, Z+5, X, Y, Z-5, 0x110))

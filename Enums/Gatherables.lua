@@ -96,5 +96,7 @@ DMW.Enums.Trackable = {
     [106318] = {Name = "Battered Chest", SkillReq = 0},
     [2849] = {Name = "Battered Chest", SkillReq = 0},
     [75293] = {Name = "Large Battered Chest", SkillReq = 0},
-    [153453] = {Name = "Solid Chest", SkillReq = 0}
+    [153453] = {Name = "Solid Chest", SkillReq = 0},
+    [181085] = {Name = "Stratholme Supply Crate", SkillReq = 0},
+    [176224] = {Name = "Supply Crate", SkillReq = 0}
 }

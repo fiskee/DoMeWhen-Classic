@@ -64,27 +64,33 @@ function LocalPlayer:Update()
         end
     end
     self.Instance = select(2, IsInInstance())
+    if self.Instance == "party" then
+        self.InstanceMap = GetInstanceInfo()
+    end
     self.Moving = self:HasMovementFlag(DMW.Enums.MovementFlags.Moving)
     self.PetActive = UnitIsVisible("pet")
     self.InGroup = IsInGroup()
     self.CombatTime = self.Combat and (DMW.Time - self.Combat) or 0
     self.CombatLeftTime = self.CombatLeft and (DMW.Time - self.CombatLeft) or 0
     self.Resting = IsResting()
-    if self.DOTed then
-        local count = 0
-        for spell in pairs(self.DOTed) do
-            count = count + 1
-            if DMW.Time > self.DOTed[spell] then
-                self.DOTed[spell] = nil
-            end
-        end
-        if count == 0 then
-            self.DOTed = nil
-        end
-    end
+    -- if self.UpdateTotemsCacheCheck then
+    --     self:UpdateTotemsCache()
+    -- end
+    -- if self.DOTed then
+    --     local count = 0
+    --     for spell in pairs(self.DOTed) do
+    --         count = count + 1
+    --         if DMW.Time > self.DOTed[spell] then
+    --             self.DOTed[spell] = nil
+    --         end
+    --     end
+    --     if count == 0 then
+    --         self.DOTed = nil
+    --     end
+    -- end
 end
 
-function LocalPlayer:UpdateTotems(spellID, slotID)
+function LocalPlayer:NewTotem(spellID)
     if spellID ~= nil and DMW.Tables.Totems[spellID] ~= nil then
         local totem, element, duration, key, realName
         totem = DMW.Tables.Totems[spellID]
@@ -93,16 +99,54 @@ function LocalPlayer:UpdateTotems(spellID, slotID)
         realName = totem["SpellName"]
         key = totem["Key"]
         table.wipe(self.Totems[element])
-        self.Totems[element]["Name"] = key
-        self.Totems[element]["RealName"] = realName
-        self.Totems[element]["Expire"] = DMW.Time + duration
-    elseif slotID ~= nil then
+        self.Totems[element].Name = key
+        self.Totems[element].RealName = realName
+        self.Totems[element].Expire = DMW.Time + duration
+        -- print(self.Totems[element].Unit)
+        -- print("new totem")
+    end
+end
+
+function LocalPlayer:UpdateTotem(slotID)
+    if slotID ~= nil then
         local element = DMW.Tables.Totems.Elements[slotID]
         if not self.Totems[element]["Updated"] then
+            local totemLinked = self.Totems[element]
+            print(totemLinked)
+            if totemLinked and totemLinked.Name and totemLinked.Unit == nil then
+                for k,v in pairs(DMW.Units) do
+                    if v.Name:find(totemLinked.RealName) and ObjectCreator(v.Pointer) == self.Pointer then
+                        totemLinked.Unit = v
+                        print("updated totem"..totemLinked.RealName)
+                        break
+                    -- else
+                    --     table.wipe(self.Totems[element])
+                    end
+                end
+            end
             self.Totems[element]["Updated"] = true
         else
             table.wipe(self.Totems[element])
         end
+    end
+end
+
+function LocalPlayer:UpdateTotemsCache()
+    local count = 0
+    for _,Element in pairs(self.Totems) do
+        if Element.Name and not Element.Unit then
+            count = count + 1
+            for k,v in pairs(DMW.Units) do
+                if v.Name:find(Element.RealName) and ObjectCreator(v.Pointer) == self.Pointer then
+                    Element.Unit = v
+                    print("updated totem")
+                    break
+                end
+            end
+        end
+    end
+    if count > 0 then
+        self.UpdateTotemsCacheCheck = true
     end
 end
 

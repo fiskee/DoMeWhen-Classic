@@ -2,7 +2,7 @@ local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 local DMW = DMW
 local UI = DMW.UI
 local RotationOrder = 1
-local TrackingFrame, TrackerConfig
+local TrackingFrame, TrackerConfig, PartyRolesFrame
 local base64 = LibStub("LibBase64-1.0")
 local serializer = LibStub("AceSerializer-3.0")
 local CurrentTab = "GeneralTab"
@@ -421,6 +421,65 @@ local TrackingOptionsTable = {
                     end,
                     set = function(info, r, g, b, a)
                         DMW.Settings.profile.Tracker.TrackUnitsColor = {r, g, b, a}
+                    end
+                },
+                TrackRare = {
+                    type = "toggle",
+                    order = 5,
+                    name = "Track Rare Units",
+                    width = "full",
+                    get = function()
+                        return DMW.Settings.profile.Tracker.TrackRare
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Tracker.TrackRare = value
+                    end
+                },
+                TrackRareLine = {
+                    type = "range",
+                    order = 6,
+                    name = "Line",
+                    desc = "Width of line to Unit",
+                    width = 0.6,
+                    min = 0,
+                    max = 5,
+                    step = 1,
+                    get = function()
+                        return DMW.Settings.profile.Tracker.TrackRareLine
+                    end,
+                    set = function(info, value)
+                        DMW.Settings.profile.Tracker.TrackRareLine = value
+                    end
+                },
+                TrackRareAlert = {
+                    type = "input",
+                    order = 7,
+                    name = "Alert",
+                    desc = "Sound for Alert, 416 = Murlocs",
+                    width = 0.4,
+                    get = function()
+                        return tostring(DMW.Settings.profile.Tracker.TrackRareAlert)
+                    end,
+                    set = function(info, value)
+                        if tonumber(value) then
+                            DMW.Settings.profile.Tracker.TrackRareAlert = tonumber(value)
+                        else
+                            DMW.Settings.profile.Tracker.TrackRareAlert = 0
+                        end
+                    end
+                },
+                TrackRareColor = {
+                    type = "color",
+                    order = 8,
+                    name = "Color",
+                    desc = "Color",
+                    width = 0.4,
+                    hasAlpha = true,
+                    get = function()
+                        return DMW.Settings.profile.Tracker.TrackRareColor[1], DMW.Settings.profile.Tracker.TrackRareColor[2], DMW.Settings.profile.Tracker.TrackRareColor[3], DMW.Settings.profile.Tracker.TrackRareColor[4]
+                    end,
+                    set = function(info, r, g, b, a)
+                        DMW.Settings.profile.Tracker.TrackRareColor = {r, g, b, a}
                     end
                 }
             }
@@ -875,6 +934,21 @@ local Options = {
                     set = function(info, value)
                         DMW.Settings.profile.Friend.DispelDelay = value
                     end
+                -- },
+                -- PartyRoles = {
+                --     type = "execute",
+                --     order = 2,
+                --     name = "Open Party Roles Frame",
+                --     desc = "Choose roles for your party/raid",
+                --     width = "full",
+                --     func = function()
+                --         if not UI.PartyRolesFrame:IsShown() then
+                --             -- UI.Show()
+                --             UI.PartyRolesFrame:Show()
+                --         else
+                --             UI.PartyRolesFrame:Hide()
+                --         end
+                --     end
                 }
             }
         },
@@ -958,6 +1032,87 @@ function UI.ShowTracking()
     end
 end
 
+-- function UI.ShowPartyRoles()
+--     if not UI.PartyRolesFrame:IsShown() then
+--         UI.PartyRolesFrame:Show()
+--     else
+--         UI.PartyRolesFrame:Hide()
+--     end
+-- end
+
+-- local function UpdateButton(unit)
+--             UI.RoleGroup[unit].userdata.Name = UnitName(unit)
+--             UI.RoleGroup[unit].userdata.Class = string.upper(UnitClass(unit))
+--             UI.RoleGroup[unit]:SetText(UI.RoleGroup[unit].userdata.Name)
+--             UI.RoleGroup[unit].userdata.Color = DMW.Enums.ClassColor[UI.RoleGroup[unit].userdata.Class]
+--             UI.RoleGroup[unit].frame.backdrop:SetBackdropColor(UI.RoleGroup[unit].userdata.Color.r/255, UI.RoleGroup[unit].userdata.Color.g/255, UI.RoleGroup[unit].userdata.Color.b/255, 1)
+--             for _, Friend in pairs(DMW.Friends.Units) do
+--                 if UnitGUID(unit) == Friend.GUID then
+--                     UI.RoleGroup[unit]["Unit"] = Friend
+--                     break
+--                 end
+--             end
+-- end
+
+-- local function CreateIconMenu()
+--     local f = AceGUI:Create("Frame")
+--     f:SetLayout("Flow")
+--     f:SetHeight(45)
+--     f:SetWidth(100)
+--     -- local typeDropdown = AceGUI:Create("Dropdown")
+--     -- typeDropdown:SetFullWidth(true)
+--     -- f:AddChild(typeDropdown)
+--     -- typeDropdown:SetList({
+--     --     [1] = "TANK",
+--     --     [2] = "HEAL",
+--     --     [3] = "MELEE",
+--     --     [4] = "RANGED"
+--     -- });
+--     local icon = AceGUI:Create("Icon", nil, f)
+--         icon:SetImage("Interface\\UI-LFG-ICON-PORTRAITROLES.blp")
+--         icon.image:SetPoint("LEFT", 0, 0)
+--         icon:SetWidth(36)
+--         icon:SetHeight(36)
+
+-- end
+
+-- local function CreateButton(unit,i, groupType)
+--     if not UI.RoleGroup[unit] then
+--         UI.RoleGroup[unit] = AceGUI:Create('Button', nil, UIParent)
+--         UI.RoleGroup[unit].index = i
+--         UI.RoleGroup[unit]:SetRelativeWidth(1)
+--         UI.RoleGroup[unit]:SetHeight(45)
+--         UI.PartyRolesFrame:AddChild(UI.RoleGroup[unit], button)
+--         UI.RoleGroup[unit]:SetCallback("OnClick", function() CreateIconMenu() end)
+--     end
+--     UpdateButton(unit)
+-- end
+
+-- function UI.InitRoles()
+--     local groupType, groupSize
+--     -- for k,v in pairs(UI.RoleGroup) do
+--     --     v:Release()
+--     -- end
+--     UI.PartyRolesFrame:SetStatusText("Raid max: Empty - Raid current: - Empty");
+-- 	if IsInRaid() then
+-- 		groupType = "raid"
+-- 		groupSize = GetNumGroupMembers()
+-- 	elseif IsInGroup() then
+-- 		groupType = "party"
+-- 		groupSize = GetNumGroupMembers() - 1
+--     end
+
+--     if groupType == "party" then
+--         for i=1, groupSize do
+--             local unit = groupType..i
+--             CreateButton(unit, i)
+--         end
+--         CreateButton("player", 5)
+--     elseif groupType == "raid" then
+--     end
+
+-- end
+
 function UI.Init()
     LibStub("AceConfig-3.0"):RegisterOptionsTable("DMW", Options)
     LibStub("AceConfigDialog-3.0"):SetDefaultSize("DMW", 580, 750)
@@ -969,6 +1124,29 @@ function UI.Init()
         _G["TrackingFrameConfig"] = TrackingFrame.frame
         table.insert(UISpecialFrames, "TrackingFrameConfig")
     end
+    -- if not UI.PartyRolesFrame then
+    --     UI.RoleGroup = {}
+    --     UI.PartyRolesFrame = AceGUI:Create("Frame")
+    --     -- UI.PartyRolesFrame:SetCallback("OnClose", UI.PartyRolesFrame:Hide);
+    --     UI.PartyRolesFrame:SetTitle("Party/Raid Roles")
+    --     UI.PartyRolesFrame:SetStatusText("Choose the Roles of your friends")
+    --     UI.PartyRolesFrame:Hide()
+    --     UI.PartyRolesFrame:SetLayout("Flow")
+    --     -- UI.PartyRolesFrame:SetAutoAdjustHeight(false)
+    --     local button = AceGUI:Create("Button", button123, UIParent);
+    --     button:SetWidth(200)
+    --     -- button123:SetFullHeight(false)
+    --     button:SetHeight(25)
+    --     button:SetText("Click Me! To Init or Reset")
+    --     -- button:SetPoint("BOTTOM", UI.PartyRolesFrame, "BOTTOM", 0, 0)
+	-- -- button:SetWidth(200)
+	-- -- button:SetHeight(50)
+    --     -- button:SetPoint(UI.PartyRolesFrame.statustext)
+    --     -- button123:SetPoint("BOTTOM")
+    --     button:SetCallback("OnClick", function() UI.InitRoles() end)
+    --     UI.PartyRolesFrame:AddChild(button)
+
+    -- end
     UI.MinimapIcon = LibStub("LibDBIcon-1.0")
     UI.MinimapIcon:Register("DMWMinimapIcon", MinimapIcon, DMW.Settings.profile.MinimapIcon)
 end

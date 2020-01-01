@@ -2,7 +2,9 @@ local DMW = DMW
 DMW.Enemies, DMW.Attackable, DMW.Units, DMW.Friends, DMW.GameObjects = {}, {}, {}, {}, {}
 DMW.Friends.Units = {}
 DMW.Friends.Tanks = {}
-local Enemies, Attackable, Units, Friends, GameObjects = DMW.Enemies, DMW.Attackable, DMW.Units, DMW.Friends.Units, DMW.GameObjects
+DMW.Friends.Corpses = {}
+local DurationLib = LibStub("LibClassicDurationsDMW")
+local Enemies, Attackable, Units, Friends, Corpses, GameObjects = DMW.Enemies, DMW.Attackable, DMW.Units, DMW.Friends.Units, DMW.Friends.Corpses, DMW.GameObjects
 local Unit, LocalPlayer, GameObject = DMW.Classes.Unit, DMW.Classes.LocalPlayer, DMW.Classes.GameObject
 
 function DMW.Remove(Pointer)
@@ -25,6 +27,10 @@ function DMW.Remove(Pointer)
     end
     if DMW.Tables.AuraUpdate[Pointer] then
         DMW.Tables.AuraUpdate[Pointer] = nil
+    end
+
+    if DurationLib.nameplateUnitMap[GUID] then
+        DurationLib.nameplateUnitMap[GUID] = nil
     end
 end
 
@@ -100,6 +106,7 @@ local function UpdateUnits()
     table.wipe(Attackable)
     table.wipe(Enemies)
     table.wipe(Friends)
+    table.wipe(Corpses)
     DMW.Player.Target = nil
     -- DMW.Player.Focus = nil
     DMW.Player.Mouseover = nil
@@ -132,6 +139,8 @@ local function UpdateUnits()
         elseif DMW.Player.InGroup and Unit.Player and not Unit.Attackable and Unit.LoS and (UnitInRaid(Pointer) or UnitInParty(Pointer)) then
             Unit:CalculateHP()
             table.insert(Friends, Unit)
+        elseif DMW.Player.InGroup and Unit.Player and Unit.Dead and not Unit.Attackable and (UnitInRaid(Pointer) or UnitInParty(Pointer)) then
+            table.insert(Corpses, Unit)
         end
     end
     SortEnemies()
@@ -155,7 +164,7 @@ function DMW.UpdateOM()
     end
     if updated and #added > 0 then
         for _, v in pairs(added) do
-            if ObjectIsUnit(v) and not Units[v] and UnitCreatureTypeID(v) ~= 8 then
+            if ObjectIsUnit(v) and  not Units[v] then --and (UnitCreatureTypeID(v) ~= 8 or UnitAffectingCombat(v)) then --and (UnitCreatureTypeID(v) ~= 8
                 Units[v] = Unit(v)
             elseif ObjectIsGameObject(v) and not GameObjects[v] then
                 GameObjects[v] = GameObject(v)

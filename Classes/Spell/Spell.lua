@@ -162,7 +162,7 @@ end
 
 function Spell:getTotemUnit()
     local totemLinked = DMW.Player.Totems[self.TotemElement]
-    if totemLinked.Unit == nil then
+    if totemLinked and totemLinked.Name and totemLinked.Unit == nil then
         for k,v in pairs(DMW.Units) do
             if v.Name:find(totemLinked.RealName) and ObjectCreator(v.Pointer) == DMW.Player.Pointer then
                 totemLinked.Unit = v
@@ -174,37 +174,37 @@ end
 
 -- ...totem keys not to overwrite
 function Spell:CheckTotem(Unit,...)
+    -- self:getTotemUnit()
     local playerToUnitRange = (Unit == DMW.Player or Unit == nil) and 0 or Unit:RawDistance()
     local range = self.Key == "TremorTotem" and 35 or 25
     if playerToUnitRange > range then
         -- print("Unit out of range, range = ")
-        return false
+        return false, "Unit out of range, range = "
     end
     if DMW.Player.Totems[self.TotemElement].Name == nil then
         -- print("no totem")
-        return true
+        return true, "no totem"
     end
-    self:getTotemUnit()
     local totemUnit = DMW.Player.Totems[self.TotemElement].Unit
     if totemUnit ~= nil then
         local totemToUnitRange = (Unit == DMW.Player or Unit == nil) and 0 or totemUnit:RawDistance(Unit)
         if totemToUnitRange > range then
             -- print("existing totem is out of range")
-            return true
+            return true, "existing totem is out of range"
         else
             if DMW.Player.Totems[self.TotemElement].Name == self.Key then
                 -- print("same totem, no need to use new")
-                return false
+                return false, "same totem, no need to use new"
             end
             for i=1, select("#", ...) do
                 local noOverwrite = select(i, ...)
                 if DMW.Player.Totems[self.TotemElement].Name == noOverwrite then
                     -- print("no overwrite for this")
-                    return false
+                    return false, "no overwrite for this"
                 end
             end
             -- print("need to cast totem, all ok")
-            return true
+            return true, "need to cast totem, all ok"
         end
     end
 end

@@ -32,7 +32,6 @@ local defaults = {
         Helpers = {
             AutoLoot = false,
             AutoSkinning = false,
-
             AutoGather = false,
         },
         Tracker = {
@@ -42,9 +41,11 @@ local defaults = {
             HideGrey = false,
             TrackNPC = false,
             QuestieHelper = false,
+            TrackRare = false,
             QuestieHelperColor = {0,0,0,1},
             HerbsColor = {0,0,0,1},
             OreColor = {0,0,0,1},
+            TrackRareColor = {0,0,0,1},
             TrackUnitsColor = {0,0,0,1},
             TrackObjectsColor = {0,0,0,1},
             TrackPlayersColor = {0,0,0,1},
@@ -53,12 +54,14 @@ local defaults = {
             HerbsAlert = 0,
             QuestieHelperAlert = 0,
             TrackUnitsAlert = 0,
+            TrackRareAlert = 0,
             TrackObjectsAlert = 0,
             TrackPlayersAlert = 0,
             OreLine = 0,
             HerbsLine = 0,
             QuestieHelperLine = 0,
             TrackUnitsLine = 0,
+            TrackRareLine = 0,
             TrackObjectsLine = 0,
             TrackPlayersLine = 0,
             TrackPlayersEnemy = false,
@@ -103,7 +106,7 @@ local function MigrateSettings()
         end
         if moveNew then
             DMW.Settings.profile.Tracker[k] = v
-            DMW.Settings.profile.Helpers[k] = nil 
+            DMW.Settings.profile.Helpers[k] = nil
             Reload = true
         end
     end

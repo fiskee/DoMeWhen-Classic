@@ -7,7 +7,7 @@ function Unit:GetTTD(targetPercentage)
     local value
     if self.HP == 0 then return -1 end
     if self.HP == 100 then return 999 end
-    if self.Player then return 999 end
+    -- if self.Player then return 999 end
     local timeNow = DMW.Time
     -- Reset unit if HP is higher
     if DMW.Tables.TTD[self.Pointer] ~= nil and (DMW.Tables.TTD[self.Pointer].lasthp < self.HP or #DMW.Tables.TTD[self.Pointer].values == 0) then

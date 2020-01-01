@@ -4,6 +4,14 @@ local HealCommLib = LibStub("LibHealComm-4.0", true)
 DMW.Tables.HealerStuff = {}
 local HealerStuff = DMW.Tables.HealerStuff
 
+-- hooksecurefunc(DMW, "Remove", function(pointer)
+--     local GUID = DMW.Units[pointer].GUID
+--     if DurationLib.nameplateUnitMap[GUID] then
+--         DurationLib.nameplateUnitMap[GUID] = nil
+--     end
+-- end)
+
+
 local function avg(a, b) return (a + b) / 2 end
 
 local spellData = {}

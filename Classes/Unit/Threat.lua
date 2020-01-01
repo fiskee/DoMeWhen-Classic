@@ -1,11 +1,11 @@
 local DMW = DMW
 local Unit = DMW.Classes.Unit
-local ThreatLib = LibStub:GetLibrary("ThreatClassic-1.0")
+local ThreatLib = LibStub:GetLibrary("LibThreatClassic2")
 ThreatLib:RequestActiveOnSolo(true)
 
 function Unit:UnitDetailedThreatSituation(OtherUnit)
     OtherUnit = OtherUnit or DMW.Player
-    local isTanking, threatStatus, threatPercent, rawThreatPercent, threatValue = nil, 0, nil, nil, 0
+	local isTanking, threatStatus, threatPercent, rawThreatPercent, threatValue = nil, 0, nil, nil, 0
 
 	local unitGUID, targetGUID = OtherUnit.GUID, self.GUID
 	local threatValue = ThreatLib:GetThreat(unitGUID, targetGUID) or 0

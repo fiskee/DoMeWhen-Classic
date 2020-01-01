@@ -14,9 +14,9 @@ HealComm.Settings = {
 function HealComm:OnInitialize()
     if DMW.Player.Class == "SHAMAN" or DMW.Player.Class == "PRIEST" or DMW.Player.Class == "DRUID" or DMW.Player.Class == "PALADIN" then
         HealCommLib.RegisterCallback(self, "HealComm_HealStarted", "HealComm_HealUpdated")
-        HealCommLib.RegisterCallback(self, "HealComm_HealStopped")
+        HealCommLib.RegisterCallback(self, "HealComm_HealStopped", "HealComm_HealUpdated")
         HealCommLib.RegisterCallback(self, "HealComm_HealDelayed", "HealComm_HealUpdated")
-        HealCommLib.RegisterCallback(self, "HealComm_HealUpdated")
+        HealCommLib.RegisterCallback(self, "HealComm_HealUpdated", "HealComm_HealUpdated")
         HealCommLib.RegisterCallback(self, "HealComm_ModifierChanged")
         HealCommLib.RegisterCallback(self, "HealComm_GUIDDisappeared")
     end
@@ -50,18 +50,6 @@ function HealComm:Update(unit)
 end
 
 function HealComm:Update(unit)
-    -- if not self.PartyGUIDs.Init then
-    --     for i = 1, 5 do
-    --         for k, Friend in pairs(DMW.Friends.Units) do
-    --             if Friend.Pointer == ObjectPointer("party"..i) then
-    --                 self.PartyGUIDs["party"..i] = Friend
-    --             end
-    --         end
-    --     end
-    --     self.PartyGUIDs.Init = true
-    -- end
-    -- -- self.PartyGUIDs[partyi].PredictedHeal = 0
-    -- self.PartyGUIDs[partyi].Health = UnitHealth(partyi)
     if UnitExists(unit) then
         for k, Friend in pairs(DMW.Friends.Units) do
             if Friend.GUID == ObjectGUID(unit) and (Friend.PredTime and DMW.Time > Friend.PredTime) then

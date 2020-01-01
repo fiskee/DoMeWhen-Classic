@@ -25,6 +25,13 @@ Player.idOH = GetInventoryItemID("player", 17)
 Player.HasOH = false
 Player.OHSpeedChanged = false
 
+-- hooksecurefunc(DMW, "Remove", function(pointer)
+--     if Swing.Units[pointer] then
+--         Swing.Units[pointer] = nil
+--         print("removed swingunit")
+--     end
+-- end)
+
 Swing.Reset = {}
 
 Swing.Reset['WARRIOR'] = {
@@ -148,7 +155,7 @@ DMW.Helpers.Swing.SpeedMHUpdate = function(unit)
 end
 
 DMW.Helpers.Swing.SpeedOHUpdate = function(unit)
-    if unit == "player" or unit == DMW.Player.Pointer then 
+    if unit == "player" or unit == DMW.Player.Pointer then
         Player.OldOHSpeed = Player.OHSpeed
         Player.OHSpeed = select(2, UnitAttackSpeed("player"))
         -- Check to see if we have an off-hand
@@ -268,14 +275,14 @@ DMW.Helpers.Swing.MissHandler = function(unit, missType, offhand, destination)
                 DMW.Helpers.Swing.SwingMHReset("player")
             else
                 DMW.Helpers.Swing.SwingOHReset("player")
-            end 
+            end
         else
             if DMW.Tables.Swing.Units[unit] then
                 if not offhand then
                     DMW.Helpers.Swing.SwingMHReset(unit)
                 -- else
                 --     DMW.Helpers.Swing.SwingOHReset(unit)
-                end 
+                end
             end
         end
     end

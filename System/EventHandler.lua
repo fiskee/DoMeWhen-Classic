@@ -79,7 +79,7 @@ local function EventHandler(self, event, ...)
             local unit, _, spellID = ...
             if unit == "player" then
                 if DMW.Player then
-                    DMW.Player:UpdateTotems(spellID)
+                    DMW.Player:NewTotem(spellID)
                 end
             end
         elseif event == "PLAYER_TOTEM_UPDATE" then
@@ -96,7 +96,8 @@ local function EventHandler(self, event, ...)
                 end
             elseif DMW.Player.Class == "SHAMAN" then
                 local slotID = ...
-                DMW.Player:UpdateTotems(nil, slotID)
+                C_Timer.After(1.3, function() DMW.Player:UpdateTotem(slotID) end)
+                -- DMW.Player:UpdateTotemsCache()
             end
         end
     end
