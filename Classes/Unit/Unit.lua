@@ -62,7 +62,7 @@ function Unit:Update()
     end
     self.CanAttack = UnitCanAttack("player", self.Pointer)
     self.Attackable = self.LoS and self.CanAttack or false
-    self.ValidEnemy = (self.Attackable and self:IsEnemy() and not self:AuraByID(1020)) or false
+    self.ValidEnemy = self.Attackable and self:IsEnemy() or false
     self.Target = UnitTarget(self.Pointer)
     self.Moving = self:HasMovementFlag(DMW.Enums.MovementFlags.Moving)
     self.Facing = UnitIsFacing("Player", self.Pointer, 90)
