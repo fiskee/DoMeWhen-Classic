@@ -412,26 +412,12 @@ function Unit:HasMovementFlag(Flag)
     return false
 end
 
-local FearImmunityBuffs = {12328, 1719, 6346, 1020}
-
 function Unit:CanBeFeared()
-    for i = 1, #FearImmunityBuffs do
-        if self:AuraByID(FearImmunityBuffs[i]) then
+    local table = DMW.Enums.FearImmuneBuffs
+    for i = 1, #table do
+        if self:AuraByID(table[i]) then
             return false
         end
     end
     return self.Attackable and self:IsEnemy()
 end
-
-function Unit:ReloadSelf(Pointer)
-    if Pointer == nil then
-        self:ReloadSelf(self.Pointer)
-    end
-end
-
-hooksecurefunc(Unit, "ReloadSelf", function(self, Pointer)
-    print("123")
-    if Pointer ~= nil then
-        Unit:New(Pointer)
-    end
-end)
