@@ -22,6 +22,7 @@ function LocalPlayer:New(Pointer)
     self:UpdateEquipment()
     self:GetItems()
     self:UpdateProfessions()
+    self.GetPotions()
     if self.Class == "WARRIOR" then
         self.OverpowerUnit = {}
         self.RevengeUnit = {}
@@ -63,6 +64,7 @@ function LocalPlayer:Update()
             self.NextTick = self.TickTime - DMW.Time
         end
     end
+    self.InInstance = IsInInstance()
     self.Instance = select(2, IsInInstance())
     if self.Instance == "party" then
         self.InstanceMap = GetInstanceInfo()
@@ -329,4 +331,105 @@ function LocalPlayer:GetFreeBagSlots()
         Slots = Slots + GetContainerNumFreeSlots(i)
     end
     return Slots
+end
+
+function LocalPlayer:GetPotions(FindPotionType)
+    local level = UnitLevel("player")
+    local potion = {}
+    local sortedPotions = {}
+    if FindPotionType == nil then FindPotionType = "" end
+    for i = 0, 4 do --Let's look at each bag
+        local numBagSlots = GetContainerNumSlots(i)
+        if numBagSlots>0 then
+            for x = 1, numBagSlots do --Let's look at each bag slot
+                local itemID = GetContainerItemID(i,x)
+                if itemID~=nil then -- Is there and item in the slot?
+                    local itemEffect = select(1,GetItemSpell(itemID))
+                    if itemEffect~=nil then --Does the item provide a use effect?
+                        local itemName, _, _, _, minLevel, itemType = GetItemInfo(itemID)
+                        if itemType == "Consumable" then -- Is it a consumable?
+                            local itemType = itemEffect:match("%s(%S+)$") or "" -- Get the specific type of consumable
+                            if itemType == "Potion" and level >= minLevel then -- Is the item a Potion and am I level to use it?
+                                local potionList = {
+                                    {ptype = "action", 		effect = "Action"},
+                                    {ptype = "agility", 	effect = "Agility"},
+                                    {ptype = "armor", 		effect = "Armor"},
+                                    {ptype = "breathing", 	effect = "Underwater"},
+                                    {ptype = "health", 		effect = "Healing Potion"},
+                                    {ptype = "intellect", 	effect = "Intellect"},
+                                    {ptype = "invis", 		effect = "Invisibility"},
+                                    {ptype = "mana", 		effect = "Mana Potion"},
+                                    {ptype = "rage", 		effect = "Rage"},
+                                    {ptype = "rejuv", 		effect = "Rejuvenation"},
+                                    {ptype = "speed", 		effect = "Swiftness"},
+                                    {ptype = "strength", 	effect = "Strength"},
+                                    {ptype = "versatility", effect = "Versatility"},
+                                    {ptype = "waterwalk", 	effect = "Water Walking"}
+                                }
+                                for y = 1, #potionList do --Look for and add to right potion table
+                                    local potionEffect = potionList[y].effect
+                                    local potionType = potionList[y].ptype
+                                    if strmatch(itemEffect,potionEffect)~=nil and strmatch(potionType,FindPotionType) ~= nil then
+                                        if potion[itemName] == nil then potion[itemName] = {} end
+                                        local item = potion[itemName]
+                                        item.level = minLevel
+                                        item.id = itemID
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return potion
+end
+
+
+function LocalPlayer:GetPotion(PotionType)
+    -- Key/Value Sorter
+    local function spairs(t, order)
+        -- collect the keys
+        local keys = {}
+        for k in pairs(t) do keys[#keys+1] = k end
+    
+        -- if order function given, sort by it by passing the table and keys a, b,
+        -- otherwise just sort the keys 
+        if order then
+            table.sort(keys, function(a,b) return order(t, a, b) end)
+        else
+            table.sort(keys)
+        end
+    
+        -- return the iterator function
+        local i = 0
+        return function()
+            i = i + 1
+            if keys[i] then
+                return keys[i], t[keys[i]]
+            end
+        end
+    end
+
+    -- Potion Object Finder
+    if PotionType == nil then return nil end
+    local potions = LocalPlayer:GetPotions(PotionType) -- Get List of all player potions in bag for specified type
+    -- Sort potion of type by level - highest to lowest
+    local sortedPotions = {}
+    for _,v in spairs(potions, function(t,a,b) return t[b].level < t[a].level end) do
+        table.insert(sortedPotions,v)
+    end
+    -- Find maching item object and return
+    if #sortedPotions > 0 then
+        for _, v in pairs(DMW.Player.Items) do
+            if type(v) == "table" then
+                local potionID = sortedPotions[1].id or 0
+                local itemID = v.ItemID or 1
+                if itemID == potionID then
+                    return v
+                end
+            end
+        end
+    end
 end

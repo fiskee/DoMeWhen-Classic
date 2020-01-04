@@ -106,6 +106,7 @@ Note not all functions work in classic yet
 - :GetEnemiesCone(Length, Angle, TTD)
 - :GetFriends(Yards, HP)
 - :GetFriendsCone(Length, Angle, HP)
+- :GetPotion(PotionType) -- PotionType = "health", "mana", "rejuv" 	
 - :IsTanking()
 - :HasMovementFlag(Flag)
 

@@ -4,7 +4,7 @@ DMW.Tables.ItemInfo = {}
 
 function Item:New(ItemID)
     self.ItemID = ItemID
-    self.ItemName = GetItemInfo(ItemID)
+    self.ItemName, _, _, _, self.MinLevel, self.ItemType = GetItemInfo(ItemID)
     if not self.ItemName then
         DMW.Tables.ItemInfo[ItemID] = self
     end

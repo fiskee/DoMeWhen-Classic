@@ -27,6 +27,27 @@ DMW.Enums.Items = {
     Healthstone = 5509,
     GreaterHealthstone = 5510,
     MajorHealthstone = 9421,
+    -- Potions: Health
+    MinorHealingPotion = 118,
+    LesserHealingPotion = 858,
+    DiscoloredHealingPotion = 4596,
+    HealingPotion = 929,
+    GreaterHealingPotion = 1710,
+    SuperiorHealingPotion = 3928,
+    CombatHealingPotion = 18839,
+    MajorHealingPotion = 13446,
+    -- Potions: Mana
+    MinorManaPotion = 2455,
+    LesserManaPotion = 3385,
+    ManaManaPotion = 3827,
+    GreaterManaPotion = 6149,
+    SuperiorManaPotion = 13443,
+    CombatManaPotion = 18841,
+    MajorManaPotion = 13444,
+    -- Potions: Rejuvenation
+    MinorRejuvenationPotion = 2456,
+    RejuvenationPotion = 22729,
+    MajorRejuvenationPotion = 18253,
     --Soulstones
     MinorSoulstone = 5232,
     LesserSoulstone = 16892,
