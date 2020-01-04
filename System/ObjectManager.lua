@@ -156,7 +156,7 @@ local function UpdateGameObjects()
 end
 
 function DMW.UpdateOM()
-    local _, updated, added, removed = GetObjectCount(true)
+    local _, updated, added, removed = GetObjectCount(true, "dmwc")
     if updated and #removed > 0 then
         for _, v in pairs(removed) do
             DMW.Remove(v)
