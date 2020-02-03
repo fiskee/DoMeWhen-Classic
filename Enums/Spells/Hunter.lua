@@ -28,7 +28,7 @@ Spells.HUNTER = {
         Flare = {Ranks = {1543}},
         FreezingTrap = {Ranks = {1499, 14310, 14311}},
         FrostTrap = {Ranks = {13809}},
-        HuntersMark = {Ranks = {1130, 14323, 14324, 14325, 19421, 19422, 19423, 19424, 19425}},
+        HuntersMark = {Ranks = {1130, 14323, 14324, 14325}},
         ImmolationTrap = {Ranks = {13795, 14302, 14303, 14304, 14305}},
         Intimidation = {Ranks = {19577}},
         MendPet = {Ranks = {136, 3111, 3661, 3662, 13542, 13543, 13544}},
@@ -84,7 +84,7 @@ Spells.HUNTER = {
         TrueshotAura = {Ranks = {19506}}
     },
     Debuffs = {
-        HuntersMark = {Ranks = {1130, 14323, 14324, 14325}},
+        HuntersMark = {Ranks = {1130, 14323, 14324, 14325, 19421, 19422, 19423, 19424, 19425}},
         ScareBeast = {Ranks = {1513, 14326, 14327}},
         ScorpidSting = {Ranks = {3043, 14275, 14276, 14277}},
         SerpentSting = {Ranks = {1978, 13549, 13550, 13551, 13552, 13553, 13554, 13555, 25295}},
