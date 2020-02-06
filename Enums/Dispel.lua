@@ -18,7 +18,7 @@ DMW.Enums.DispelSpells = {
     [1152] = {"Poison", "Disease"},
     [4987] = {"Poison", "Magic", "Disease"},
     --Hunter
-    [19801] = {"Enrage"}
+    [19801] = {"Enrage"},
 	
     --Item
     [23595] = {"Physical"} -- Luffa
