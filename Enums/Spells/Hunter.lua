@@ -84,7 +84,7 @@ Spells.HUNTER = {
         TrueshotAura = {Ranks = {19506}}
     },
     Debuffs = {
-        HuntersMark = {Ranks = {1130, 14323, 14324, 14325}},
+        HuntersMark = {Ranks = {1130, 14323, 14324, 14325, 19421, 19422, 19423, 19424, 19425}},
         ScareBeast = {Ranks = {1513, 14326, 14327}},
         ScorpidSting = {Ranks = {3043, 14275, 14276, 14277}},
         SerpentSting = {Ranks = {1978, 13549, 13550, 13551, 13552, 13553, 13554, 13555, 25295}},
