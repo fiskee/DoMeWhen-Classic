@@ -56,6 +56,8 @@ DMW.Enums.Items = {
     MajorSoulstone = 16896,
     --Trinkets
     Luffa = 19141,
+    DevilsaurEye = 19991,
+    DiamondFlask = 20130,
     --Potions
     SuperiorHealingPotion = 3928,
     GreaterHealingPotion = 1710,
