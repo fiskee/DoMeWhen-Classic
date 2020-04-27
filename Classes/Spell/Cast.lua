@@ -59,7 +59,7 @@ function Spell:Cast(Unit, Rank)
     if not Rank then
         Rank = self:HighestLevel(Unit)
     end
-    if self:Known(Rank) and self:Usable(Rank) and ((Unit.Distance <= self.MaxRange and (self.MinRange == 0 or Unit.Distance >= self.MinRange)) or IsSpellInRange(self.SpellName, Unit.Pointer) == 1) then
+    if not IsCurrentSpell(self.SpellID) and self:Known(Rank) and self:Usable(Rank) and ((Unit.Distance <= self.MaxRange and (self.MinRange == 0 or Unit.Distance >= self.MinRange)) or IsSpellInRange(self.SpellName, Unit.Pointer) == 1) then
         if IsAutoRepeatSpell(DMW.Player.Spells.Shoot.SpellName) and self:CD(Rank) < 0.2 then
             MoveForwardStart()
             MoveForwardStop()
