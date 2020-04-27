@@ -3,7 +3,9 @@ local WaitForSuccess = 0
 local lastCastFrame = CreateFrame("Frame")
 local Spell = DMW.Classes.Spell
 
-function Spell:LastCast(Index)
+function Spell:LastCast(Index,OoCReset)
+    OoCReset = OoCReset or false
+    if OoCReset then return false end
     Index = Index or 1
     if DMW.Player.LastCast and DMW.Player.LastCast[Index] then
         return DMW.Player.LastCast[Index].SpellName == self.SpellName
