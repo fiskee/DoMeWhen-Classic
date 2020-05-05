@@ -19,7 +19,9 @@ DMW.Enums.Spells = {
             SoulstoneResurrection = {Ranks = {20707}}
         },
         Debuffs = {
-            LivingBomb = {Ranks = {20475}}
+            LivingBomb = {Ranks = {20475}},
+            BurningAdrenaline = {Ranks = {18173}}
+            
         },
         Talents = {}
     }
