@@ -63,7 +63,8 @@ DMW.Enums.Items = {
     GreaterHealingPotion = 1710,
     HealingPotion = 929,
     LesserHealingPotion = 858,
-    MinorHealingPotion = 118
+    MinorHealingPotion = 118,
+    LimitedInvulnerabilityPotion = 3387
     
     
     
