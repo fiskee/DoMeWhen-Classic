@@ -20,7 +20,9 @@ DMW.Enums.Spells = {
         },
         Debuffs = {
             LivingBomb = {Ranks = {20475}},
-            BurningAdrenaline = {Ranks = {18173}}
+            BurningAdrenaline = {Ranks = {18173}},
+            ShadowVulnerability = {Ranks = {15258}},
+            Nightfall = {Ranks = {23605}}
             
         },
         Talents = {}
