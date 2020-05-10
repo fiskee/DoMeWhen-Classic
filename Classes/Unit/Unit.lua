@@ -421,3 +421,13 @@ function Unit:CanBeFeared()
     end
     return self.Attackable and self:IsEnemy()
 end
+
+function Unit:IsImmune(immuneType)
+    if not immuneType then return false end
+    if immuneType == "Bleed" 
+        and (self.CreatureType == "Mechanical" or self.CreatureType == "Elemental") 
+    then
+        return true
+    end
+    return false
+end

@@ -92,6 +92,11 @@ function LocalPlayer:Update()
     -- end
 end
 
+function LocalPlayer:CurrentCast()
+    if not self.Casting then return nil end
+    return DMW.Helpers.Rotation.GetSpellByID(select(9,self.Casting))
+end
+
 function LocalPlayer:NewTotem(spellID)
     if spellID ~= nil and DMW.Tables.Totems[spellID] ~= nil then
         local totem, element, duration, key, realName
