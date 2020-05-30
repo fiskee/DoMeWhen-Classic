@@ -16,7 +16,11 @@ DMW.Enums.Spells = {
             Skinning = {Ranks = {8613}, CastType = "Profession"}
         },
         Buffs = {
-            SoulstoneResurrection = {Ranks = {20707}}
+            SoulstoneResurrection = {Ranks = {20707}},
+            EssenceoOfSapphiron = {Ranks = {28779}},
+            EphemeralPower = {Ranks = {23271}},
+            UnstablePower = {Ranks = {24658}}
+        
         },
         Debuffs = {
             LivingBomb = {Ranks = {20475}},
