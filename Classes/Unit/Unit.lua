@@ -425,7 +425,7 @@ end
 function Unit:IsImmune(immuneType)
     if not immuneType then return false end
     if immuneType == "Bleed" 
-        and (self.CreatureType == "Mechanical" or self.CreatureType == "Elemental") 
+        and (self.CreatureType == "Mechanical" or self.CreatureType == "Elemental" or self.CreatureType == "Undead") 
     then
         return true
     end
