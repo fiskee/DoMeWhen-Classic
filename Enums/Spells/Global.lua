@@ -17,10 +17,11 @@ DMW.Enums.Spells = {
         },
         Buffs = {
             SoulstoneResurrection = {Ranks = {20707}},
-            EssenceoOfSapphiron = {Ranks = {28779}},
-            EphemeralPower = {Ranks = {23271}},
-            UnstablePower = {Ranks = {24658}}
-        
+            EssenceoOfSapphiron = {Ranks = {28779}}, -- The Restrained Essence of Sapphiron
+            EphemeralPower = {Ranks = {23271}}, -- Talisman of Ephemeral Power
+            UnstablePower = {Ranks = {24658}}, -- Zandalarian Hero Charm
+            DraconicInfusedEmblem = {Ranks = {27675}}, -- Draconic Infused Emblem
+            PowerInfusion = {Ranks = {10060}}
         },
         Debuffs = {
             LivingBomb = {Ranks = {20475}},
