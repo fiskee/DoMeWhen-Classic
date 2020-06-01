@@ -76,6 +76,11 @@ function Spell:CD(Rank)
     return FinalCD
 end
 
+function Spell:InRange(Target)
+    local inRange = IsSpellInRange(self.SpellName,Target)
+    if inRange == 1 then return true end
+    return false
+end
 function Spell:IsReady(Rank)
     if self:Known(Rank) and self:Usable(Rank) and self:CD(Rank) == 0 then
         return true

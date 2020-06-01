@@ -75,6 +75,8 @@ function LocalPlayer:Update()
     self.CombatTime = self.Combat and (DMW.Time - self.Combat) or 0
     self.CombatLeftTime = self.CombatLeft and (DMW.Time - self.CombatLeft) or 0
     self.Resting = IsResting()
+    self.MovingTime = self:TimeMoving()
+    self.StandingTime = self:TimeStanding()
     -- if self.UpdateTotemsCacheCheck then
     --     self:UpdateTotemsCache()
     -- end
@@ -325,6 +327,26 @@ function LocalPlayer:HasMovementFlag(Flag)
     local SelfFlag = UnitMovementFlags(self.Pointer)
     if SelfFlag then
         return bit.band(UnitMovementFlags(self.Pointer), Flag) > 0
+    end
+    return false
+end
+
+local movingTimer = GetTime()
+function LocalPlayer:TimeMoving()
+    if not self.Moving then movingTimer = GetTime() end
+    return GetTime() - movingTimer
+end
+
+local standingTimer = GetTime()
+function LocalPlayer:TimeStanding()
+    if self.Moving then standingTimer = GetTime() end
+    return GetTime() - standingTimer
+end
+
+function LocalPlayer:IsInside()
+    local tx, ty, tz = self.PosX, self.PosY, self.PosZ
+    if tx then
+        return TraceLine(tx, ty, tz + 1, tx, ty, tz + 100, 0x100111) ~= nil and IsIndoors()
     end
     return false
 end
