@@ -31,6 +31,9 @@ function LocalPlayer:New(Pointer)
         self.Totems.Earth = {}
         self.Totems.Water = {}
         self.Totems.Air = {}
+    elseif self.Class == "DRUID" then
+        self.HealPending = false
+        self.LastHeal = GetTime()
     end
     self.SwingMH = 0
     self.SwingOH = false
@@ -77,6 +80,7 @@ function LocalPlayer:Update()
     self.Resting = IsResting()
     self.MovingTime = self:TimeMoving()
     self.StandingTime = self:TimeStanding()
+    self.SwimmingTime = self:TimeSwimming()
     -- if self.UpdateTotemsCacheCheck then
     --     self:UpdateTotemsCache()
     -- end
@@ -341,6 +345,12 @@ local standingTimer = GetTime()
 function LocalPlayer:TimeStanding()
     if self.Moving then standingTimer = GetTime() end
     return GetTime() - standingTimer
+end
+
+local swimmingTimer = GetTime()
+function LocalPlayer:TimeSwimming()
+    if not IsSwimming() then swimmingTimer = GetTime() end
+    return GetTime() - swimmingTimer
 end
 
 function LocalPlayer:IsInside()

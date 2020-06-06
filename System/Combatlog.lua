@@ -103,6 +103,17 @@ function frame:Reader(event, ...)
                 end
             end
         end
+        if Player.Class == "DRUID" then
+            if (spellName == "Healing Touch" or spellName == "Regrowth" or spellName == "Rejuvenation") then
+                if param == "SPELL_CAST_SUCCESS" then
+                    Player.HealPending = false
+                    Player.LastHeal = GetTime()
+                end
+                if param == "SPELL_CAST_FAILED" then
+                    Player.HealPending = false
+                end
+            end
+        end
         -- if param == "SPELL_DISPELL" and destination == Player.GUID then
         --     if Player.DOTed then
         --         if Player.DOTed[spellName] ~= nil then
