@@ -1,6 +1,7 @@
 local DMW = DMW
 local Spell = DMW.Classes.Spell
 local CastTimer = GetTime()
+local WandStop = false
 
 function Spell:HighestLevel(Unit)
     local HighestRank
@@ -60,9 +61,13 @@ function Spell:Cast(Unit, Rank)
         Rank = self:HighestLevel(Unit)
     end
     if not IsCurrentSpell(self.SpellID) and self:Known(Rank) and self:Usable(Rank) and ((Unit.Distance <= self.MaxRange and (self.MinRange == 0 or Unit.Distance >= self.MinRange)) or IsSpellInRange(self.SpellName, Unit.Pointer) == 1) then
-        if IsAutoRepeatSpell(DMW.Player.Spells.Shoot.SpellName) and self:CD(Rank) < 0.2 then
+        if IsAutoRepeatSpell(DMW.Player.Spells.Shoot.SpellName) and self:CD(Rank) < 0.2 and not WandStop then
+            WandStop = true
             MoveForwardStart()
             MoveForwardStop()
+            C_Timer.After(0.2, function()
+                WandStop = false
+            end)
             return true
         elseif self:CD(Rank) == 0 and (DMW.Time - CastTimer) > 0.1 then
             CastTimer = DMW.Time
