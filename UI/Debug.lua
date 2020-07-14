@@ -274,7 +274,11 @@ Label = AceGUI:Create("Label")
 Label:SetFullWidth(true)
 Label.Update = function(self)
     if DMW.Player.Target then
-        self:SetText("Moving: " .. tostring(DMW.Player.Target:HasMovementFlag(DMW.Enums.MovementFlags.Moving)) .. " - Movement Flag: " .. string.format("%X", UnitMovementFlags(DMW.Player.Target.Pointer)))
+        if DMW.Player.Target.Player then
+            self:SetText("Moving: " .. tostring(DMW.Player.Target:HasMovementFlag(DMW.Enums.MovementFlags.Moving)))
+        else
+            self:SetText("Moving: " .. tostring(DMW.Player.Target:HasMovementFlag(DMW.Enums.MovementFlags.Moving)) .. " - Movement Flag: " .. string.format("%X", UnitMovementFlags(DMW.Player.Target.Pointer)))
+        end
     else
         self:SetText("")
     end

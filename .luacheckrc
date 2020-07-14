@@ -3929,6 +3929,7 @@ globals = {
 	"GetMapId",
 	"GetCorpsePosition",
 	"WorldPreload",
+	"GetServerPosition",
 	--Extras
 	"DMW",
 	"RealMobHealth_CreatureHealthCache",
