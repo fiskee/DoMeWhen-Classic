@@ -1170,6 +1170,21 @@ function UI.AddHeader(Text)
     RotationOrder = RotationOrder + 1
 end
 
+function UI.AddLabel(Name)
+    Options.args.RotationTab.args[CurrentTab].args[Name] = {
+        type = "description",
+        order = RotationOrder,
+        name = Name,
+        get = function()
+            return DMW.Settings.profile.Rotation[Name]
+        end,
+        set = function(info, value)
+            DMW.Settings.profile.Rotation[Name] = value
+        end
+    }
+    RotationOrder = RotationOrder + 1
+end
+
 function UI.AddToggle(Name, Desc, Default, FullWidth)
     local Width = FullWidth and "full" or 0.9
     Options.args.RotationTab.args[CurrentTab].args[Name] = {
