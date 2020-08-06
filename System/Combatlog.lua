@@ -113,6 +113,9 @@ function frame:Reader(event, ...)
                     Player.HealPending = false
                 end
             end
+            if spellName == "Maul" then
+                if param == "SPELL_CAST_SUCCESS" or param == "SPELL_CAST_FAILED" then Player.MaulActive = false end
+            end
         end
         -- if param == "SPELL_DISPELL" and destination == Player.GUID then
         --     if Player.DOTed then
