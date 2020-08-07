@@ -58,6 +58,8 @@ DMW.Enums.Items = {
     Luffa = 19141,
     DevilsaurEye = 19991,
     DiamondFlask = 20130,
+    Earthstrike = 21180,
+    JomGabbar = 23570,
     --Potions
     SuperiorHealingPotion = 3928,
     GreaterHealingPotion = 1710,
