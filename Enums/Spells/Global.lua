@@ -21,7 +21,9 @@ DMW.Enums.Spells = {
             EphemeralPower = {Ranks = {23271}}, -- Talisman of Ephemeral Power
             UnstablePower = {Ranks = {24658}}, -- Zandalarian Hero Charm
             DraconicInfusedEmblem = {Ranks = {27675}}, -- Draconic Infused Emblem
-            PowerInfusion = {Ranks = {10060}}
+            PowerInfusion = {Ranks = {10060}},
+			BloodFury = {Ranks = {20572}},
+            BerserkingTroll = {Ranks = {20554}}
         },
         Debuffs = {
             LivingBomb = {Ranks = {20475}},

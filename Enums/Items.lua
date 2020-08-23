@@ -60,6 +60,10 @@ DMW.Enums.Items = {
     DiamondFlask = 20130,
     Earthstrike = 21180,
     JomGabbar = 23570,
+	BadgeoftheSwarmguard = 21670,
+	RoyalSeal = 18473,
+	BlackhandsB = 13965,
+
     --Potions
     SuperiorHealingPotion = 3928,
     GreaterHealingPotion = 1710,

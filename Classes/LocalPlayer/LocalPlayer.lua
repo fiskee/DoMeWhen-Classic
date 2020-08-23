@@ -34,7 +34,6 @@ function LocalPlayer:New(Pointer)
     elseif self.Class == "DRUID" then
         self.HealPending = false
         self.LastHeal = GetTime()
-        self.MaulActive = false
     end
     self.SwingMH = 0
     self.SwingOH = false
@@ -79,6 +78,8 @@ function LocalPlayer:Update()
     self.CombatTime = self.Combat and (DMW.Time - self.Combat) or 0
     self.CombatLeftTime = self.CombatLeft and (DMW.Time - self.CombatLeft) or 0
     self.Resting = IsResting()
+	self.IsFeign = self:IsFeignUp()
+	self.ReallyDeadPlayer = self:IsPlayerReallyDead()
     self.MovingTime = self:TimeMoving()
     self.StandingTime = self:TimeStanding()
     self.SwimmingTime = self:TimeSwimming()
@@ -335,6 +336,31 @@ function LocalPlayer:HasMovementFlag(Flag)
     end
     return false
 end
+
+
+function LocalPlayer:IsFeignUp()
+	for i=1,40 do 
+			local _,_,_,_,_,_,_,_,_,ID = UnitBuff("player",i)
+			if ID == 5384 then
+				IsFeign = true 
+				return true
+			end
+	end
+end
+
+function LocalPlayer:IsPlayerReallyDead()
+		if UnitIsDeadOrGhost("player")
+		and IsFeign then
+				ReallyDeadPlayer = false
+				return false
+		elseif UnitIsDeadOrGhost("player") then
+				ReallyDeadPlayer = true
+				return true
+		else 	ReallyDeadPlayer = false
+				return false
+		end
+	end
+
 
 local movingTimer = GetTime()
 function LocalPlayer:TimeMoving()
