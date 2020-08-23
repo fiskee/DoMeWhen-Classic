@@ -34,6 +34,7 @@ function LocalPlayer:New(Pointer)
     elseif self.Class == "DRUID" then
         self.HealPending = false
         self.LastHeal = GetTime()
+		self.MaulActive = false
     end
     self.SwingMH = 0
     self.SwingOH = false
