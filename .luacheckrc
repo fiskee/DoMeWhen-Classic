@@ -3934,5 +3934,6 @@ globals = {
 	"DMW",
 	"RealMobHealth_CreatureHealthCache",
 	"QuestieLoader",
-	"LibStub"
+	"LibStub",
+	"_"
 }
