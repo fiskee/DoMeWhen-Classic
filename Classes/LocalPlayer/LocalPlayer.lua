@@ -33,7 +33,7 @@ function LocalPlayer:New(Pointer)
         self.Totems.Air = {}
     elseif self.Class == "DRUID" then
         self.HealPending = false
-        self.LastHeal = GetTime()
+        self.LastHeal = DMW.Time
         self.MaulActive = false
     end
     self.SwingMH = 0
@@ -79,8 +79,8 @@ function LocalPlayer:Update()
     self.CombatTime = self.Combat and (DMW.Time - self.Combat) or 0
     self.CombatLeftTime = self.CombatLeft and (DMW.Time - self.CombatLeft) or 0
     self.Resting = IsResting()
-	self.IsFeign = self:IsFeignUp()
-	self.ReallyDeadPlayer = self:IsPlayerReallyDead()
+    self.IsFeign = self:IsFeignUp()
+    self.ReallyDeadPlayer = self:IsPlayerReallyDead()
     self.MovingTime = self:TimeMoving()
     self.StandingTime = self:TimeStanding()
     self.SwimmingTime = self:TimeSwimming()
@@ -102,8 +102,10 @@ function LocalPlayer:Update()
 end
 
 function LocalPlayer:CurrentCast()
-    if not self.Casting then return nil end
-    return DMW.Helpers.Rotation.GetSpellByID(select(9,self.Casting))
+    if not self.Casting then
+        return nil
+    end
+    return DMW.Helpers.Rotation.GetSpellByID(select(9, self.Casting))
 end
 
 function LocalPlayer:NewTotem(spellID)
@@ -118,8 +120,8 @@ function LocalPlayer:NewTotem(spellID)
         self.Totems[element].Name = key
         self.Totems[element].RealName = realName
         self.Totems[element].Expire = DMW.Time + duration
-        -- print(self.Totems[element].Unit)
-        -- print("new totem")
+    -- print(self.Totems[element].Unit)
+    -- print("new totem")
     end
 end
 
@@ -130,10 +132,10 @@ function LocalPlayer:UpdateTotem(slotID)
             local totemLinked = self.Totems[element]
             print(totemLinked)
             if totemLinked and totemLinked.Name and totemLinked.Unit == nil then
-                for k,v in pairs(DMW.Units) do
+                for k, v in pairs(DMW.Units) do
                     if v.Name:find(totemLinked.RealName) and ObjectCreator(v.Pointer) == self.Pointer then
                         totemLinked.Unit = v
-                        print("updated totem"..totemLinked.RealName)
+                        print("updated totem" .. totemLinked.RealName)
                         break
                     -- else
                     --     table.wipe(self.Totems[element])
@@ -149,10 +151,10 @@ end
 
 function LocalPlayer:UpdateTotemsCache()
     local count = 0
-    for _,Element in pairs(self.Totems) do
+    for _, Element in pairs(self.Totems) do
         if Element.Name and not Element.Unit then
             count = count + 1
-            for k,v in pairs(DMW.Units) do
+            for k, v in pairs(DMW.Units) do
                 if v.Name:find(Element.RealName) and ObjectCreator(v.Pointer) == self.Pointer then
                     Element.Unit = v
                     print("updated totem")
@@ -186,7 +188,7 @@ end
 local GCDList = {
     DRUID = {
         NONE = 5176,
-        CAT = 5221,
+        CAT = 5221
     },
     HUNTER = 1978,
     MAGE = 133,
@@ -195,13 +197,17 @@ local GCDList = {
     ROGUE = 1752,
     SHAMAN = 403,
     WARLOCK = 348,
-    WARRIOR = 772,
+    WARRIOR = 772
 }
 
 function LocalPlayer:GCDRemain()
     local GCDSpell = 61304
     if self.Class == "DRUID" then
-        if self:AuraByID(768,true) then GCDSpell = GCDList[self.Class].CAT else GCDSpell = GCDList[self.Class].NONE end
+        if self:AuraByID(768, true) then
+            GCDSpell = GCDList[self.Class].CAT
+        else
+            GCDSpell = GCDList[self.Class].NONE
+        end
     else
         GCDSpell = GCDList[self.Class]
     end
@@ -213,7 +219,7 @@ function LocalPlayer:GCDRemain()
 end
 
 function LocalPlayer:GCD()
-    if self.Class == "ROGUE" or (self.Class == "DRUID" and self:AuraByID(768,true)) then
+    if self.Class == "ROGUE" or (self.Class == "DRUID" and self:AuraByID(768, true)) then
         return 1
     else
         return 1.5
@@ -338,47 +344,46 @@ function LocalPlayer:HasMovementFlag(Flag)
     return false
 end
 
-
 function LocalPlayer:IsFeignUp()
-	for i=1,40 do 
-			local _,_,_,_,_,_,_,_,_,ID = UnitBuff("player",i)
-			if ID == 5384 then
-				IsFeign = true 
-				return true
-			end
-	end
+    if self:AuraByID(5384, true) then
+        return true
+    end
+    return false
 end
 
 function LocalPlayer:IsPlayerReallyDead()
-		if UnitIsDeadOrGhost("player")
-		and IsFeign then
-				ReallyDeadPlayer = false
-				return false
-		elseif UnitIsDeadOrGhost("player") then
-				ReallyDeadPlayer = true
-				return true
-		else 	ReallyDeadPlayer = false
-				return false
-		end
-	end
-
+    if UnitIsDeadOrGhost("player") then
+        if self.IsFeign then
+            return false
+        else
+            return true
+        end
+    end
+    return false
+end
 
 local movingTimer = GetTime()
 function LocalPlayer:TimeMoving()
-    if not self.Moving then movingTimer = GetTime() end
-    return GetTime() - movingTimer
+    if not self.Moving then
+        movingTimer = DMW.Time
+    end
+    return DMW.Time - movingTimer
 end
 
 local standingTimer = GetTime()
 function LocalPlayer:TimeStanding()
-    if self.Moving then standingTimer = GetTime() end
-    return GetTime() - standingTimer
+    if self.Moving then
+        standingTimer = DMW.Time
+    end
+    return DMW.Time - standingTimer
 end
 
 local swimmingTimer = GetTime()
 function LocalPlayer:TimeSwimming()
-    if not IsSwimming() then swimmingTimer = GetTime() end
-    return GetTime() - swimmingTimer
+    if not IsSwimming() then
+        swimmingTimer = DMW.Time
+    end
+    return DMW.Time - swimmingTimer
 end
 
 function LocalPlayer:IsInside()
@@ -402,40 +407,44 @@ function LocalPlayer:GetPotions(FindPotionType)
     local level = UnitLevel("player")
     local potion = {}
     local sortedPotions = {}
-    if FindPotionType == nil then FindPotionType = "" end
+    if FindPotionType == nil then
+        FindPotionType = ""
+    end
     for i = 0, 4 do --Let's look at each bag
         local numBagSlots = GetContainerNumSlots(i)
-        if numBagSlots>0 then
+        if numBagSlots > 0 then
             for x = 1, numBagSlots do --Let's look at each bag slot
-                local itemID = GetContainerItemID(i,x)
-                if itemID~=nil then -- Is there and item in the slot?
-                    local itemEffect = select(1,GetItemSpell(itemID))
-                    if itemEffect~=nil then --Does the item provide a use effect?
+                local itemID = GetContainerItemID(i, x)
+                if itemID ~= nil then -- Is there and item in the slot?
+                    local itemEffect = select(1, GetItemSpell(itemID))
+                    if itemEffect ~= nil then --Does the item provide a use effect?
                         local itemName, _, _, _, minLevel, itemType = GetItemInfo(itemID)
                         if itemType == "Consumable" then -- Is it a consumable?
                             local itemType = itemEffect:match("%s(%S+)$") or "" -- Get the specific type of consumable
                             if itemType == "Potion" and level >= minLevel then -- Is the item a Potion and am I level to use it?
                                 local potionList = {
-                                    {ptype = "action", 		effect = "Action"},
-                                    {ptype = "agility", 	effect = "Agility"},
-                                    {ptype = "armor", 		effect = "Armor"},
-                                    {ptype = "breathing", 	effect = "Underwater"},
-                                    {ptype = "health", 		effect = "Healing Potion"},
-                                    {ptype = "intellect", 	effect = "Intellect"},
-                                    {ptype = "invis", 		effect = "Invisibility"},
-                                    {ptype = "mana", 		effect = "Mana Potion"},
-                                    {ptype = "rage", 		effect = "Rage"},
-                                    {ptype = "rejuv", 		effect = "Rejuvenation"},
-                                    {ptype = "speed", 		effect = "Swiftness"},
-                                    {ptype = "strength", 	effect = "Strength"},
+                                    {ptype = "action", effect = "Action"},
+                                    {ptype = "agility", effect = "Agility"},
+                                    {ptype = "armor", effect = "Armor"},
+                                    {ptype = "breathing", effect = "Underwater"},
+                                    {ptype = "health", effect = "Healing Potion"},
+                                    {ptype = "intellect", effect = "Intellect"},
+                                    {ptype = "invis", effect = "Invisibility"},
+                                    {ptype = "mana", effect = "Mana Potion"},
+                                    {ptype = "rage", effect = "Rage"},
+                                    {ptype = "rejuv", effect = "Rejuvenation"},
+                                    {ptype = "speed", effect = "Swiftness"},
+                                    {ptype = "strength", effect = "Strength"},
                                     {ptype = "versatility", effect = "Versatility"},
-                                    {ptype = "waterwalk", 	effect = "Water Walking"}
+                                    {ptype = "waterwalk", effect = "Water Walking"}
                                 }
                                 for y = 1, #potionList do --Look for and add to right potion table
                                     local potionEffect = potionList[y].effect
                                     local potionType = potionList[y].ptype
-                                    if strmatch(itemEffect,potionEffect)~=nil and strmatch(potionType,FindPotionType) ~= nil then
-                                        if potion[itemName] == nil then potion[itemName] = {} end
+                                    if strmatch(itemEffect, potionEffect) ~= nil and strmatch(potionType, FindPotionType) ~= nil then
+                                        if potion[itemName] == nil then
+                                            potion[itemName] = {}
+                                        end
                                         local item = potion[itemName]
                                         item.level = minLevel
                                         item.id = itemID
@@ -451,22 +460,28 @@ function LocalPlayer:GetPotions(FindPotionType)
     return potion
 end
 
-
 function LocalPlayer:GetPotion(PotionType)
     -- Key/Value Sorter
     local function spairs(t, order)
         -- collect the keys
         local keys = {}
-        for k in pairs(t) do keys[#keys+1] = k end
-    
+        for k in pairs(t) do
+            keys[#keys + 1] = k
+        end
+
         -- if order function given, sort by it by passing the table and keys a, b,
-        -- otherwise just sort the keys 
+        -- otherwise just sort the keys
         if order then
-            table.sort(keys, function(a,b) return order(t, a, b) end)
+            table.sort(
+                keys,
+                function(a, b)
+                    return order(t, a, b)
+                end
+            )
         else
             table.sort(keys)
         end
-    
+
         -- return the iterator function
         local i = 0
         return function()
@@ -478,12 +493,19 @@ function LocalPlayer:GetPotion(PotionType)
     end
 
     -- Potion Object Finder
-    if PotionType == nil then return nil end
+    if PotionType == nil then
+        return nil
+    end
     local potions = LocalPlayer:GetPotions(PotionType) -- Get List of all player potions in bag for specified type
     -- Sort potion of type by level - highest to lowest
     local sortedPotions = {}
-    for _,v in spairs(potions, function(t,a,b) return t[b].level < t[a].level end) do
-        table.insert(sortedPotions,v)
+    for _, v in spairs(
+        potions,
+        function(t, a, b)
+            return t[b].level < t[a].level
+        end
+    ) do
+        table.insert(sortedPotions, v)
     end
     -- Find maching item object and return
     if #sortedPotions > 0 then
