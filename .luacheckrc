@@ -3813,6 +3813,7 @@ globals = {
 	"unpack",
 	"wipe",
 	"xpcall",
+	"CreateVector2D",
 	--Classic
 	"CastingInfo",
 	"ChannelInfo",

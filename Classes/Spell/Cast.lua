@@ -84,6 +84,7 @@ function Spell:Cast(Unit, Rank)
                 self:HealCommFix(Rank)
                 self:FacingCast(Unit, Rank)
                 self.LastBotTarget = Unit.Pointer
+                DMW.UI.Log.AddCast(self.SpellName, Unit.Name)
             end
             return true
         end

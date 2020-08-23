@@ -31,11 +31,21 @@ function DMW:ChatCommand(Input)
                     print("/DMW HUD " .. Name .. " 1 - " .. #Setting)
                 end
             end
+            print("Debug:")
+            print("/DMW Debug")
+            print("Log:")
+            print("/DMW Log")
         elseif Commands[1] == "DEBUG" then
             if not DMW.UI.Debug.Frame:IsShown() then
                 DMW.UI.Debug.Frame:Show()
             else
                 DMW.UI.Debug.Frame:Hide()
+            end
+        elseif Commands[1] == "LOG" then
+            if not DMW.UI.Debug.Frame:IsShown() then
+                DMW.UI.Log.Frame:Show()
+            else
+                DMW.UI.Log.Frame:Hide()
             end
         else
             LibStub("AceConfigCmd-3.0").HandleCommand(DMW, "dmw", "DMW", Input)
