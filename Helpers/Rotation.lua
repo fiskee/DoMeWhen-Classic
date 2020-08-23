@@ -4,7 +4,7 @@ local Rotation = DMW.Helpers.Rotation
 DMW.Helpers.Rotation.CastingCheck = true
 DMW.Helpers.Rotation.StandingCheck = true
 
--- and not UnitIsDeadOrGhost("player")  
+
 function Rotation.Active()
     if DMW.Settings.profile.HUD.Rotation == 1 and not DMW.Player.ReallyDeadPlayer and (not DMW.Helpers.Rotation.CastingCheck or not DMW.Player.Casting) and not (IsMounted() or IsFlying()) and not DMW.Player.NoControl and (not DMW.Helpers.Rotation.StandingCheck or DMW.Player:Standing()) then
         return true
