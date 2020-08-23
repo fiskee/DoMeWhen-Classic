@@ -113,7 +113,7 @@ function frame:Reader(event, ...)
                     Player.HealPending = false
                 end
             end
-            if spellName == "Maul" then
+			 if spellName == "Maul" then
                 if param == "SPELL_CAST_SUCCESS" or param == "SPELL_CAST_FAILED" then Player.MaulActive = false end
             end
         end
