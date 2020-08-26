@@ -70,8 +70,14 @@ DMW.Enums.Items = {
     HealingPotion = 929,
     LesserHealingPotion = 858,
     MinorHealingPotion = 118,
-    LimitedInvulnerabilityPotion = 3387
-    
-    
+    LimitedInvulnerabilityPotion = 3387,
+	
+	--Engineering
+    GoblinSapperCharge = 10646,
+    DenseDynamite = 23070,		-- 340-460 range 30y
+	EZThroDynamitII = 18588,	-- 213-287 range 30y
+	ThoriumGrenade = 15993,		-- 300-500 range 45y
+    IronGrenade = 4390			-- 132-218 range 45y
+       
     
 }
