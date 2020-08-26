@@ -57,6 +57,29 @@ function Item:Use(Unit)
     return false
 end
 
+function Item:UseGround(Unit)
+    if self:IsReady() then
+        local MouseLooking = false
+        local PX, PY, PZ = DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ
+		local X, Y, Z = Unit.PosX, Unit.PosY, Unit.PosZ
+        local Distance = sqrt(((X - PX) ^ 2) + ((Y - PY) ^ 2) + ((Z - PZ) ^ 2))
+		Z = select(3,TraceLine(X, Y, Z+5, X, Y, Z-5, 0x110))
+		if Z ~= nil and TraceLine(PX, PY, PZ+2, X, Y, Z+1, 0x100010) == nil and TraceLine(X, Y, Z+4, X, Y, Z, 0x1) == nil then
+            if IsMouselooking() then
+                MouseLooking = true
+                MouselookStop()
+            end
+			UseItemByName(self.ItemName)
+			ClickPosition(X, Y, Z)
+            if MouseLooking then
+                MouselookStart()
+            end
+            return true
+        end
+    end
+    return false
+end
+
 function Item:InBag()
     if self.ItemName then
         local TempName, TempID
