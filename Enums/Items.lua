@@ -60,9 +60,9 @@ DMW.Enums.Items = {
     DiamondFlask = 20130,
     Earthstrike = 21180,
     JomGabbar = 23570,
-	BadgeoftheSwarmguard = 21670,
-	RoyalSeal = 18473,
-	BlackhandsB = 13965,
+    BadgeoftheSwarmguard = 21670,
+    RoyalSeal = 18473,
+    BlackhandsB = 13965,
 
     --Potions
     SuperiorHealingPotion = 3928,
@@ -72,11 +72,11 @@ DMW.Enums.Items = {
     MinorHealingPotion = 118,
     LimitedInvulnerabilityPotion = 3387,
 	
-	--Engineering
+    --Engineering
     GoblinSapperCharge = 10646,
     DenseDynamite = 23070,		-- 340-460 range 30y
-	EZThroDynamitII = 18588,	-- 213-287 range 30y
-	ThoriumGrenade = 15993,		-- 300-500 range 45y
+    EZThroDynamitII = 18588,		-- 213-287 range 30y
+    ThoriumGrenade = 15993,		-- 300-500 range 45y
     IronGrenade = 4390			-- 132-218 range 45y
        
     
