@@ -83,7 +83,7 @@ Spells.HUNTER = {
         TrackHumanoids = {Ranks = {19883}},
         TrackUndead = {Ranks = {19884}},
         TrueshotAura = {Ranks = {19506}},
-	DevilsaurFury = {Ranks = {24352}}-- buff of DevilsaurEye
+        DevilsaurFury = {Ranks = {24352}}-- buff of DevilsaurEye
     },
     Debuffs = {
         HuntersMark = {Ranks = {1130, 14323, 14324, 14325, 19421, 19422, 19423, 19424, 19425}},
