@@ -23,7 +23,11 @@ DMW.Enums.Spells = {
             DraconicInfusedEmblem = {Ranks = {27675}}, -- Draconic Infused Emblem
             PowerInfusion = {Ranks = {10060}},
 			BloodFury = {Ranks = {20572}},
-            BerserkingTroll = {Ranks = {20554}}
+            BerserkingTroll = {Ranks = {20554}},
+			Earthstrike = {Ranks = {25891}}, -- Earthstrike
+			JomGabbar = {Ranks = {29602}}, -- JomGabbar
+			InsightoftheQiraji = {Ranks = {26480}} -- BadgeoftheSwarmguard
+			
         },
         Debuffs = {
             LivingBomb = {Ranks = {20475}},
