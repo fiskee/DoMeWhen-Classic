@@ -22,11 +22,11 @@ DMW.Enums.Spells = {
             UnstablePower = {Ranks = {24658}}, -- Zandalarian Hero Charm
             DraconicInfusedEmblem = {Ranks = {27675}}, -- Draconic Infused Emblem
             PowerInfusion = {Ranks = {10060}},
-			BloodFury = {Ranks = {20572}},
+            BloodFury = {Ranks = {20572}},
             BerserkingTroll = {Ranks = {20554}},
-			Earthstrike = {Ranks = {25891}}, -- Earthstrike
-			JomGabbar = {Ranks = {29602}}, -- JomGabbar
-			InsightoftheQiraji = {Ranks = {26480}} -- BadgeoftheSwarmguard
+            Earthstrike = {Ranks = {25891}}, -- Earthstrike
+            JomGabbar = {Ranks = {29602}}, -- JomGabbar
+            InsightoftheQiraji = {Ranks = {26480}} -- BadgeoftheSwarmguard
 			
         },
         Debuffs = {
