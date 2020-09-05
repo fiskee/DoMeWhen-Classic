@@ -37,7 +37,8 @@ DMW.Enums.Spells = {
             TracesofSilithyst = {Ranks = {29534}}, --Silithus PVP 5% damage
             WarchiefsBlessing = {Ranks = {16609}},
             RallyingCryoftheDragonslayer = {Ranks = {22888}},
-            SpiritofZandalar = {Ranks = {24425}}
+            SpiritofZandalar = {Ranks = {24425}},
+            SongflowerSerenade = {Ranks = {15366}} --Songflower
 			
         },
         Debuffs = {
