@@ -102,4 +102,13 @@ local function EventHandler(self, event, ...)
         end
     end
 end
+
+local function KeyPress(self, Key)
+    if (Key == "W" or Key == "A" or Key == "S" or Key == "D") and DMW.Helpers.Navigation ~= 0 then
+        DMW.Helpers.Navigation:ClearPath()
+    end
+end
+
 EHFrame:SetScript("OnEvent", EventHandler)
+EHFrame:SetPropagateKeyboardInput(true)
+EHFrame:SetScript("OnKeyDown", KeyPress)
