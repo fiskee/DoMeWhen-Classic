@@ -22,8 +22,24 @@ DMW.Enums.Spells = {
             UnstablePower = {Ranks = {24658}}, -- Zandalarian Hero Charm
             DraconicInfusedEmblem = {Ranks = {27675}}, -- Draconic Infused Emblem
             PowerInfusion = {Ranks = {10060}},
-			BloodFury = {Ranks = {20572}},
-            BerserkingTroll = {Ranks = {20554}}
+            BloodFury = {Ranks = {20572}},
+            BerserkingTroll = {Ranks = {20554}},
+            Earthstrike = {Ranks = {25891}}, -- Earthstrike
+            JomGabbar = {Ranks = {29602}}, -- JomGabbar
+            InsightoftheQiraji = {Ranks = {26480}}, -- BadgeoftheSwarmguard
+            SaygesDarkFortuneofAgility = {Ranks = {23736}}, --Darkmoon Agi
+            SaygesDarkFortuneofIntelligence = {Ranks = {23766}}, --Darkmoon Int
+            SaygesDarkFortuneofSpirit = {Ranks = {23738}}, --Darkmoon Spirit
+            SaygesDarkFortuneofStamina = {Ranks = {23737}}, --Darkmoon Stamina
+            SaygesDarkFortuneofStrength = {Ranks = {23735}}, --Darkmoon Strength
+            SaygesDarkFortuneofArmor = {Ranks = {23767}}, --Darkmoon Armor
+            SaygesDarkFortuneofDamage = {Ranks = {23768}}, --Darkmoon 10% Damage
+            TracesofSilithyst = {Ranks = {29534}}, --Silithus PVP 5% damage
+            WarchiefsBlessing = {Ranks = {16609}},
+            RallyingCryoftheDragonslayer = {Ranks = {22888}},
+            SpiritofZandalar = {Ranks = {24425}},
+            SongflowerSerenade = {Ranks = {15366}} --Songflower
+			
         },
         Debuffs = {
             LivingBomb = {Ranks = {20475}},

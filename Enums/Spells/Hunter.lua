@@ -71,6 +71,7 @@ Spells.HUNTER = {
         EyesOfTheBeast = {Ranks = {1002}},
         FeignDeath = {Ranks = {5384}},
         MendPet = {Ranks = {136, 3111, 3661, 3662, 13542, 13543, 13544}},
+        QuickShots = {Ranks = {6150}},
         RapidFire = {Ranks = {3045}},
         TameBeast = {Ranks = {1515}},
         TrackBeasts = {Ranks = {1494}},
@@ -82,7 +83,7 @@ Spells.HUNTER = {
         TrackHumanoids = {Ranks = {19883}},
         TrackUndead = {Ranks = {19884}},
         TrueshotAura = {Ranks = {19506}},
-		DevilsaurFury = {Ranks = {24352}}-- buff of DevilsaurEye
+        DevilsaurFury = {Ranks = {24352}}-- buff of DevilsaurEye
     },
     Debuffs = {
         HuntersMark = {Ranks = {1130, 14323, 14324, 14325, 19421, 19422, 19423, 19424, 19425}},
