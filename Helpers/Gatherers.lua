@@ -1,19 +1,26 @@
 local DMW = DMW
 DMW.Helpers.Gatherers = {}
 local Looting = false
+local LootingUnit = false
+local LastLooted = false
 local Skinning = false
 
 function DMW.Helpers.Gatherers.Run()
     if DMW.Player:Standing() and not DMW.Player.Casting and not IsMounted() and not UnitIsDeadOrGhost("player") then
-        if Looting and (DMW.Time - Looting) > 0 and not DMW.Player.Looting then
+        if not LastLooted and Looting and DMW.Player.Looting then
+            LastLooted = LootingUnit
+        end
+        if Looting and DMW.Time > Looting and not DMW.Player.Looting then
             Looting = false
         end
         if DMW.Settings.profile.Helpers.AutoLoot then
             if not Looting and not DMW.Player.Combat then
                 for _, Unit in pairs(DMW.Units) do
-                    if Unit.Dead and Unit.Distance < 1.5 and UnitCanBeLooted(Unit.Pointer) then
+                    if Unit.Dead and LastLooted ~= Unit.Pointer and Unit.Distance < 1.5 and UnitCanBeLooted(Unit.Pointer) then
                         InteractUnit(Unit.Pointer)
-                        Looting = DMW.Time + 0.6
+                        Looting = DMW.Time + 1
+                        LootingUnit = Unit.Pointer
+                        LastLooted = false
                     end
                 end
             end
