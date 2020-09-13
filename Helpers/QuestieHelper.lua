@@ -6,11 +6,21 @@ DMW.Helpers.QuestieHelper = {}
 function DMW.Helpers.DrawLineDMWC(sx, sy, sz, ex, ey, ez)
     local function WorldToScreen(wX, wY, wZ)
         local sX, sY = _G.WorldToScreen(wX, wY, wZ)
-        if sX and sY then
-            return sX, -(WorldFrame:GetTop() - sY)
-        else
-            return sX, sY
-        end
+		local a = 1;
+		local b = 1;
+		if wmbapi then
+			a = 1365;
+			b = 768;
+		end
+		if sX and sY then
+			return sX*a, -(WorldFrame:GetTop() - sY*b)
+		elseif sX then
+			return sX*a, sY;
+		elseif sY then
+			return sX, sY*b;
+		else
+			return sX, sY;
+		end
     end
     local startx, starty = WorldToScreen(sx, sy, sz)
     local endx, endy = WorldToScreen(ex, ey, ez)

@@ -116,6 +116,8 @@ f:SetScript(
             DMW.Timers.QuestieHelper.Average = DMW.Timers.QuestieHelper.Total / DMW.Pulses
             DMW.Timers.Trackers.Average = DMW.Timers.Trackers.Total / DMW.Pulses
             DMW.Timers.Gatherers.Average = DMW.Timers.Gatherers.Total / DMW.Pulses
-        end
+        elseif wmbapi then
+			LoadMiniBotAPI()
+		end
     end
 )
