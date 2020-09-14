@@ -77,7 +77,8 @@ function LoadMiniBotAPI()
 		["cgunitdata__demoncreator"] = "CGUnitData__demonCreator",
 		["cgobjectdata__m_scale"] = "CGObjectData__m_scale",
 		["cgobjectdata__m_dynamicflags"] = "CGObjectData__m_dynamicFlags",
-		["cgareatriggerdata__m_caster"] = "CGAreaTriggerData__m_caster"
+		["cgareatriggerdata__m_caster"] = "CGAreaTriggerData__m_caster",
+		["cgunitdata__npcflags"]="CGUnitData__npcFlags"
 	}
 	StopFalling = wmbapi.StopFalling
 	ObjectTypeFlags = wmbapi.ObjectTypeFlags
@@ -231,11 +232,7 @@ function LoadMiniBotAPI()
 		return result
 	end
 	GetOffset = function(offset)
-		if offset == "CGUnitData__NPCFlags" then
-			return 492
-		else
-			return wmbapi.GetObjectDescriptorsTable()[Offsets[string.lower(offset)]]
-		end
+		return wmbapi.GetObjectDescriptorsTable()[Offsets[string.lower(offset)]]
 	end
 	InitializeNavigation = function() end
 	IsHackEnabled = function() end
