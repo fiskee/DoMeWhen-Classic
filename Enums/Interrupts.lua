@@ -9,5 +9,8 @@ DMW.Enums.InterruptBlacklist = {
 	[22539] = true, --FireMaw, Ebonroc, Flamegor, Nefarian Shadowflame
 	[23339] = true, --FireMaw, Ebonroc, Flamegor 
 	[23312] = true, --Chromaggus Timelaps
-	[22686] = true --Nefarian Bellowing Roar
+	[22686] = true, --Nefarian Bellowing Roar
+	--Ony
+	[18435] = true, --Ony Flame Breath
+	[18431] = true  --Ony Bellowing Roar
 }
