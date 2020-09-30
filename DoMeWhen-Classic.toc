@@ -61,6 +61,7 @@ Helpers\Dump.lua
 Helpers\Swing.lua
 Helpers\Navigation.lua
 Helpers\HealComm.lua
+Helpers\MiniBotAPI.lua
 # Tables
 Helpers\Healers.lua
 Helpers\Misc.lua
