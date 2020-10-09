@@ -77,7 +77,18 @@ DMW.Enums.Items = {
     DenseDynamite = 18641,		-- 340-460 range 30y
     EZThroDynamitII = 18588,		-- 213-287 range 30y
     ThoriumGrenade = 15993,		-- 300-500 range 45y
-    IronGrenade = 4390			-- 132-218 range 45y
-       
+    IronGrenade = 4390,			-- 132-218 range 45y
+    
+    --Bandages
+    HeavyRuneclothBandage = 18630,
+    RuneclothBandage = 18629,
+    HeavyMageweaveBandage = 10841,
+    Mageweave Bandage = 10840,
+    HeavySilkBandage = 7929,
+    SilkBandage = 7928,
+    HeavyWoolBandage = 3278,
+    WoolBandage = 3277,
+    HeavyLinenBandage = 3276,
+    LinenBandage = 3275
     
 }
