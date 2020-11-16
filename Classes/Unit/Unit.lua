@@ -345,10 +345,10 @@ function Unit:CCed()
 end
 
 function Unit:IsQuest()
-    if self.ObjectID and DMW.Settings.profile.Tracker.QuestieHelper and DMW.QuestieTooltips and DMW.QuestieTooltips.tooltipLookup["m_" .. self.ObjectID] then
-        for _, Tooltip in pairs(DMW.QuestieTooltips.tooltipLookup["m_" .. self.ObjectID]) do
-            Tooltip.Objective:Update()
-            if not Tooltip.Objective.Completed then
+    if self.ObjectID and DMW.Settings.profile.Tracker.QuestieHelper and DMW.QuestieTooltips and DMW.QuestieTooltips.lookupByKey["m_" .. self.ObjectID] then
+        for _, Tooltip in pairs(DMW.QuestieTooltips.lookupByKey["m_" .. self.ObjectID]) do
+            Tooltip.objective:Update()
+            if not Tooltip.objective.Completed then
                 return true
             end
         end
