@@ -29,10 +29,13 @@ end
 function GameObject:IsQuest()
     if self.ObjectID and DMW.Settings.profile.Tracker.QuestieHelper and DMW.QuestieTooltips and DMW.QuestieTooltips.lookupByKey["o_" .. self.ObjectID] then
         for _, Tooltip in pairs(DMW.QuestieTooltips.lookupByKey["o_" .. self.ObjectID]) do
-            Tooltip.objective:Update()
-            if not Tooltip.objective.Completed then
-                return true
-            end
+            if tooltip.objective and tooltip.objective.Update
+			then
+				tooltip.objective:Update()
+				if not tooltip.objective.Completed then
+					return true
+				end
+			end
         end
     end
     return false
