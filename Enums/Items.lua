@@ -38,7 +38,7 @@ DMW.Enums.Items = {
     SuperiorHealingPotion = 3928,
     CombatHealingPotion = 18839,
     MajorHealingPotion = 13446,
-    LimitedInvulnerabilityPotion = 3387,
+    WhipperRootTuber = 11951,
 
     -- Potions: Mana
     MinorManaPotion = 2455,
