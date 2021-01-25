@@ -76,6 +76,9 @@ DMW.Enums.Items = {
     RoyalSeal = 18473,
     BlackhandsB = 13965,
 
+    --Ungoru
+    CrystalCharge = 11566,
+
     --Engineering
     GoblinSapperCharge = 10646,
     DenseDynamite = 18641,		-- 340-460 range 30y
