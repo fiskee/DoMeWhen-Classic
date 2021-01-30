@@ -71,8 +71,13 @@ DMW.Enums.Items = {
     Earthstrike = 21180,
     JomGabbar = 23570,
     BadgeoftheSwarmguard = 21670,
+    KissoftheSpider = 22954,
+    SlayersCrest = 23041,	
     RoyalSeal = 18473,
     BlackhandsB = 13965,
+
+    --Ungoru
+    CrystalCharge = 11566,
 
     --Engineering
     GoblinSapperCharge = 10646,
