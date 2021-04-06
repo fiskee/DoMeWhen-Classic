@@ -347,12 +347,12 @@ end
 function Unit:IsQuest()
     if self.ObjectID and DMW.Settings.profile.Tracker.QuestieHelper and DMW.QuestieTooltips and DMW.QuestieTooltips.lookupByKey["m_" .. self.ObjectID] then
         for _, Tooltip in pairs(DMW.QuestieTooltips.lookupByKey["m_" .. self.ObjectID]) do
-            if tooltip.objective and tooltip.objective.Update
-			then
+            if tooltip.objective and tooltip.objective.Update then
 				tooltip.objective:Update()
 				if not tooltip.objective.Completed then
 					return true
 				end
+			end
         end
     end
     return false

@@ -1,4 +1,5 @@
-local LibDraw = LibStub("LibDraw-1.0")
+local 
+libdraw = LibStub("libdraw-1.0")
 local DMW = DMW
 local AlertTimer = GetTime()
 DMW.Helpers.QuestieHelper = {}
@@ -38,7 +39,7 @@ function DMW.Helpers.DrawLineDMWC(sx, sy, sz, ex, ey, ez)
             i = i + 1
         end
     end
-    LibDraw.Draw2DLine(startx, starty, endx, endy)
+    libdraw.Draw2DLine(startx, starty, endx, endy)
 end
 
 function DMW.Helpers.QuestieHelper.Run()
@@ -46,7 +47,7 @@ function DMW.Helpers.QuestieHelper.Run()
         local s = 1
         local tX, tY, tZ
         local r, b, g, a = DMW.Settings.profile.Tracker.QuestieHelperColor[1], DMW.Settings.profile.Tracker.QuestieHelperColor[2], DMW.Settings.profile.Tracker.QuestieHelperColor[3], DMW.Settings.profile.Tracker.QuestieHelperColor[4]
-        LibDraw.SetColorRaw(r, b, g, a)
+        libdraw.SetColorRaw(r, b, g, a)
         for _, Unit in pairs(DMW.Units) do
             if Unit.Quest and (not Unit.Dead or UnitCanBeLooted(Unit.Pointer)) and not Unit.Target and not UnitIsTapDenied(Unit.Pointer) then
                 if tonumber(DMW.Settings.profile.Tracker.QuestieHelperAlert) > 0 and (AlertTimer + 5) < DMW.Time and not IsForeground() then
@@ -60,13 +61,13 @@ function DMW.Helpers.QuestieHelper.Run()
                 end
                 Unit:UpdatePosition()
                 tX, tY, tZ = Unit.PosX, Unit.PosY, Unit.PosZ
-                LibDraw.SetWidth(4)
-                LibDraw.Line(tX, tY, tZ + s * 1.3, tX, tY, tZ)
-                LibDraw.Line(tX - s, tY, tZ, tX + s, tY, tZ)
-                LibDraw.Line(tX, tY - s, tZ, tX, tY + s, tZ)
+                libdraw.SetWidth(4)
+                libdraw.Line(tX, tY, tZ + s * 1.3, tX, tY, tZ)
+                libdraw.Line(tX - s, tY, tZ, tX + s, tY, tZ)
+                libdraw.Line(tX, tY - s, tZ, tX, tY + s, tZ)
                 if DMW.Settings.profile.Tracker.QuestieHelperLine > 0 then
                     local w = DMW.Settings.profile.Tracker.QuestieHelperLine
-                    LibDraw.SetWidth(w)
+                    libdraw.SetWidth(w)
                     DMW.Helpers.DrawLineDMWC(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
                 end
             end
@@ -83,13 +84,13 @@ function DMW.Helpers.QuestieHelper.Run()
                     AlertTimer = DMW.Time
                 end
                 tX, tY, tZ = Object.PosX, Object.PosY, Object.PosZ
-                LibDraw.SetWidth(4)
-                LibDraw.Line(tX, tY, tZ + s * 1.3, tX, tY, tZ)
-                LibDraw.Line(tX - s, tY, tZ, tX + s, tY, tZ)
-                LibDraw.Line(tX, tY - s, tZ, tX, tY + s, tZ)
+                libdraw.SetWidth(4)
+                libdraw.Line(tX, tY, tZ + s * 1.3, tX, tY, tZ)
+                libdraw.Line(tX - s, tY, tZ, tX + s, tY, tZ)
+                libdraw.Line(tX, tY - s, tZ, tX, tY + s, tZ)
                 if DMW.Settings.profile.Tracker.QuestieHelperLine > 0 then
                     local w = DMW.Settings.profile.Tracker.QuestieHelperLine
-                    LibDraw.SetWidth(w)
+                    libdraw.SetWidth(w)
                     DMW.Helpers.DrawLineDMWC(tX, tY, tZ, DMW.Player.PosX, DMW.Player.PosY, DMW.Player.PosZ + 2)
                 end
             end

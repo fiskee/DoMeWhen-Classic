@@ -65,7 +65,7 @@ f:SetScript(
     "OnUpdate",
     function(self, elapsed)
         if GetObjectWithGUID then
-            LibStub("LibDraw-1.0").clearCanvas()
+            LibStub("libdraw-1.0").clearCanvas()
             DMW.Time = GetTime()
             DMW.Pulses = DMW.Pulses + 1
             if not Initialized and not DMW.UI.MinimapIcon then
@@ -116,8 +116,12 @@ f:SetScript(
             DMW.Timers.QuestieHelper.Average = DMW.Timers.QuestieHelper.Total / DMW.Pulses
             DMW.Timers.Trackers.Average = DMW.Timers.Trackers.Total / DMW.Pulses
             DMW.Timers.Gatherers.Average = DMW.Timers.Gatherers.Total / DMW.Pulses
-        elseif wmbapi then
+        elseif bntapi then
+			LoadBanetoBotAPI()
+			print(tostring("DMWC: bntapi loaded"))
+		elseif wmbapi then
 			LoadMiniBotAPI()
+			print(tostring("DMWC: wmbapi loaded"))
 		end
     end
 )

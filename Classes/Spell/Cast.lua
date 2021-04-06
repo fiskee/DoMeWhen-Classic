@@ -79,8 +79,8 @@ function Spell:Cast(Unit, Rank)
                 end
             else
                 if DMW.Player.Moving then
-                    SendMovementUpdate()
-                end
+					--SendMovementUpdate()
+				end
                 self:HealCommFix(Rank)
                 self:FacingCast(Unit, Rank)
                 self.LastBotTarget = Unit.Pointer

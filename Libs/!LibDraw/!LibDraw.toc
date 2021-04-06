@@ -1,5 +1,5 @@
 ## Interface: 60000
-## Title: !LibDraw
+## Title: !libdraw
 
 Libs\LibStub\LibStub.lua
-LibDraw.lua
+libdraw.lua
