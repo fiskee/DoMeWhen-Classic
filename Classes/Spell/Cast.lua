@@ -79,10 +79,8 @@ function Spell:Cast(Unit, Rank)
                 end
             else
                 if DMW.Player.Moving then
-					if not bntapi or not wmbapi then
-						SendMovementUpdate()
-					end
-                end
+					--SendMovementUpdate()
+				end
                 self:HealCommFix(Rank)
                 self:FacingCast(Unit, Rank)
                 self.LastBotTarget = Unit.Pointer
