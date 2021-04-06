@@ -774,14 +774,14 @@ local Options = {
                     type = "toggle",
                     order = 5,
                     name = "Anti Afk",
-                    desc = "Enable/Disable EWT Anti Afk",
+                    desc = "Enable/Disable Anti Afk     - do not work ATM",
                     width = "full",
-                    get = function()
-                        return IsHackEnabled("antiafk")
-                    end,
-                    set = function(info, value)
-                        SetHackEnabled("antiafk", value)
-                    end
+                    --get = function()
+                    --    return IsHackEnabled("antiafk")
+                    --end,
+                    --set = function(info, value)
+                    --    SetHackEnabled("antiafk", value)
+                    --end
                 },
                 AutoLoot = {
                     type = "toggle",

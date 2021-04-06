@@ -21,7 +21,7 @@ Libs\LibDBIcon-1.0\LibDataBroker-1.1\LibDataBroker-1.1.lua
 Libs\LibDBIcon-1.0\LibDBIcon-1.0\lib.xml
 Libs\LibClassicDurations\LibClassicDurations.xml
 Libs\LibClassicCasterino\LibClassicCasterino.lua
-Libs\!LibDraw\LibDraw.lua
+Libs\!libdraw\libdraw.lua
 Libs\LibBossIDs-1.0\LibBossIDs-1.0.lua
 Libs\AceSerializer-3.0\AceSerializer-3.0.lua
 Libs\LibBase64-1.0\LibBase64-1.0.lua
@@ -62,6 +62,7 @@ Helpers\Swing.lua
 Helpers\Navigation.lua
 Helpers\HealComm.lua
 Helpers\MiniBotAPI.lua
+Helpers\BanetoBotAPI.lua
 # Tables
 Helpers\Healers.lua
 Helpers\Misc.lua
